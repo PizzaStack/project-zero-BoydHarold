@@ -19,7 +19,7 @@ public class CheckingAccount implements Account{
 	
 	@Override
 	public void setupDefaultValues() {
-		System.out.println("YO!");
+
 		boolean exists = customerIdFile.exists();
 		if(!exists) {
 			try(
