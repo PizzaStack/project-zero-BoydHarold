@@ -64,7 +64,7 @@ public class Employee {
 				psEmployeeBirthDate.println("0");
 				psEmployeeEmailAddress.println("0");
 				psEmployeePhoneNumber.println("0");
-				psEmployeeIsActive.println("0");
+				psEmployeeIsActive.println("1");
 				
 			} catch (FileNotFoundException e) {
 
@@ -161,7 +161,7 @@ public class Employee {
 				return newId;
 			}
 
-			public void commitEmployee() {
+			public int commitEmployee() {
 				try (
 						FileOutputStream fosEmployeeId = new FileOutputStream(employeeIdFile, true);
 						PrintStream psEmployeeId = new PrintStream(fosEmployeeId);
@@ -188,13 +188,13 @@ public class Employee {
 						PrintStream psEmployeeIsActive = new PrintStream(fosEmployeeIsActive);) {
 					
 					this.employeeId = generateEmployeeId();
-					psEmployeeId.println(String.valueOf(employeeId));
-					psEmployeeFirstName.println(firstName);
-					psEmployeeLastName.println(lastName);
-					psEmployeeAddress.println(address);
-					psEmployeeBirthDate.println(birthDate);
-					psEmployeeEmailAddress.println(emailAddress);
-					psEmployeePhoneNumber.println(phoneNumber);
+					psEmployeeId.println(String.valueOf(employeeId).trim());
+					psEmployeeFirstName.println(firstName.trim());
+					psEmployeeLastName.println(lastName.trim());
+					psEmployeeAddress.println(address.trim());
+					psEmployeeBirthDate.println(birthDate.trim());
+					psEmployeeEmailAddress.println(emailAddress.trim());
+					psEmployeePhoneNumber.println(phoneNumber.trim());
 					psEmployeeIsActive.println("1");
 
 				} catch (FileNotFoundException e) {
@@ -202,6 +202,8 @@ public class Employee {
 				} catch (IOException e) {
 
 				}
+				
+				return this.employeeId;
 			}
 
 			public void getCommittedEmployeeInformation(int employeeId) {
@@ -299,6 +301,30 @@ public class Employee {
 		    		} catch (IOException e) {
 		    			
 		    		}
+			}
+			
+			public boolean employeeCheck(int employeeId) {
+				boolean exists = false;
+				try 
+				(
+				FileInputStream fisEmployeeId = new FileInputStream(employeeIdFile);
+				BufferedReader brEmployeeId = new BufferedReader(new InputStreamReader(fisEmployeeId));
+						
+				) {
+					String line = "";
+					while((line = brEmployeeId.readLine()) != null) {
+						
+						if(Integer.parseInt(line) == employeeId) {
+							exists = true;
+						}
+					}
+				} catch (FileNotFoundException e) {
+					
+				} catch (IOException e) {
+					
+				}
+				
+				return exists;
 			}
 		
 		

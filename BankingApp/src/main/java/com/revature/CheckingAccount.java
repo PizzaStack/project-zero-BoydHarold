@@ -17,7 +17,7 @@ public class CheckingAccount implements Account {
 	File customerCheckingAccountBalanceFile = new File(checkingFilePath + "CustomerCheckingAccountBalance.txt");
 	File customerAccountStatusFile = new File(checkingFilePath + "CustomerAccountStatus.txt");
 	File customerAccountApprovalStatusFile = new File(checkingFilePath + "CustomerAccountApprovalStatus.txt");
-	DecimalFormat df = new DecimalFormat("##.00");
+	DecimalFormat df = new DecimalFormat("#0.00");
 
 	@Override
 	public void setupDefaultValues() {
@@ -57,7 +57,7 @@ public class CheckingAccount implements Account {
 		double currentBalance = getBalance(customerId);
 		double newBalance = currentBalance - amount;
 		if (newBalance < 0) {
-			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + currentBalance
+			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance)
 					+ " remaining in your account!");
 			return false;
 		} else {
@@ -81,13 +81,13 @@ public class CheckingAccount implements Account {
 		if (destination.equals("Savings")) {
 			withdrawl(customerId, amount);
 			sa.deposit(customerId, amount);
-			System.out.println("New Checking Account Balance: $" + getBalance(customerId));
-			System.out.println("New Savings Account Balance: $" + sa.getBalance(customerId));
+			System.out.println("New Checking Account Balance: $" + df.format(getBalance(customerId)));
+			System.out.println("New Savings Account Balance: $" + df.format(sa.getBalance(customerId)));
 		} else if (destination.equals("Joint")) {
 			withdrawl(customerId, amount);
 			ja.deposit(customerId, amount);
-			System.out.println("New Checking Account Balance: $" + getBalance(customerId));
-			System.out.println("New Joint Account Balance: $" + ja.getBalance(customerId));
+			System.out.println("New Checking Account Balance: $" + df.format(getBalance(customerId)));
+			System.out.println("New Joint Account Balance: $" + df.format(ja.getBalance(customerId)));
 		}
 	}
 

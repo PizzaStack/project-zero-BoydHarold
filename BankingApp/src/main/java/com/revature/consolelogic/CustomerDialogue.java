@@ -9,7 +9,7 @@ import com.revature.Customer;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 
-public class CustomerDialog {
+public class CustomerDialogue {
 	private String firstName = "";
 	private String lastName = "";
 	private String address = "";
@@ -233,6 +233,14 @@ public class CustomerDialog {
 		System.out.println("Birth Date: " + customer.getCustomerBirthDate());
 		System.out.println("Email Address: " + customer.getCustomerEmailAddress());
 		System.out.println("Phone Number: " + customer.getCustomerPhoneNumber());
+		int status = customer.getCustomerIsActive();
+		String statusString = "";
+		if(status == 0) {
+			statusString = "Disabled";
+		} else if(status == 1) {
+			statusString = "Enabled";
+		}
+		System.out.println("Status: " + statusString);
 		System.out.println("\nDisplaying Checking Account Information for Customer ID: " + customerId);
 		String checkingAccountStatus = ca.getAccountStatus(customerId);
 		String checkingAccountApprovalStatus = ca.getApprovalStatus(customerId);
@@ -282,9 +290,9 @@ public class CustomerDialog {
 		System.out.println("Savings Account Balance: $" + savingsAccountBalance);
 		
 		System.out.println("\nDisplaying Joint Account Information for Customer ID: " + customerId);
-		String jointAccountStatus = ja.getAccountStatus(customerId);
-		String jointAccountApprovalStatus = ja.getApprovalStatus(customerId);
-		String jointAccountBalance = String.valueOf(df.format(ja.getBalance(customerId)));
+		String jointAccountStatus = ja.getAccountStatus(ja.getPosition(customerId));
+		String jointAccountApprovalStatus = ja.getApprovalStatus(ja.getPosition(customerId));
+		String jointAccountBalance = String.valueOf(df.format(ja.getBalance(ja.getPosition(customerId))));
 		if(jointAccountStatus.equals("0")) {
 			jointAccountStatus = "Disabled";
 		} else if (jointAccountStatus.equals("1")) {

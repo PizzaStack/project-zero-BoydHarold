@@ -1,0 +1,245 @@
+package com.revature.consolelogic;
+
+import java.text.DecimalFormat;
+import java.time.Year;
+import java.util.Scanner;
+
+
+import com.revature.Administrator;
+
+
+public class AdministratorDialogue {
+	private String firstName = "";
+	private String lastName = "";
+	private String address = "";
+	private String birthDate = "";
+	private String day = "";
+	private String month = "";
+	private String year = "";
+	private String emailAddress = "";
+	private String phoneNumber = "";
+	private boolean validEntry = false;
+	private String commit = "n";
+	private Scanner sc = new Scanner(System.in);
+	private Administrator administrator = new Administrator();
+	DecimalFormat df = new DecimalFormat("#0.00");
+	
+	public void addNewAdministrator() {
+		while(commit.equals("n")) {
+			
+		while (firstName.equals("")) {
+			System.out.println("Enter in the Administrator's First Name:");
+			firstName = sc.nextLine();
+		}
+
+		while (lastName.equals("")) {
+			System.out.println("\nEnter in the Administrator's Last Name:");
+			lastName = sc.nextLine();
+		}
+
+		while (address.equals("")) {
+			System.out.println("\nEnter in the Administrator's Address:");
+			address = sc.nextLine();
+		}
+
+		System.out.println("\nEnter in the Administrator's Birth Date:");
+		
+		while (month.equals("")) {
+			System.out.println("Month:");
+			month = sc.nextLine();
+			boolean isNumeric = isNumeric(month);
+			while (isNumeric == false) {
+				month = "";
+				System.out.println("Invalid entry! Please use the following format: 1-12");
+				month = sc.nextLine();
+				isNumeric = isNumeric(month);
+			}
+
+			while (month.length() > 2) {
+				month = "";
+				System.out.println("Invalid entry! Please use the following format: 1-12");
+				month = sc.nextLine();
+			}
+
+			while (Integer.parseInt(month) > 31 || Integer.parseInt(month) < 1) {
+				month = "";
+				System.out.println("Invalid entry! Please use the following format: 1-12");
+				month = sc.nextLine();
+			}
+
+		}
+		
+		while (day.equals("")) {
+			System.out.println("Day:");
+			day = sc.nextLine();
+			boolean isNumeric = isNumeric(day);
+			while (isNumeric == false) {
+				day = "";
+				System.out.println("Invalid entry! Please use the following format: 1-31");
+				day = sc.nextLine();
+				isNumeric = isNumeric(day);
+			}
+
+			while (day.length() > 2) {
+				day = "";
+				System.out.println("Invalid entry! Please use the following format: 1-31");
+				day = sc.nextLine();
+			}
+
+			while (Integer.parseInt(day) > 31 || Integer.parseInt(day) < 1) {
+				day = "";
+				System.out.println("Invalid entry! Please use the following format: 1-31");
+				day = sc.nextLine();
+			}
+
+		}
+		
+		int currentYear = Year.now().getValue();
+		
+		while (year.equals("")) {
+			System.out.println("Year:");
+			year = sc.nextLine();
+			boolean isNumeric = isNumeric(year);
+			while (isNumeric == false) {
+				year = "";
+				System.out.println("Invalid entry! Please use the following format: 1900-" + currentYear);
+				year = sc.nextLine();
+				isNumeric = isNumeric(month);
+			}
+
+			while (year.length() > 4) {
+				year = "";
+				System.out.println("Invalid entry! Please use the following format: 1900-" + currentYear);
+				year = sc.nextLine();
+			}
+
+			while (Integer.parseInt(year) < 1900 || Integer.parseInt(year) >= currentYear) {
+				year = "";
+				System.out.println("Invalid entry! Please use the following format: 1900-" + currentYear);
+				year = sc.nextLine();
+			}
+			
+
+		}
+		
+		System.out.println("\nEnter in the Administrator's Email Address:");
+		
+		
+		while(emailAddress.equals("")) {
+			emailAddress = sc.nextLine();
+			while(validEntry == false) {
+				if(emailAddress.contains("@")) {
+				validEntry = true;
+				} else {
+					System.out.println("Invalid entry! Make sure the Email Address contains the '@' sign and Domain!");
+					emailAddress = sc.nextLine();
+					validEntry = false;
+				}
+			}
+			
+		}
+		
+		System.out.println("\nEnter in the Administrator's Phone Number:");
+		validEntry = false;
+		while(phoneNumber.equals("")) {
+			phoneNumber = sc.nextLine();
+			if(phoneNumber.contains("-")) {
+				validEntry = true;
+			} else {
+				System.out.println("Invalid entry! Make sure the Phone Number contains a '-' character!");
+				phoneNumber = sc.nextLine();
+				validEntry = false;
+			}
+		}
+		
+
+		
+		administrator.setAdministratorFirstName(firstName);
+		administrator.setAdministratorLastName(lastName);
+		administrator.setAdministratorAddress(address);
+		administrator.setAdministratorBirthDate(Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year));
+		administrator.setAdministratorEmailAddress(emailAddress);
+		administrator.setAdministratorPhoneNumber(phoneNumber);
+		
+		System.out.println("\nPlease review the following information:");
+		System.out.println(administrator.getAdministratorFirstName());
+		System.out.println(administrator.getAdministratorLastName());
+		System.out.println(administrator.getAdministratorAddress());
+		System.out.println(administrator.getAdministratorBirthDate());
+		System.out.println(administrator.getAdministratorEmailAddress());
+		System.out.println(administrator.getAdministratorPhoneNumber());
+		
+		System.out.println("\nCommit? (Y/N)");
+		commit = sc.nextLine().toLowerCase();
+		validEntry = false;
+		
+		while(validEntry = false) {
+			while(commit.length() > 1 || commit.length() < 1) {
+				System.out.println("Invalid entry! Please submit either Y or N!");
+				commit = sc.nextLine().toLowerCase();
+				validEntry = false;
+			}
+			
+			if(commit.equals("y") || commit.equals("n")) {
+				validEntry = true;
+			}
+		}
+		
+		if(commit.equals("n")) {
+			System.out.println("\nEnter the Administrator information again.\n");
+			firstName = "";
+			lastName = "";
+			emailAddress = "";
+			address = "";
+			day = "";
+			month = "";
+			year = "";
+		} else {
+			System.out.println("\nCommited!");
+			int administratorId = administrator.commitAdministrator();
+			System.out.println("\nAdministrator ID generated! Make sure to write this down!\nAdministrator ID: " + administratorId);
+		}
+		
+		}
+
+	}
+
+	public boolean isNumeric(String datePart) {
+		boolean isNumeric = false;
+		try {
+			Integer.parseInt(datePart);
+			isNumeric = true;
+		} catch (Exception e) {
+			isNumeric = false;
+		}
+
+		return isNumeric;
+	}
+	
+	public void displayAdministrator() {
+		System.out.println("Enter in the Administrator ID:");
+		int administratorId = Integer.parseInt(sc.nextLine());
+		boolean exists = administrator.administratorCheck(administratorId);
+		if(exists) {
+		administrator.getCommittedAdministratorInformation(administratorId);
+		System.out.println("Displaying General Administrator Information for Administrator ID: " + administratorId);
+		System.out.println("First Name: " + administrator.getAdministratorFirstName());
+		System.out.println("Last Name: " + administrator.getAdministratorLastName());
+		System.out.println("Address: " + administrator.getAdministratorAddress());
+		System.out.println("Birth Date: " + administrator.getAdministratorBirthDate());
+		System.out.println("Email Address: " + administrator.getAdministratorEmailAddress());
+		System.out.println("Phone Number: " + administrator.getAdministratorPhoneNumber());
+		int status = administrator.getAdministratorIsActive();
+		String statusString = "";
+		if(status == 0) {
+			statusString = "Disabled";
+		} else if(status == 1) {
+			statusString = "Enabled";
+		}
+		System.out.println("Status: " + statusString);
+		
+		} else {
+			System.out.println("Administrator does not exist!");
+		}
+	}
+}

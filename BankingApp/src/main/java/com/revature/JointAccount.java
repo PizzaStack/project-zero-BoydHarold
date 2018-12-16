@@ -18,7 +18,8 @@ public class JointAccount{
 	File customerJointAccountBalanceFile = new File(jointFilePath + "CustomerJointAccountBalance.txt");
 	File customerAccountStatusFile = new File(jointFilePath + "CustomerAccountStatus.txt");
 	File customerAccountApprovalStatusFile = new File(jointFilePath + "CustomerAccountApprovalStatus.txt");
-
+	DecimalFormat df = new DecimalFormat("#0.00");
+	
 	public void setupDefaultValues() {
 		boolean exists = customerIdFile1.exists();
 		if (!exists) {
@@ -56,7 +57,7 @@ public class JointAccount{
 		double currentBalance = getBalance(customerId);
 		double newBalance = currentBalance - amount;
 		if (newBalance < 0) {
-			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + currentBalance
+			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance)
 					+ " remaining in your account!");
 			return false;
 		} else {
@@ -78,60 +79,47 @@ public class JointAccount{
 		if (destination.equals("Checking")) {
 			withdrawl(customerId, amount);
 			ca.deposit(customerId, amount);
-			System.out.println("New Joint Account Balance: $" + getBalance(customerId));
-			System.out.println("New Checking Account Balance: $" + ca.getBalance(customerId));
+			System.out.println("New Joint Account Balance: $" + df.format(getBalance(customerId)));
+			System.out.println("New Checking Account Balance: $" + df.format(ca.getBalance(customerId)));
 		} else if (destination.equals("Savings")) {
 			withdrawl(customerId, amount);
 			sa.deposit(customerId, amount);
-			System.out.println("New Joint Account Balance: $" + getBalance(customerId));
-			System.out.println("New Savings Account Balance: $" + sa.getBalance(customerId));
+			System.out.println("New Joint Account Balance: $" + df.format(getBalance(customerId)));
+			System.out.println("New Savings Account Balance: $" + df.format(sa.getBalance(customerId)));
 		}
 	}
 
 	public void applyForAccount(int customerId1, int customerId2) {
+		Customer customer = new Customer();
+		boolean customerCheck = customer.customerCheck(customerId2);
+
+		if(customerCheck) {
 		
-		String approvalStatus = getApprovalStatus(customerId1);
-		if (approvalStatus.equals("p")) {
-			System.out.println("Approval already pending!");
-		} else {
-			ArrayList<String> alOne = new ArrayList<String>();
-			ArrayList<String> alTwo = new ArrayList<String>();
-			ArrayList<String> alThree = new ArrayList<String>();
 
-			try (FileInputStream fisGetAccountApprovalStatus = new FileInputStream(customerAccountApprovalStatusFile);
-					BufferedReader brGetAccountApprovalStatus = new BufferedReader(
-							new InputStreamReader(fisGetAccountApprovalStatus));) {
-				String line = "";
-				while ((line = brGetAccountApprovalStatus.readLine()) != null) {
-					alOne.add(line);
-				}
+			try (
+					FileOutputStream fosCustomerId1 = new FileOutputStream(customerIdFile1, true);
+					PrintStream psCustomerId1 = new PrintStream(fosCustomerId1);
 
-				for (int i = 0; i < alOne.size(); i++) {
-					if (i < customerId1) {
-						alTwo.add(alOne.get(i));
-					} else if (i > customerId1) {
-						alThree.add(alOne.get(i));
-					}
-				}
+					FileOutputStream fosCustomerJointAccountBalance = new FileOutputStream(
+							customerJointAccountBalanceFile, true);
+					PrintStream psCustomerJointAccountBalance = new PrintStream(fosCustomerJointAccountBalance);
 
-				alOne.clear();
-				alOne.addAll(alTwo);
-				alOne.add("p");
-				alOne.addAll(alThree);
+					FileOutputStream fosCustomerAccountStatus = new FileOutputStream(customerAccountStatusFile, true);
+					PrintStream psCustomerAccountStatus = new PrintStream(fosCustomerAccountStatus);
 
-			} catch (FileNotFoundException e) {
+					FileOutputStream fosCustomerApprovalStatus = new FileOutputStream(customerAccountApprovalStatusFile,
+							true);
+					PrintStream psCustomerApprovalStatus = new PrintStream(fosCustomerApprovalStatus);
 
-			} catch (IOException e) {
-
-			}
-
-			customerAccountApprovalStatusFile.delete();
-
-			try (FileOutputStream fosSetAccountApprovalStatus = new FileOutputStream(customerAccountApprovalStatusFile,
-					true); PrintStream psSetAccountApprovalStatus = new PrintStream(fosSetAccountApprovalStatus);) {
-				for (int i = 0; i < alOne.size(); i++) {
-					psSetAccountApprovalStatus.println(alOne.get(i));
-				}
+					FileOutputStream fosCustomerId2 = new FileOutputStream(customerIdFile2, true);
+					PrintStream psCustomerId2 = new PrintStream(fosCustomerId2);
+					
+					) {
+					psCustomerId1.println(customerId1);
+					psCustomerId2.println(customerId2);
+					psCustomerJointAccountBalance.println("0");
+					psCustomerAccountStatus.println("0");
+					psCustomerApprovalStatus.println("p");
 			} catch (FileNotFoundException e) {
 
 			} catch (IOException e) {
@@ -139,7 +127,10 @@ public class JointAccount{
 			}
 
 			System.out.println("Applied for Joint Account!");
+		} else {
+			System.out.println("The customer you wish to open a Joint Account with does not exist!");
 		}
+		
 	}
 
 	public double getBalance(int customerId) {
@@ -295,5 +286,6 @@ public class JointAccount{
 		
 		return position;
 	}
+	
 
 }

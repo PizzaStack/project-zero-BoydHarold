@@ -9,8 +9,12 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.revature.consolelogic.CustomerDialog;
+import com.revature.consolelogic.AdministratorDialogue;
+import com.revature.consolelogic.CustomerDialogue;
+import com.revature.consolelogic.EmployeeDialogue;
 import com.revature.consolelogic.Initialize;
+import com.revature.consolelogic.LoginDialogue;
+import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
 
 
@@ -26,21 +30,52 @@ public class App
     {
     	
     	Initialize init = new Initialize();
-    	CustomerDialog cd = new CustomerDialog();
-    	int customerId = 2;
+    	init.init();
+    	AdministratorDialogue ad = new AdministratorDialogue();
+    //	ad.addNewAdministrator();
+    	//ad.displayAdministrator();
+   	CustomerDialogue cd = new CustomerDialogue();
+   	
+   	EmployeeDialogue ed = new EmployeeDialogue();
+   	
+   	RegistrationDialogue rd = new RegistrationDialogue();
+   	
+   	LoginDialogue ld = new LoginDialogue();
+   	
+   	ld.login();
+   	
+//   	rd.register();
+   	
+//   	ed.addNewEmployee();
+   //	ed.displayEmployee();
+//    	int customerId = 1;
+//    	
+//    	JointAccount ja = new JointAccount();
+//    	
+//    	TransferDialogue td = new TransferDialogue();
+//    	
+//    	td.transfer(customerId);
     	
-    	JointAccount ja = new JointAccount();
-    	//System.out.println(ja.getPosition(2));
-    	System.out.println(ja.getBalance(ja.getPosition(1)));
+    //	ja.applyForAccount(1, 2);
+    	
+    	
+//    	System.out.println(ja.getPosition(customerId));
+    	
+//    	System.out.println(ja.getAccountStatus(ja.getPosition(customerId)));
+//    	
+//    	System.out.println(ja.getApprovalStatus(ja.getPosition(customerId)));
+//    	System.out.println(ja.getBalance(ja.getPosition(customerId)));
+//    	System.out.println(ja.getPosition(2));
+//    	ja.applyForAccount(1, 3);
 //    	CheckingAccount ca = new CheckingAccount();
 //    	ca.applyForAccount(customerId);
     	
 //    	SavingsAccount sa = new SavingsAccount();
 //    	sa.applyForAccount(customerId);
 //    	
-    //	init.init();
-//    	cd.displayCustomer();
-    //	cd.addNewCustomer();
+//    	init.init();
+   	//cd.displayCustomer();
+//    	cd.addNewCustomer();
     	
 //    	TransferDialogue td = new TransferDialogue();
 //    	int customerId = 4;

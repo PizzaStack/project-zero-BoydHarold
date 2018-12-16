@@ -48,13 +48,16 @@ public class CustomerRegistration{
 		}
 	}
 	
-	public void registerUser(String customerId, String username, String password) {
+	public boolean registerUser(String customerId, String username, String password) {
 		int userExists = checkUserExists(username);
 		int customerOnboarded = checkCustomerOnboarded(customerId);
+		boolean success = false;
 		if(userExists == 1) {
-			System.out.println("Account already exists. No changes made.");
+			System.out.println("Account already exists with that username!");
+			success = false;
 		} else if(customerOnboarded == 0) {
-			System.out.println("Customer does not have an account with the bank, please");
+			System.out.println("Customer does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
+			success = false;
 		} else {
 			try (
 					FileOutputStream fosCustomerId = new FileOutputStream(customerIdFile, true);
@@ -75,13 +78,14 @@ public class CustomerRegistration{
 				psUsernames.println(username);
 				psPasswords.println(password);
 				psAccountType.println("c");
-				
+				success = true;
 			} catch (FileNotFoundException e) {
 
 			} catch (IOException e) {
 				
 			}
 		}
+		return success;
 	}
 	
 	public int checkUserExists(String username) {
@@ -130,6 +134,29 @@ public class CustomerRegistration{
 
 		}
 		return customerExists;
+	}
+	
+	public boolean checkUserAlreadyHasAccount(int customerId) {
+		boolean userHasAccountAlready = false;
+		try (			
+				FileInputStream fis = new FileInputStream(customerIdFile);
+				BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+			) {
+				String currentId;
+				while((currentId = br.readLine()) != null){
+					if(currentId.equals(customerId)) {
+						userHasAccountAlready = true;
+					}
+				}
+		
+				
+			} catch (FileNotFoundException e) {
+				
+				return userHasAccountAlready;
+			} catch (IOException e) {
+
+			}
+			return userHasAccountAlready;
 	}
 
 }
