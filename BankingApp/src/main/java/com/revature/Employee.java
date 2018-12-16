@@ -19,7 +19,7 @@ public class Employee {
 	private String phoneNumber;
 	private int employeeId;
 	private int employeeIsActive;
-	private String employeePath = "C:\\Users\\boydt\\eclipse-workspace\\BankingApp\\PseudoDB\\PseudoTables\\Employee\\";
+	private String employeePath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Employee\\";
 	private File employeeIdFile = new File(employeePath + "EmployeeId.txt");
 	private File employeeFirstNameFile = new File(employeePath + "EmployeeFirstName.txt");
 	private File employeeLastNameFile = new File(employeePath + "EmployeeLastName.txt");

@@ -9,6 +9,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.revature.consolelogic.CustomerDialog;
+import com.revature.consolelogic.Initialize;
 import com.revature.consolelogic.TransferDialogue;
 
 
@@ -23,10 +25,16 @@ public class App
     public static void main( String[] args )
     {
     	
-
-    	TransferDialogue td = new TransferDialogue();
-    	int customerId = 4;
-    	td.transfer(customerId);
+    	Initialize init = new Initialize();
+    	CustomerDialog cd = new CustomerDialog();
+    	
+    	init.init();
+    	cd.displayCustomer();
+    	//cd.addNewCustomer();
+    	
+//    	TransferDialogue td = new TransferDialogue();
+//    	int customerId = 4;
+//    	td.transfer(customerId);
     	
     	
 //		Customer customer = new Customer();

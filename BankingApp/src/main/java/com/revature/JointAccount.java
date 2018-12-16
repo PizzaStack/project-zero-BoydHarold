@@ -12,18 +12,20 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class JointAccount implements Account{
-	private String jointFilePath = "C:\\Users\\boydt\\eclipse-workspace\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Joint\\";
-	File customerIdFile = new File(jointFilePath + "CustomerId.txt");
+	private String jointFilePath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Joint\\";
+	File customerIdFile1 = new File(jointFilePath + "CustomerId1.txt");
+	File customerIdFile2 = new File(jointFilePath + "CustomerId2.txt");
 	File customerJointAccountBalanceFile = new File(jointFilePath + "CustomerJointAccountBalance.txt");
 	File customerAccountStatusFile = new File(jointFilePath + "CustomerAccountStatus.txt");
+	File customerAccountApprovalStatusFile = new File(jointFilePath + "CustomerAccountApprovalStatus.txt");
 	
 	@Override
 	public void setupDefaultValues() {
-		boolean exists = customerIdFile.exists();
+		boolean exists = customerIdFile1.exists();
 		if(!exists) {
 			try(
-					FileOutputStream fosCustomerId = new FileOutputStream(customerIdFile, true);
-					PrintStream psCustomerId = new PrintStream(fosCustomerId);
+					FileOutputStream fosCustomerId1 = new FileOutputStream(customerIdFile1, true);
+					PrintStream psCustomerId1 = new PrintStream(fosCustomerId1);
 					
 					FileOutputStream fosCustomerJointAccountBalance = new FileOutputStream(customerJointAccountBalanceFile, true);
 					PrintStream psCustomerJointAccountBalance = new PrintStream(fosCustomerJointAccountBalance);
@@ -31,10 +33,17 @@ public class JointAccount implements Account{
 					FileOutputStream fosCustomerAccountStatus = new FileOutputStream(customerAccountStatusFile, true);
 					PrintStream psCustomerAccountStatus = new PrintStream(fosCustomerAccountStatus);
 					
+					FileOutputStream fosCustomerApprovalStatus = new FileOutputStream(customerAccountApprovalStatusFile, true);
+					PrintStream psCustomerApprovalStatus = new PrintStream(fosCustomerApprovalStatus);
+					
+					FileOutputStream fosCustomerId2 = new FileOutputStream(customerIdFile2, true);
+					PrintStream psCustomerId2 = new PrintStream(fosCustomerId2);
 			){
-				psCustomerId.println("0");
+				psCustomerId1.println("0");
+				psCustomerId2.println("0");
 				psCustomerJointAccountBalance.println("0");
 				psCustomerAccountStatus.println("0");
+				psCustomerApprovalStatus.println("0");
 				
 			} catch (FileNotFoundException e) {
 				
@@ -160,6 +169,28 @@ public class JointAccount implements Account{
 		} catch (IOException e) {
 			
 		}
+	}
+
+	@Override
+	public String getAccountStatus(int customerId) {
+		String status = "0";
+		try (
+		FileInputStream fisGetAccountStatus = new FileInputStream(customerAccountStatusFile);
+		BufferedReader brGetAccountStatus = new BufferedReader(new InputStreamReader(fisGetAccountStatus));
+		) {
+			String line = "";
+			int lineNumber = 0;
+			while(lineNumber <= customerId) {
+				line = brGetAccountStatus.readLine();
+				status = line;
+				lineNumber++;
+			}
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		return status;
 	}
 
 }

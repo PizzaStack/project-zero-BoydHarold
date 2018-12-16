@@ -19,8 +19,8 @@ public class Customer {
 	private String phoneNumber;
 	private int customerId;
 	private int customerIsActive;
-	
-	private String customerPath = "C:\\Users\\boydt\\eclipse-workspace\\BankingApp\\PseudoDB\\PseudoTables\\Customer\\";
+	private String customerPath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Customer\\";
+	private String accountPath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Account\\";
 	private File customerIdFile = new File(customerPath + "CustomerId.txt");
 	private File customerFirstNameFile = new File(customerPath + "CustomerFirstName.txt");
 	private File customerLastNameFile = new File(customerPath + "CustomerLastName.txt");
@@ -29,6 +29,19 @@ public class Customer {
 	private File customerEmailAddressFile = new File(customerPath + "CustomerEmailAddress.txt");
 	private File customerPhoneNumberFile = new File(customerPath + "CustomerPhoneNumber.txt");
 	private File customerIsActiveFile = new File(customerPath + "CustomerIsActive.txt");
+	private File customerAccountApprovalStatusCheckingFile = new File(accountPath + "Checking\\CustomerAccountApprovalStatus.txt");
+	private File customerAccountApprovalStatusSavingsFile = new File(accountPath + "Savings\\CustomerAccountApprovalStatus.txt");
+	private File customerAccountApprovalStatusJointFile = new File(accountPath + "Joint\\CustomerAccountApprovalStatus.txt");
+	private File customerIdCheckingFile = new File(accountPath + "Checking\\CustomerId.txt");
+	private File customerCheckingAccountBalanceFile = new File(accountPath + "Checking\\CustomerCheckingAccountBalance.txt");
+	private File customerAccountStatusCheckingFile = new File(accountPath + "Checking\\CustomerAccountStatus.txt");
+	private File customerIdSavingsFile = new File(accountPath + "Savings\\CustomerId.txt");
+	private File customerSavingsAccountBalanceFile = new File(accountPath + "Savings\\CustomerSavingsAccountBalance.txt");
+	private File customerAccountStatusSavingsFile = new File(accountPath + "Savings\\CustomerAccountStatus.txt");
+	private File customerIdJointFile1 = new File(accountPath + "Joint\\CustomerId1.txt");
+	private File customerIdJointFile2 = new File(accountPath + "Joint\\CustomerId2.txt");
+	private File customerJointAccountBalanceFile = new File(accountPath + "Joint\\CustomerJointAccountBalance.txt");
+	private File customerAccountStatusJointFile = new File(accountPath + "Joint\\CustomerAccountStatus.txt");
 	
 	public void makeBaselineCustomer() {
 		boolean exists = customerIdFile.exists();
@@ -56,7 +69,9 @@ public class Customer {
 					PrintStream psCustomerPhoneNumber = new PrintStream(fosCustomerPhoneNumber);
 					
 					FileOutputStream fosCustomerIsActive = new FileOutputStream(customerIsActiveFile, true);
-					PrintStream psCustomerIsActive = new PrintStream(fosCustomerIsActive);) {
+					PrintStream psCustomerIsActive = new PrintStream(fosCustomerIsActive);
+					
+					) {
 				
 				psCustomerId.println("0");
 				psCustomerFirstName.println("0");
@@ -162,7 +177,7 @@ public class Customer {
 		return newId;
 	}
 
-	public void commitCustomer() {
+	public int commitCustomer() {
 		try (
 				FileOutputStream fosCustomerId = new FileOutputStream(customerIdFile, true);
 				PrintStream psCustomerId = new PrintStream(fosCustomerId);
@@ -186,10 +201,51 @@ public class Customer {
 				PrintStream psCustomerPhoneNumber = new PrintStream(fosCustomerPhoneNumber);
 				
 				FileOutputStream fosCustomerIsActive = new FileOutputStream(customerIsActiveFile, true);
-				PrintStream psCustomerIsActive = new PrintStream(fosCustomerIsActive);) {
+				PrintStream psCustomerIsActive = new PrintStream(fosCustomerIsActive);
+				
+				FileOutputStream fosCustomerCheckingId = new FileOutputStream(customerIdCheckingFile, true);
+				PrintStream psCustomerCheckingId = new PrintStream(fosCustomerCheckingId);
+				
+				FileOutputStream fosCustomerCheckingAccountBalance = new FileOutputStream(customerCheckingAccountBalanceFile, true);
+				PrintStream psCustomerCheckingAccountBalance = new PrintStream(fosCustomerCheckingAccountBalance);
+				
+				FileOutputStream fosCustomerAccountCheckingStatus = new FileOutputStream(customerAccountStatusCheckingFile, true);
+				PrintStream psCustomerAccountCheckingStatus = new PrintStream(fosCustomerAccountCheckingStatus);
+				
+				FileOutputStream fosCustomerSavingsId = new FileOutputStream(customerIdSavingsFile, true);
+				PrintStream psCustomerSavingsId = new PrintStream(fosCustomerSavingsId);
+				
+				FileOutputStream fosCustomerSavingsAccountBalance = new FileOutputStream(customerSavingsAccountBalanceFile, true);
+				PrintStream psCustomerSavingsAccountBalance = new PrintStream(fosCustomerSavingsAccountBalance);
+				
+				FileOutputStream fosCustomerAccountSavingsStatus = new FileOutputStream(customerAccountStatusSavingsFile, true);
+				PrintStream psCustomerAccountSavingsStatus = new PrintStream(fosCustomerAccountSavingsStatus);
+				
+				FileOutputStream fosCustomerJointId1 = new FileOutputStream(customerIdJointFile1, true);
+				PrintStream psCustomerJointId1 = new PrintStream(fosCustomerJointId1);
+				
+				FileOutputStream fosCustomerJointId2 = new FileOutputStream(customerIdJointFile2, true);
+				PrintStream psCustomerJointId2 = new PrintStream(fosCustomerJointId2);
+				
+				FileOutputStream fosCustomerJointAccountBalance = new FileOutputStream(customerJointAccountBalanceFile, true);
+				PrintStream psCustomerJointAccountBalance = new PrintStream(fosCustomerJointAccountBalance);
+				
+				FileOutputStream fosCustomerAccountJointStatus = new FileOutputStream(customerAccountStatusJointFile, true);
+				PrintStream psCustomerAccountJointStatus = new PrintStream(fosCustomerAccountJointStatus);
+				
+				FileOutputStream fosCustomerAccountApprovalStatusChecking = new FileOutputStream(customerAccountApprovalStatusCheckingFile, true);
+				PrintStream psCustomerAccountApprovalStatusChecking = new PrintStream(fosCustomerAccountApprovalStatusChecking);
+				
+				FileOutputStream fosCustomerAccountApprovalStatusSavings = new FileOutputStream(customerAccountApprovalStatusSavingsFile, true);
+				PrintStream psCustomerAccountApprovalStatusSavings = new PrintStream(fosCustomerAccountApprovalStatusSavings);
+				
+				FileOutputStream fosCustomerAccountApprovalStatusJoint = new FileOutputStream(customerAccountApprovalStatusJointFile, true);
+				PrintStream psCustomerAccountApprovalStatusJoint = new PrintStream(fosCustomerAccountApprovalStatusJoint);
+				
+				) {
 			
 			this.customerId = generateCustomerId();
-			psCustomerId.println(String.valueOf(customerId));
+			psCustomerId.println(customerId);
 			psCustomerFirstName.println(firstName);
 			psCustomerLastName.println(lastName);
 			psCustomerAddress.println(address);
@@ -197,12 +253,26 @@ public class Customer {
 			psCustomerEmailAddress.println(emailAddress);
 			psCustomerPhoneNumber.println(phoneNumber);
 			psCustomerIsActive.println("1");
+			psCustomerCheckingId.println(customerId);
+			psCustomerCheckingAccountBalance.println("0");
+			psCustomerAccountCheckingStatus.println("0");
+			psCustomerSavingsId.println(customerId);
+			psCustomerSavingsAccountBalance.println("0");
+			psCustomerAccountSavingsStatus.println("0");
+			psCustomerJointId1.println(customerId);
+			psCustomerJointId2.println("0");
+			psCustomerJointAccountBalance.println("0");
+			psCustomerAccountJointStatus.println("0");
+			psCustomerAccountApprovalStatusChecking.println("u");
+			psCustomerAccountApprovalStatusSavings.println("u");
+			psCustomerAccountApprovalStatusJoint.println("u");
 
 		} catch (FileNotFoundException e) {
 
 		} catch (IOException e) {
 
 		}
+		return this.customerId;
 	}
 
 	public void getCommittedCustomerInformation(int customerId) {
@@ -300,6 +370,30 @@ public class Customer {
     		} catch (IOException e) {
     			
     		}
+	}
+	
+	public boolean customerCheck(int customerId) {
+		boolean exists = false;
+		try 
+		(
+		FileInputStream fisCustomerId = new FileInputStream(customerIdFile);
+		BufferedReader brCustomerId = new BufferedReader(new InputStreamReader(fisCustomerId));
+				
+		) {
+			String line = "";
+			while((line = brCustomerId.readLine()) != null) {
+				
+				if(Integer.parseInt(line) == customerId) {
+					exists = true;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		
+		return exists;
 	}
 
 

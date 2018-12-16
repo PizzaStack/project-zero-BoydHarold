@@ -10,12 +10,12 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 public class CustomerRegistration{
-	private String authenticationPath = "C:\\Users\\boydt\\eclipse-workspace\\BankingApp\\PseudoDB\\PseudoTables\\Authentication\\Customer\\";
+	private String authenticationPath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Authentication\\Customer\\";
 	File customerIdFile = new File(authenticationPath + "CustomerId.txt");
 	File usernamesFile = new File(authenticationPath + "Usernames.txt");
 	File passwordFile = new File(authenticationPath + "Passwords.txt");
 	File accountTypeFile = new File(authenticationPath + "AccountTypeFile.txt");
-	File customerIdFile2 = new File("C:\\Users\\boydt\\eclipse-workspace\\BankingApp\\PseudoDB\\PseudoTables\\Customer\\CustomerId.txt");
+	File customerIdFile2 = new File("C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Customer\\CustomerId.txt");
 
 	public void makeBaselineUser() {
 		boolean exists = usernamesFile.exists();

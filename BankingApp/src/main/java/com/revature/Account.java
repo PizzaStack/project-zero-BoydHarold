@@ -8,4 +8,5 @@ public interface Account {
 	public void applyForAccount(int customerId);
 	public double getBalance(int customerId);
 	public void setBalance(int customerId, double balance);
+	public String getAccountStatus(int customerId);
 }

@@ -12,10 +12,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SavingsAccount implements Account{
-	private String savingsFilePath = "C:\\Users\\boydt\\eclipse-workspace\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Savings\\";
+	private String savingsFilePath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Savings\\";
 	File customerIdFile = new File(savingsFilePath + "CustomerId.txt");
 	File customerSavingsAccountBalanceFile = new File(savingsFilePath + "CustomerSavingsAccountBalance.txt");
 	File customerAccountStatusFile = new File(savingsFilePath + "CustomerAccountStatus.txt");
+	File customerAccountApprovalStatusFile = new File(savingsFilePath + "CustomerAccountApprovalStatus.txt");
 	
 	@Override
 	public void setupDefaultValues() {
@@ -31,10 +32,14 @@ public class SavingsAccount implements Account{
 					FileOutputStream fosCustomerAccountStatus = new FileOutputStream(customerAccountStatusFile, true);
 					PrintStream psCustomerAccountStatus = new PrintStream(fosCustomerAccountStatus);
 					
+					FileOutputStream fosCustomerApprovalStatus = new FileOutputStream(customerAccountApprovalStatusFile, true);
+					PrintStream psCustomerApprovalStatus = new PrintStream(fosCustomerApprovalStatus);
+					
 			){
 				psCustomerId.println("0");
 				psCustomerSavingsAccountBalance.println("0");
 				psCustomerAccountStatus.println("0");
+				psCustomerApprovalStatus.println("0");
 				
 			} catch (FileNotFoundException e) {
 				
@@ -160,6 +165,28 @@ public class SavingsAccount implements Account{
 		} catch (IOException e) {
 			
 		}
+	}
+
+	@Override
+	public String getAccountStatus(int customerId) {
+		String status = "0";
+		try (
+		FileInputStream fisGetAccountStatus = new FileInputStream(customerAccountStatusFile);
+		BufferedReader brGetAccountStatus = new BufferedReader(new InputStreamReader(fisGetAccountStatus));
+		) {
+			String line = "";
+			int lineNumber = 0;
+			while(lineNumber <= customerId) {
+				line = brGetAccountStatus.readLine();
+				status = line;
+				lineNumber++;
+			}
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			
+		}
+		return status;
 	}
 
 }
