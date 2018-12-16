@@ -37,7 +37,7 @@ public class SavingsAccount implements Account{
 					
 			){
 				psCustomerId.println("0");
-				psCustomerSavingsAccountBalance.println("0");
+				psCustomerSavingsAccountBalance.println("0.00");
 				psCustomerAccountStatus.println("0");
 				psCustomerApprovalStatus.println("0");
 				
@@ -89,7 +89,56 @@ public class SavingsAccount implements Account{
 
 	@Override
 	public void applyForAccount(int customerId) {
-		
+		String approvalStatus = getApprovalStatus(customerId);
+		if (approvalStatus.equals("p")) {
+			System.out.println("Approval already pending!");
+		} else {
+			ArrayList<String> alOne = new ArrayList<String>();
+			ArrayList<String> alTwo = new ArrayList<String>();
+			ArrayList<String> alThree = new ArrayList<String>();
+
+			try (FileInputStream fisGetAccountApprovalStatus = new FileInputStream(customerAccountApprovalStatusFile);
+					BufferedReader brGetAccountApprovalStatus = new BufferedReader(
+							new InputStreamReader(fisGetAccountApprovalStatus));) {
+				String line = "";
+				while ((line = brGetAccountApprovalStatus.readLine()) != null) {
+					alOne.add(line);
+				}
+
+				for (int i = 0; i < alOne.size(); i++) {
+					if (i < customerId) {
+						alTwo.add(alOne.get(i));
+					} else if (i > customerId) {
+						alThree.add(alOne.get(i));
+					}
+				}
+
+				alOne.clear();
+				alOne.addAll(alTwo);
+				alOne.add("p");
+				alOne.addAll(alThree);
+
+			} catch (FileNotFoundException e) {
+
+			} catch (IOException e) {
+
+			}
+
+			customerAccountApprovalStatusFile.delete();
+
+			try (FileOutputStream fosSetAccountApprovalStatus = new FileOutputStream(customerAccountApprovalStatusFile,
+					true); PrintStream psSetAccountApprovalStatus = new PrintStream(fosSetAccountApprovalStatus);) {
+				for (int i = 0; i < alOne.size(); i++) {
+					psSetAccountApprovalStatus.println(alOne.get(i));
+				}
+			} catch (FileNotFoundException e) {
+
+			} catch (IOException e) {
+
+			}
+
+			System.out.println("Applied for Savings Account!");
+		}
 	}
 
 	@Override
@@ -187,6 +236,34 @@ public class SavingsAccount implements Account{
 			
 		}
 		return status;
+	}
+
+	@Override
+	public String getApprovalStatus(int customerId) {
+		String status = "";
+		try (
+				FileInputStream fisGetAccountApprovalStatus = new FileInputStream(customerAccountApprovalStatusFile);
+				BufferedReader brGetAccountApprovalStatus = new BufferedReader(new InputStreamReader(fisGetAccountApprovalStatus));
+				) {
+					String line = "";
+					int lineNumber = 0;
+					while(lineNumber <= customerId) {
+						line = brGetAccountApprovalStatus.readLine();
+						status = line;
+						lineNumber++;
+					}
+				} catch (FileNotFoundException e) {
+					
+				} catch (IOException e) {
+					
+				}
+				return status;
+	}
+
+	@Override
+	public int getPosition(int customerId) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

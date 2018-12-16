@@ -9,4 +9,6 @@ public interface Account {
 	public double getBalance(int customerId);
 	public void setBalance(int customerId, double balance);
 	public String getAccountStatus(int customerId);
+	public String getApprovalStatus(int customerId);
+	public int getPosition(int customerId);
 }

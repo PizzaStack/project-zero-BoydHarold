@@ -27,10 +27,20 @@ public class App
     	
     	Initialize init = new Initialize();
     	CustomerDialog cd = new CustomerDialog();
+    	int customerId = 2;
     	
-    	init.init();
-    	cd.displayCustomer();
-    	//cd.addNewCustomer();
+    	JointAccount ja = new JointAccount();
+    	//System.out.println(ja.getPosition(2));
+    	System.out.println(ja.getBalance(ja.getPosition(1)));
+//    	CheckingAccount ca = new CheckingAccount();
+//    	ca.applyForAccount(customerId);
+    	
+//    	SavingsAccount sa = new SavingsAccount();
+//    	sa.applyForAccount(customerId);
+//    	
+    //	init.init();
+//    	cd.displayCustomer();
+    //	cd.addNewCustomer();
     	
 //    	TransferDialogue td = new TransferDialogue();
 //    	int customerId = 4;

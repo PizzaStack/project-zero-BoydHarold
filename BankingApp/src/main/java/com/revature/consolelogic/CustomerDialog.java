@@ -1,9 +1,13 @@
 package com.revature.consolelogic;
 
+import java.text.DecimalFormat;
 import java.time.Year;
 import java.util.Scanner;
 
+import com.revature.CheckingAccount;
 import com.revature.Customer;
+import com.revature.JointAccount;
+import com.revature.SavingsAccount;
 
 public class CustomerDialog {
 	private String firstName = "";
@@ -19,7 +23,11 @@ public class CustomerDialog {
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
 	private Customer customer = new Customer();
-
+	private CheckingAccount ca = new CheckingAccount();
+	private SavingsAccount sa = new SavingsAccount();
+	private JointAccount ja = new JointAccount();
+	DecimalFormat df = new DecimalFormat("#0.00");
+	
 	public void addNewCustomer() {
 		while(commit.equals("n")) {
 			
@@ -218,13 +226,85 @@ public class CustomerDialog {
 		boolean exists = customer.customerCheck(customerId);
 		if(exists) {
 		customer.getCommittedCustomerInformation(customerId);
-		System.out.println("Displaying Customer Information for Customer ID: " + customerId);
-		System.out.println(customer.getCustomerFirstName());
-		System.out.println(customer.getCustomerLastName());
-		System.out.println(customer.getCustomerAddress());
-		System.out.println(customer.getCustomerBirthDate());
-		System.out.println(customer.getCustomerEmailAddress());
-		System.out.println(customer.getCustomerPhoneNumber());
+		System.out.println("Displaying General Customer Information for Customer ID: " + customerId);
+		System.out.println("First Name: " + customer.getCustomerFirstName());
+		System.out.println("Last Name: " + customer.getCustomerLastName());
+		System.out.println("Address: " + customer.getCustomerAddress());
+		System.out.println("Birth Date: " + customer.getCustomerBirthDate());
+		System.out.println("Email Address: " + customer.getCustomerEmailAddress());
+		System.out.println("Phone Number: " + customer.getCustomerPhoneNumber());
+		System.out.println("\nDisplaying Checking Account Information for Customer ID: " + customerId);
+		String checkingAccountStatus = ca.getAccountStatus(customerId);
+		String checkingAccountApprovalStatus = ca.getApprovalStatus(customerId);
+		String checkingAccountBalance = String.valueOf(df.format(ca.getBalance(customerId)));
+		if(checkingAccountStatus.equals("0")) {
+			checkingAccountStatus = "Disabled";
+		} else if (checkingAccountStatus.equals("1")) {
+			checkingAccountStatus = "Active";
+		}
+		
+		if(checkingAccountApprovalStatus.equals("u")) {
+			checkingAccountApprovalStatus = "Customer has not applied.";
+		} else if (checkingAccountApprovalStatus.equals("p")) {
+			checkingAccountApprovalStatus = "Customer approval pending.";
+		} else if (checkingAccountApprovalStatus.equals("a")) {
+			checkingAccountApprovalStatus = "Customer has been approved.";
+		} else if (checkingAccountApprovalStatus.equals("d")) {
+			checkingAccountApprovalStatus = "Customer has been denied.";
+		}
+		
+		System.out.println("Checking Account Status: " + checkingAccountStatus);
+		System.out.println("Checking Account Approval Status: " + checkingAccountApprovalStatus);
+		System.out.println("Checking Account Balance: $" + checkingAccountBalance);
+		
+		System.out.println("\nDisplaying Savings Account Information for Customer ID: " + customerId);
+		String savingsAccountStatus = sa.getAccountStatus(customerId);
+		String savingsAccountApprovalStatus = sa.getApprovalStatus(customerId);
+		String savingsAccountBalance = String.valueOf(df.format(sa.getBalance(customerId)));
+		if(savingsAccountStatus.equals("0")) {
+			savingsAccountStatus = "Disabled";
+		} else if (savingsAccountStatus.equals("1")) {
+			savingsAccountStatus = "Active";
+		}
+		
+		if(savingsAccountApprovalStatus.equals("u")) {
+			savingsAccountApprovalStatus = "Customer has not applied.";
+		} else if (savingsAccountApprovalStatus.equals("p")) {
+			savingsAccountApprovalStatus = "Customer approval pending.";
+		} else if (savingsAccountApprovalStatus.equals("a")) {
+			savingsAccountApprovalStatus = "Customer has been approved.";
+		} else if (savingsAccountApprovalStatus.equals("d")) {
+			savingsAccountApprovalStatus = "Customer has been denied.";
+		}
+		
+		System.out.println("Savings Account Status: " + savingsAccountStatus);
+		System.out.println("Savings Account Approval Status: " + savingsAccountApprovalStatus);
+		System.out.println("Savings Account Balance: $" + savingsAccountBalance);
+		
+		System.out.println("\nDisplaying Joint Account Information for Customer ID: " + customerId);
+		String jointAccountStatus = ja.getAccountStatus(customerId);
+		String jointAccountApprovalStatus = ja.getApprovalStatus(customerId);
+		String jointAccountBalance = String.valueOf(df.format(ja.getBalance(customerId)));
+		if(jointAccountStatus.equals("0")) {
+			jointAccountStatus = "Disabled";
+		} else if (jointAccountStatus.equals("1")) {
+			jointAccountStatus = "Active";
+		}
+		
+		if(jointAccountApprovalStatus.equals("u")) {
+			jointAccountApprovalStatus = "Customer has not applied.";
+		} else if (jointAccountApprovalStatus.equals("p")) {
+			jointAccountApprovalStatus = "Customer approval pending.";
+		} else if (jointAccountApprovalStatus.equals("a")) {
+			jointAccountApprovalStatus = "Customer has been approved.";
+		} else if (jointAccountApprovalStatus.equals("d")) {
+			jointAccountApprovalStatus = "Customer has been denied.";
+		}
+		
+		System.out.println("Joint Account Status: " + jointAccountStatus);
+		System.out.println("Joint Account Approval Status: " + jointAccountApprovalStatus);
+		System.out.println("Joint Account Balance: $" + jointAccountBalance);
+		
 		} else {
 			System.out.println("Customer does not exist!");
 		}
