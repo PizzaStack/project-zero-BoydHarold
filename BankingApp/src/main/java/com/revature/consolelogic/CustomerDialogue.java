@@ -307,6 +307,8 @@ public class CustomerDialogue {
 			jointAccountApprovalStatus = "Customer has been approved.";
 		} else if (jointAccountApprovalStatus.equals("d")) {
 			jointAccountApprovalStatus = "Customer has been denied.";
+		} else if (jointAccountApprovalStatus.equals(0)) {
+			jointAccountApprovalStatus = "Customer has not applied.";
 		}
 		
 		System.out.println("Joint Account Status: " + jointAccountStatus);

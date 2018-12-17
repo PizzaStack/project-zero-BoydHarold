@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.revature.consolelogic.AdministratorDialogue;
+import com.revature.consolelogic.ApplyForAccountDialogue;
 import com.revature.consolelogic.CustomerDialogue;
+import com.revature.consolelogic.DepositDialogue;
 import com.revature.consolelogic.EmployeeDialogue;
 import com.revature.consolelogic.Initialize;
 import com.revature.consolelogic.LoginDialogue;
 import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
+import com.revature.consolelogic.WithdrawlDialogue;
 
 
 /**
@@ -25,7 +28,6 @@ import com.revature.consolelogic.TransferDialogue;
 public class App 
 {
 
-	
     public static void main( String[] args )
     {
     	
@@ -36,13 +38,29 @@ public class App
     	//ad.displayAdministrator();
    	CustomerDialogue cd = new CustomerDialogue();
    	
+
+   	
    	EmployeeDialogue ed = new EmployeeDialogue();
    	
    	RegistrationDialogue rd = new RegistrationDialogue();
    	
    	LoginDialogue ld = new LoginDialogue();
    	
-   	ld.login();
+   	WithdrawlDialogue wd = new WithdrawlDialogue();
+   	
+   	DepositDialogue dd = new DepositDialogue();
+   	
+   	ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+   	
+   	afad.apply(1);
+//   	cd.displayCustomer();
+//   	cd.addNewCustomer();
+   	
+//   	afad.apply(1);
+//   dd.deposit(1);
+//   	wd.withdrawl(1);
+   	
+  // 	ld.login();
    	
 //   	rd.register();
    	
@@ -51,10 +69,12 @@ public class App
 //    	int customerId = 1;
 //    	
 //    	JointAccount ja = new JointAccount();
+//    	System.out.println(ja.getApprovalStatus(1));
+    	
 //    	
 //    	TransferDialogue td = new TransferDialogue();
 //    	
-//    	td.transfer(customerId);
+//    	td.transfer(1);
     	
     //	ja.applyForAccount(1, 2);
     	

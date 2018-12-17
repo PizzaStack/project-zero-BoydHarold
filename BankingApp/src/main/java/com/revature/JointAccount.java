@@ -90,11 +90,30 @@ public class JointAccount{
 	}
 
 	public void applyForAccount(int customerId1, int customerId2) {
+
+		if(customerId1 == customerId2) {
+			System.out.println("You cannot open a joint account with yourself!");
+		} else {
 		Customer customer = new Customer();
 		boolean customerCheck = customer.customerCheck(customerId2);
-
-		if(customerCheck) {
 		
+		String approvalStatus = getApprovalStatus(customerId1);
+		
+		if (approvalStatus.equals("p")) {
+			System.out.println("Approval already pending!");
+		} else {
+		
+
+		
+		if(customerCheck) {
+		 
+			int position1 = getPosition(customerId1);
+			
+			int position2 = getPosition(customerId2);
+				
+			if(position1 > 0 || position2 > 0) {
+				System.out.println("Either you or the requested customer already have a joint account!");
+			} else {
 
 			try (
 					FileOutputStream fosCustomerId1 = new FileOutputStream(customerIdFile1, true);
@@ -127,10 +146,12 @@ public class JointAccount{
 			}
 
 			System.out.println("Applied for Joint Account!");
+			}
 		} else {
 			System.out.println("The customer you wish to open a Joint Account with does not exist!");
 		}
-		
+		}
+		}
 	}
 
 	public double getBalance(int customerId) {
@@ -226,15 +247,16 @@ public class JointAccount{
 						new InputStreamReader(fisGetAccountApprovalStatus));) {
 			String line = "";
 			int lineNumber = 0;
-			while (lineNumber <= customerId) {
-				line = brGetAccountApprovalStatus.readLine();
+			while ((line = brGetAccountApprovalStatus.readLine()) != null) {
+				if(lineNumber == customerId) {
 				status = line;
+				}
 				lineNumber++;
 			}
 		} catch (FileNotFoundException e) {
 
 		} catch (IOException e) {
-
+			
 		}
 		return status;
 	}
