@@ -97,6 +97,8 @@ public class CheckingAccount implements Account {
 		if (approvalStatus.equals("p")) {
 			System.out.println("Approval already pending!");
 		} else {
+			
+			if(approvalStatus.equals("d") || approvalStatus.equals("u")) {
 			ArrayList<String> alOne = new ArrayList<String>();
 			ArrayList<String> alTwo = new ArrayList<String>();
 			ArrayList<String> alThree = new ArrayList<String>();
@@ -142,6 +144,9 @@ public class CheckingAccount implements Account {
 			}
 
 			System.out.println("Applied for Checking Account!");
+			} else {
+				System.out.println("You already have an account!");
+			}
 		}
 	}
 

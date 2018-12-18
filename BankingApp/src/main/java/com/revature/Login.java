@@ -50,7 +50,7 @@ public class Login {
 			String line2 = "";
 			while((line2 = brPassword.readLine()) != null) {
 				positionPassword++;
-				if(line.equals(password)) {
+				if(line2.equals(password)) {
 					validatedPassword = true;
 					finalPasswordPosition = positionPassword;
 				}

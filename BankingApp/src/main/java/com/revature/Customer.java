@@ -38,6 +38,19 @@ public class Customer {
 	private File customerSavingsAccountBalanceFile = new File(accountPath + "Savings\\CustomerSavingsAccountBalance.txt");
 	private File customerAccountStatusSavingsFile = new File(accountPath + "Savings\\CustomerAccountStatus.txt");
 	
+	public Customer(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.birthDate = birthDate;
+		this.emailAddress = emailAddress;
+		this.phoneNumber = phoneNumber;
+	}
+	
+	public Customer() {
+		
+	}
+	
 	public void makeBaselineCustomer() {
 		boolean exists = customerIdFile.exists();
 		if(!exists) {

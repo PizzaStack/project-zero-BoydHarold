@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import com.revature.CheckingAccount;
 import com.revature.Customer;
+import com.revature.CustomerDao;
+import com.revature.CustomerDaoImp;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 
@@ -22,11 +24,12 @@ public class CustomerDialogue {
 	private boolean validEntry = false;
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
-	private Customer customer = new Customer();
 	private CheckingAccount ca = new CheckingAccount();
 	private SavingsAccount sa = new SavingsAccount();
 	private JointAccount ja = new JointAccount();
 	DecimalFormat df = new DecimalFormat("#0.00");
+	Customer customer = new Customer();
+	
 	
 	public void addNewCustomer() {
 		while(commit.equals("n")) {
@@ -156,14 +159,9 @@ public class CustomerDialogue {
 			}
 		}
 		
-
+		String birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		customer.setCustomerFirstName(firstName);
-		customer.setCustomerLastName(lastName);
-		customer.setCustomerAddress(address);
-		customer.setCustomerBirthDate(Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year));
-		customer.setCustomerEmailAddress(emailAddress);
-		customer.setCustomerPhoneNumber(phoneNumber);
+		Customer customer = new Customer(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
 		
 		System.out.println("\nPlease review the following information:");
 		System.out.println(customer.getCustomerFirstName());
@@ -199,8 +197,11 @@ public class CustomerDialogue {
 			month = "";
 			year = "";
 		} else {
+
+			CustomerDao customerDao = new CustomerDaoImp();
+			customerDao.addCustomer(customer);
+			int customerId = customerDao.getCustomerId(customer);
 			System.out.println("\nCommited!");
-			int customerId = customer.commitCustomer();
 			System.out.println("\nCustomer ID generated! Make sure to write this down!\nCustomer ID: " + customerId);
 		}
 		
@@ -307,7 +308,7 @@ public class CustomerDialogue {
 			jointAccountApprovalStatus = "Customer has been approved.";
 		} else if (jointAccountApprovalStatus.equals("d")) {
 			jointAccountApprovalStatus = "Customer has been denied.";
-		} else if (jointAccountApprovalStatus.equals(0)) {
+		} else if (jointAccountApprovalStatus.equals("0")) {
 			jointAccountApprovalStatus = "Customer has not applied.";
 		}
 		

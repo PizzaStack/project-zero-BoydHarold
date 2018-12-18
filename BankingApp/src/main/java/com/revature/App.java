@@ -12,6 +12,7 @@ import java.util.Scanner;
 import com.revature.consolelogic.AdministratorDialogue;
 import com.revature.consolelogic.ApplyForAccountDialogue;
 import com.revature.consolelogic.CustomerDialogue;
+import com.revature.consolelogic.CustomerPortalDialogue;
 import com.revature.consolelogic.DepositDialogue;
 import com.revature.consolelogic.EmployeeDialogue;
 import com.revature.consolelogic.Initialize;
@@ -31,14 +32,31 @@ public class App
     public static void main( String[] args )
     {
     	
+    	CustomerDao customerDao = new CustomerDaoImp();
+    	
+    	//Customer customer = new Customer("John","Smith","2/7/1994","John.Smith@Revature.com","923-229-1192");
+    	
+    	//customerDao.addCustomer(customer);
+    	
+    	JDBCHelper jdbc = new JDBCHelper();
+//    	jdbc.establishConnection();
+    	
     	Initialize init = new Initialize();
     	init.init();
     	AdministratorDialogue ad = new AdministratorDialogue();
     //	ad.addNewAdministrator();
     	//ad.displayAdministrator();
+//    
+    	Approval approval = new Approval();
+//    	approval.approve(1,"3");
+//    	approval.deny(1,"3");
+    	
+    	
    	CustomerDialogue cd = new CustomerDialogue();
    	
-
+   	CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+   	
+//   	cpd.customerOptions(1);
    	
    	EmployeeDialogue ed = new EmployeeDialogue();
    	
@@ -52,15 +70,18 @@ public class App
    	
    	ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
    	
-   	afad.apply(1);
+   	
+   	cd.addNewCustomer();
+//   afad.apply(1);
+
 //   	cd.displayCustomer();
-//   	cd.addNewCustomer();
+
    	
 //   	afad.apply(1);
 //   dd.deposit(1);
 //   	wd.withdrawl(1);
    	
-  // 	ld.login();
+   	//ld.login();
    	
 //   	rd.register();
    	

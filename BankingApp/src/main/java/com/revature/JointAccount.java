@@ -97,16 +97,17 @@ public class JointAccount{
 		Customer customer = new Customer();
 		boolean customerCheck = customer.customerCheck(customerId2);
 		
-		String approvalStatus = getApprovalStatus(customerId1);
+		String approvalStatus = getApprovalStatus(getPosition(customerId1));
 		
 		if (approvalStatus.equals("p")) {
 			System.out.println("Approval already pending!");
 		} else {
 		
-
+				
 		
 		if(customerCheck) {
-		 
+			if(approvalStatus.equals("0")) {
+				
 			int position1 = getPosition(customerId1);
 			
 			int position2 = getPosition(customerId2);
@@ -147,9 +148,13 @@ public class JointAccount{
 
 			System.out.println("Applied for Joint Account!");
 			}
+			} else {
+				System.out.println("You already have an account!");
+		} 
 		} else {
 			System.out.println("The customer you wish to open a Joint Account with does not exist!");
 		}
+
 		}
 		}
 	}
@@ -284,9 +289,9 @@ public class JointAccount{
 			String line2 = "";
 			int count2 = 0;
 			int finalCount2 = 0;
-			while ((line = brPosition2.readLine()) != null) {
+			while ((line2 = brPosition2.readLine()) != null) {
 				
-				if (Integer.parseInt(line) == customerId) {
+				if (Integer.parseInt(line2) == customerId) {
 					finalCount2 = count2;
 				}
 				count2++;
