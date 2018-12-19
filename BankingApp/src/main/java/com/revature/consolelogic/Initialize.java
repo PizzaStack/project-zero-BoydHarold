@@ -22,14 +22,6 @@ public class Initialize {
 	AdminRegistration adminRegistration = new AdminRegistration();
 	
 	public void init() {
-		ca.setupDefaultValues();
-		sa.setupDefaultValues();
-		ja.setupDefaultValues();
-		customer.makeBaselineCustomer();
-		employee.makeBaselineEmployee();
-		administrator.makeBaselineAdministrator();
-		employeeRegistration.makeBaselineUser();
-		customerRegistration.makeBaselineUser();
-		adminRegistration.makeBaselineUser();
+
 	}
 }

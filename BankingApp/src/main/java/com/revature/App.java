@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +21,14 @@ import com.revature.consolelogic.LoginDialogue;
 import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
 import com.revature.consolelogic.WithdrawlDialogue;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CustomerDao;
+import com.revature.dao.JointAccountDao;
+import com.revature.dao.SavingsAccountDao;
+import com.revature.daoimp.CheckingAccountDaoImp;
+import com.revature.daoimp.CustomerDaoImp;
+import com.revature.daoimp.JointAccountDaoImp;
+import com.revature.daoimp.SavingsAccountDaoImp;
 
 
 /**
@@ -28,25 +37,57 @@ import com.revature.consolelogic.WithdrawlDialogue;
  */
 public class App 
 {
-
+	static DecimalFormat df = new DecimalFormat("#0.00");
     public static void main( String[] args )
     {
     	
     	CustomerDao customerDao = new CustomerDaoImp();
     	
+    	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
+    	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
+    	JointAccountDao jointAccountDao = new JointAccountDaoImp();
+    	
+//    	checkingAccountDao.setBalance(1, 500.43);
+    	
+    	SavingsAccount savingsAccount = new SavingsAccount();
+    	
+    	CheckingAccount ca = new CheckingAccount();
+    	
+    	JointAccount ja = new JointAccount();
+    	
+    	
+    	
+//    	ja.withdrawl(2,25.44);
+    	
+    	
+    //	ca.deposit(1, 50.54);
+    	
+//    	System.out.println(df.format(jointAccountDao.getBalance(2)));
+    	
+    	
+    	RegistrationDialogue rd = new RegistrationDialogue();
+    	
+//    	rd.register();
+    	
     	//Customer customer = new Customer("John","Smith","2/7/1994","John.Smith@Revature.com","923-229-1192");
+ 
+//    	Customer customer = customerDao.getCustomerById(5);
+//    	
+//    	try {
+//    	customer.getCustomerFirstName();
+//    	} catch (NullPointerException e) {
+//    		System.out.println("NULL");
+//    	}
     	
-    	//customerDao.addCustomer(customer);
-    	
-    	JDBCHelper jdbc = new JDBCHelper();
 //    	jdbc.establishConnection();
     	
     	Initialize init = new Initialize();
     	init.init();
     	AdministratorDialogue ad = new AdministratorDialogue();
-    //	ad.addNewAdministrator();
-    	//ad.displayAdministrator();
-//    
+    //	ad.
+//    	ad.addNewAdministrator();
+//    	ad.displayAdministrator();
+//    	ad.addNewAdministrator();
     	Approval approval = new Approval();
 //    	approval.approve(1,"3");
 //    	approval.deny(1,"3");
@@ -54,13 +95,15 @@ public class App
     	
    	CustomerDialogue cd = new CustomerDialogue();
    	
+   	
+//   	cd.displayCustomer();
    	CustomerPortalDialogue cpd = new CustomerPortalDialogue();
    	
 //   	cpd.customerOptions(1);
    	
    	EmployeeDialogue ed = new EmployeeDialogue();
    	
-   	RegistrationDialogue rd = new RegistrationDialogue();
+//   	RegistrationDialogue rd = new RegistrationDialogue();
    	
    	LoginDialogue ld = new LoginDialogue();
    	
@@ -70,8 +113,8 @@ public class App
    	
    	ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
    	
-   	
-   	cd.addNewCustomer();
+   	wd.withdrawl(1);
+//   	cd.addNewCustomer();
 //   afad.apply(1);
 
 //   	cd.displayCustomer();
@@ -86,7 +129,7 @@ public class App
 //   	rd.register();
    	
 //   	ed.addNewEmployee();
-   //	ed.displayEmployee();
+//   	ed.displayEmployee();
 //    	int customerId = 1;
 //    	
 //    	JointAccount ja = new JointAccount();

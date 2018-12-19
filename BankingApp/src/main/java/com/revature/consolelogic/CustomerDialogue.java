@@ -6,10 +6,16 @@ import java.util.Scanner;
 
 import com.revature.CheckingAccount;
 import com.revature.Customer;
-import com.revature.CustomerDao;
-import com.revature.CustomerDaoImp;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CustomerDao;
+import com.revature.dao.JointAccountDao;
+import com.revature.dao.SavingsAccountDao;
+import com.revature.daoimp.CheckingAccountDaoImp;
+import com.revature.daoimp.CustomerDaoImp;
+import com.revature.daoimp.JointAccountDaoImp;
+import com.revature.daoimp.SavingsAccountDaoImp;
 
 public class CustomerDialogue {
 	private String firstName = "";
@@ -29,7 +35,9 @@ public class CustomerDialogue {
 	private JointAccount ja = new JointAccount();
 	DecimalFormat df = new DecimalFormat("#0.00");
 	Customer customer = new Customer();
-	
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
+	JointAccountDao jointAccountDao = new JointAccountDaoImp();
 	
 	public void addNewCustomer() {
 		while(commit.equals("n")) {
@@ -159,7 +167,7 @@ public class CustomerDialogue {
 			}
 		}
 		
-		String birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
+		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
 		Customer customer = new Customer(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
 		
@@ -224,9 +232,29 @@ public class CustomerDialogue {
 	public void displayCustomer() {
 		System.out.println("Enter in the Customer ID:");
 		int customerId = Integer.parseInt(sc.nextLine());
-		boolean exists = customer.customerCheck(customerId);
+		boolean validEntry = false;
+		boolean exists = false;
+		while(validEntry == false) {
+			boolean isNumeric = isNumeric(String.valueOf(customerId));
+			if (isNumeric) {
+				validEntry = true;
+			} else {
+				validEntry = false;
+				System.out.println("Invalid entry! Please enter a numerical value!");
+			}
+		}
+		
+		CustomerDao customerDao = new CustomerDaoImp();
+		Customer customer = customerDao.getCustomerById(customerId);
+		if(customer != null){
+	        	exists = true;
+	        	} else {
+	        		exists = false;
+	        	}
+	    		
+		
 		if(exists) {
-		customer.getCommittedCustomerInformation(customerId);
+			
 		System.out.println("Displaying General Customer Information for Customer ID: " + customerId);
 		System.out.println("First Name: " + customer.getCustomerFirstName());
 		System.out.println("Last Name: " + customer.getCustomerLastName());
@@ -234,7 +262,7 @@ public class CustomerDialogue {
 		System.out.println("Birth Date: " + customer.getCustomerBirthDate());
 		System.out.println("Email Address: " + customer.getCustomerEmailAddress());
 		System.out.println("Phone Number: " + customer.getCustomerPhoneNumber());
-		int status = customer.getCustomerIsActive();
+		int status = customerDao.getStatus(customerId);
 		String statusString = "";
 		if(status == 0) {
 			statusString = "Disabled";
@@ -243,9 +271,9 @@ public class CustomerDialogue {
 		}
 		System.out.println("Status: " + statusString);
 		System.out.println("\nDisplaying Checking Account Information for Customer ID: " + customerId);
-		String checkingAccountStatus = ca.getAccountStatus(customerId);
-		String checkingAccountApprovalStatus = ca.getApprovalStatus(customerId);
-		String checkingAccountBalance = String.valueOf(df.format(ca.getBalance(customerId)));
+		String checkingAccountStatus = String.valueOf(checkingAccountDao.getStatus(customerId));
+		String checkingAccountApprovalStatus = checkingAccountDao.getApprovalStatus(customerId);
+		String checkingAccountBalance = String.valueOf(df.format(checkingAccountDao.getBalance(customerId)));
 		if(checkingAccountStatus.equals("0")) {
 			checkingAccountStatus = "Disabled";
 		} else if (checkingAccountStatus.equals("1")) {
@@ -267,9 +295,9 @@ public class CustomerDialogue {
 		System.out.println("Checking Account Balance: $" + checkingAccountBalance);
 		
 		System.out.println("\nDisplaying Savings Account Information for Customer ID: " + customerId);
-		String savingsAccountStatus = sa.getAccountStatus(customerId);
-		String savingsAccountApprovalStatus = sa.getApprovalStatus(customerId);
-		String savingsAccountBalance = String.valueOf(df.format(sa.getBalance(customerId)));
+		String savingsAccountStatus = String.valueOf(savingsAccountDao.getStatus(customerId));
+		String savingsAccountApprovalStatus = savingsAccountDao.getApprovalStatus(customerId);
+		String savingsAccountBalance = String.valueOf(df.format(savingsAccountDao.getBalance(customerId)));
 		if(savingsAccountStatus.equals("0")) {
 			savingsAccountStatus = "Disabled";
 		} else if (savingsAccountStatus.equals("1")) {
@@ -291,9 +319,9 @@ public class CustomerDialogue {
 		System.out.println("Savings Account Balance: $" + savingsAccountBalance);
 		
 		System.out.println("\nDisplaying Joint Account Information for Customer ID: " + customerId);
-		String jointAccountStatus = ja.getAccountStatus(ja.getPosition(customerId));
-		String jointAccountApprovalStatus = ja.getApprovalStatus(ja.getPosition(customerId));
-		String jointAccountBalance = String.valueOf(df.format(ja.getBalance(ja.getPosition(customerId))));
+		String jointAccountStatus = String.valueOf(jointAccountDao.getStatus(customerId));
+		String jointAccountApprovalStatus = jointAccountDao.getApprovalStatus(customerId);
+		String jointAccountBalance = String.valueOf(df.format(jointAccountDao.getBalance(customerId)));
 		if(jointAccountStatus.equals("0")) {
 			jointAccountStatus = "Disabled";
 		} else if (jointAccountStatus.equals("1")) {

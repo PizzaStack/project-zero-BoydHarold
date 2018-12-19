@@ -4,8 +4,12 @@ import java.text.DecimalFormat;
 import java.time.Year;
 import java.util.Scanner;
 
-
+import com.revature.Customer;
 import com.revature.Employee;
+import com.revature.dao.CustomerDao;
+import com.revature.dao.EmployeeDao;
+import com.revature.daoimp.CustomerDaoImp;
+import com.revature.daoimp.EmployeeDaoImp;
 
 
 public class EmployeeDialogue {
@@ -153,13 +157,9 @@ public class EmployeeDialogue {
 		}
 		
 
+		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		employee.setEmployeeFirstName(firstName);
-		employee.setEmployeeLastName(lastName);
-		employee.setEmployeeAddress(address);
-		employee.setEmployeeBirthDate(Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year));
-		employee.setEmployeeEmailAddress(emailAddress);
-		employee.setEmployeePhoneNumber(phoneNumber);
+		Employee employee = new Employee(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
 		
 		System.out.println("\nPlease review the following information:");
 		System.out.println(employee.getEmployeeFirstName());
@@ -195,8 +195,10 @@ public class EmployeeDialogue {
 			month = "";
 			year = "";
 		} else {
+			EmployeeDao employeeDao = new EmployeeDaoImp();
+			employeeDao.addEmployee(employee);
+			int employeeId = employeeDao.getEmployeeId(employee);
 			System.out.println("\nCommited!");
-			int employeeId = employee.commitEmployee();
 			System.out.println("\nEmployee ID generated! Make sure to write this down!\nEmployee ID: " + employeeId);
 		}
 		
@@ -219,9 +221,18 @@ public class EmployeeDialogue {
 	public void displayEmployee() {
 		System.out.println("Enter in the Employee ID:");
 		int employeeId = Integer.parseInt(sc.nextLine());
-		boolean exists = employee.employeeCheck(employeeId);
+		boolean exists = false;
+		
+		EmployeeDao employeeDao = new EmployeeDaoImp();
+		Employee employee = employeeDao.getEmployeeById(employeeId);
+		if(employee != null){
+	        	exists = true;
+	        	} else {
+	        		exists = false;
+	        	}
+	    		
 		if(exists) {
-		employee.getCommittedEmployeeInformation(employeeId);
+		
 		System.out.println("Displaying General Employee Information for Employee ID: " + employeeId);
 		System.out.println("First Name: " + employee.getEmployeeFirstName());
 		System.out.println("Last Name: " + employee.getEmployeeLastName());
@@ -229,7 +240,9 @@ public class EmployeeDialogue {
 		System.out.println("Birth Date: " + employee.getEmployeeBirthDate());
 		System.out.println("Email Address: " + employee.getEmployeeEmailAddress());
 		System.out.println("Phone Number: " + employee.getEmployeePhoneNumber());
-		int status = employee.getEmployeeIsActive();
+		
+		
+		int status = employeeDao.getStatus(employeeId);
 		String statusString = "";
 		if(status == 0) {
 			statusString = "Disabled";

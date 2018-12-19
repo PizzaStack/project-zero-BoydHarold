@@ -6,6 +6,11 @@ import java.util.Scanner;
 
 
 import com.revature.Administrator;
+import com.revature.Employee;
+import com.revature.dao.AdministratorDao;
+import com.revature.dao.EmployeeDao;
+import com.revature.daoimp.AdministratorDaoImp;
+import com.revature.daoimp.EmployeeDaoImp;
 
 
 public class AdministratorDialogue {
@@ -152,14 +157,9 @@ public class AdministratorDialogue {
 			}
 		}
 		
-
+		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		administrator.setAdministratorFirstName(firstName);
-		administrator.setAdministratorLastName(lastName);
-		administrator.setAdministratorAddress(address);
-		administrator.setAdministratorBirthDate(Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(year));
-		administrator.setAdministratorEmailAddress(emailAddress);
-		administrator.setAdministratorPhoneNumber(phoneNumber);
+		Administrator administrator = new Administrator(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
 		
 		System.out.println("\nPlease review the following information:");
 		System.out.println(administrator.getAdministratorFirstName());
@@ -195,8 +195,12 @@ public class AdministratorDialogue {
 			month = "";
 			year = "";
 		} else {
+			
+			AdministratorDao administratorDao = new AdministratorDaoImp();
+			administratorDao.addAdministrator(administrator);
+			int administratorId = administratorDao.getAdministratorId(administrator);
+			
 			System.out.println("\nCommited!");
-			int administratorId = administrator.commitAdministrator();
 			System.out.println("\nAdministrator ID generated! Make sure to write this down!\nAdministrator ID: " + administratorId);
 		}
 		
@@ -219,9 +223,16 @@ public class AdministratorDialogue {
 	public void displayAdministrator() {
 		System.out.println("Enter in the Administrator ID:");
 		int administratorId = Integer.parseInt(sc.nextLine());
-		boolean exists = administrator.administratorCheck(administratorId);
+		boolean exists = false;
+		
+		AdministratorDao administratorDao = new AdministratorDaoImp();
+		Administrator administrator = administratorDao.getAdministratorById(administratorId);
+		if(administrator != null){
+	        	exists = true;
+	        	} else {
+	        		exists = false;
+	        	}
 		if(exists) {
-		administrator.getCommittedAdministratorInformation(administratorId);
 		System.out.println("Displaying General Administrator Information for Administrator ID: " + administratorId);
 		System.out.println("First Name: " + administrator.getAdministratorFirstName());
 		System.out.println("Last Name: " + administrator.getAdministratorLastName());
@@ -229,7 +240,8 @@ public class AdministratorDialogue {
 		System.out.println("Birth Date: " + administrator.getAdministratorBirthDate());
 		System.out.println("Email Address: " + administrator.getAdministratorEmailAddress());
 		System.out.println("Phone Number: " + administrator.getAdministratorPhoneNumber());
-		int status = administrator.getAdministratorIsActive();
+		
+		int status = administratorDao.getStatus(administratorId);
 		String statusString = "";
 		if(status == 0) {
 			statusString = "Disabled";

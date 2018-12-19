@@ -6,6 +6,12 @@ import java.util.Scanner;
 import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.JointAccountDao;
+import com.revature.dao.SavingsAccountDao;
+import com.revature.daoimp.CheckingAccountDaoImp;
+import com.revature.daoimp.JointAccountDaoImp;
+import com.revature.daoimp.SavingsAccountDaoImp;
 
 public class TransferDialogue {
 	String source;
@@ -17,12 +23,14 @@ public class TransferDialogue {
 	SavingsAccount sa = new SavingsAccount();
 	JointAccount ja = new JointAccount();
 	DecimalFormat df = new DecimalFormat("#0.00");
-	
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
+	JointAccountDao jointAccountDao = new JointAccountDaoImp();
 	
 	public void transfer(int customerId) {
-		double checkingBalance = ca.getBalance(customerId);
-		double savingsBalance = sa.getBalance(customerId);
-		double jointBalance = ja.getBalance(ja.getPosition(customerId));
+		double checkingBalance = checkingAccountDao.getBalance(customerId);
+		double savingsBalance = savingsAccountDao.getBalance(customerId);
+		double jointBalance = jointAccountDao.getBalance(customerId);
 		
 		ca.setupDefaultValues();
     	sa.setupDefaultValues();

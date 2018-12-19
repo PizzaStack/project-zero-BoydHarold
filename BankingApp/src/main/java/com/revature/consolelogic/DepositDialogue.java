@@ -6,6 +6,12 @@ import java.util.Scanner;
 import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.JointAccountDao;
+import com.revature.dao.SavingsAccountDao;
+import com.revature.daoimp.CheckingAccountDaoImp;
+import com.revature.daoimp.JointAccountDaoImp;
+import com.revature.daoimp.SavingsAccountDaoImp;
 
 public class DepositDialogue {
 	boolean validEntry = false;
@@ -16,16 +22,19 @@ public class DepositDialogue {
 	JointAccount ja = new JointAccount();
 	DecimalFormat df = new DecimalFormat("#0.00");
 	String source;
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
+	JointAccountDao jointAccountDao = new JointAccountDaoImp();
 	
 	public void deposit(int customerId) {
-		double checkingBalance = ca.getBalance(customerId);
-		double savingsBalance = sa.getBalance(customerId);
-		double jointBalance = ja.getBalance(ja.getPosition(customerId));
+		double checkingBalance = checkingAccountDao.getBalance(customerId);
+		double savingsBalance = savingsAccountDao.getBalance(customerId);
+		double jointBalance = jointAccountDao.getBalance(customerId);
 		
     	
-    	String checkingAccountStatus = ca.getAccountStatus(customerId);
-    	String savingsAccountStatus = sa.getAccountStatus(customerId);
-    	String jointAccountStatus = ja.getAccountStatus(ja.getPosition(customerId));
+    	String checkingAccountStatus = String.valueOf(checkingAccountDao.getStatus(customerId));
+    	String savingsAccountStatus = String.valueOf(savingsAccountDao.getStatus(customerId));
+    	String jointAccountStatus = String.valueOf(jointAccountDao.getStatus(customerId));
     	
     	System.out.println("Which account would you like to deposit to?\n");
     	if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -227,17 +236,17 @@ public class DepositDialogue {
     	
     	if(source.equals("Checking")) {
     		ca.deposit(customerId, amount);
-    		double newBalance = ca.getBalance(customerId);
+    		double newBalance = checkingAccountDao.getBalance(customerId);
     		System.out.println("\n$" + df.format(amount) + " added to checking account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
     	} else if(source.equals("Savings")) {
     		sa.deposit(customerId, amount);
-    		double newBalance = sa.getBalance(customerId);
+    		double newBalance = savingsAccountDao.getBalance(customerId);
     		System.out.println("\n$" + df.format(amount) + " added to savings account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
     	} else if(source.equals("Joint")) {
     		ja.deposit(customerId, amount);
-    		double newBalance = ja.getBalance(customerId);
+    		double newBalance = jointAccountDao.getBalance(customerId);
     		System.out.println("\n$" + df.format(amount) + " added to joint account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
     	}

@@ -5,6 +5,9 @@ import java.util.Scanner;
 import com.revature.AdminRegistration;
 import com.revature.CustomerRegistration;
 import com.revature.EmployeeRegistration;
+import com.revature.daoimp.AdminRegistrationDaoImp;
+import com.revature.daoimp.CustomerRegistrationDaoImp;
+import com.revature.daoimp.EmployeeRegistrationDaoImp;
 
 public class RegistrationDialogue {
 	CustomerDialogue cd = new CustomerDialogue();
@@ -56,26 +59,52 @@ public class RegistrationDialogue {
 			}
 		}
 		
+		
+		CustomerRegistrationDaoImp customerRegistrationDao = new CustomerRegistrationDaoImp();
+		EmployeeRegistrationDaoImp employeeRegistrationDao = new EmployeeRegistrationDaoImp();
+		AdminRegistrationDaoImp adminRegistrationDao = new AdminRegistrationDaoImp();
+		
 		boolean hasCustomerAccount = false;;
 		boolean hasEmployeeAccount = false;
 		boolean hasAdministratorAccount = false;
 		
+		boolean customerOnboarded = false;
+		boolean employeeOnboarded = false;
+		boolean administratorOnboarded = false;
+		
 		validEntry = false;
+		boolean validEntry2 = false;
+		
 		
 		if(accountType.equals("1")) {
-			hasCustomerAccount = cr.checkUserAlreadyHasAccount(Integer.parseInt(id));
+			hasCustomerAccount = customerRegistrationDao.getUserAlreadyHasAccount(Integer.parseInt(id));
 			if(hasCustomerAccount == false) {
 				validEntry = true;
+			}
+			
+			customerOnboarded = customerRegistrationDao.getCustomerById(Integer.parseInt(id));
+			if(customerOnboarded == true) {
+				validEntry2 = true;
 			}
 		} else if(accountType.equals("2")) {
-			hasEmployeeAccount = er.checkUserAlreadyHasAccount(Integer.parseInt(id));
-			if(hasCustomerAccount == false) {
+			hasEmployeeAccount = employeeRegistrationDao.getUserAlreadyHasAccount(Integer.parseInt(id));
+			if(hasEmployeeAccount == false) {
 				validEntry = true;
 			}
+			
+			employeeOnboarded = employeeRegistrationDao.getEmployeeById(Integer.parseInt(id));
+			if(employeeOnboarded == true) {
+				validEntry2 = true;
+			}
 		} else if(accountType.equals("3")) {
-			hasAdministratorAccount = ar.checkUserAlreadyHasAccount(Integer.parseInt(id));
-			if(hasCustomerAccount == false) {
+			hasAdministratorAccount = adminRegistrationDao.getUserAlreadyHasAccount(Integer.parseInt(id));
+			if(hasAdministratorAccount == false) {
 				validEntry = true;
+			}
+			
+			administratorOnboarded = adminRegistrationDao.getAdminById(Integer.parseInt(id));
+			if(administratorOnboarded == true) {
+				validEntry2 = true;
 			}
 		}
 		
@@ -86,9 +115,17 @@ public class RegistrationDialogue {
 		
 		if(validEntry == false) {
 			System.out.println("\nYou already have an account!");
+			commit = true;
+		} else if (validEntry2 == false){
+			System.out.println("\nYou are not onboarded in our system, please speak with a bank employee for further assistance!");
+			commit = true;
 		} else {
+			
+			
+			
+			
 			System.out.println("\nEnter in your desired username:");
-		}
+		
 		
 		username = sc.nextLine();
 		
@@ -104,6 +141,71 @@ public class RegistrationDialogue {
 			}
 		}
 		
+		boolean customerUsernameExists = false;
+		boolean employeeUsernameExists = false;
+		boolean adminUsernameExists = false;
+		
+		validEntry = false;
+		
+		if(accountType.equals("1")) {
+			customerUsernameExists = customerRegistrationDao.getUserExists(username);
+			if(customerUsernameExists == false) {
+				validEntry = true;
+			}
+			
+		} else if(accountType.equals("2")) {
+			employeeUsernameExists = employeeRegistrationDao.getUserExists(username);
+			if(employeeUsernameExists == false) {
+				validEntry = true;
+			}
+
+		} else if(accountType.equals("3")) {
+			adminUsernameExists = adminRegistrationDao.getUserExists(username);
+			if(adminUsernameExists == false) {
+				validEntry = true;
+			}
+
+		}
+		
+		while(validEntry == false) {
+			System.out.println("\nUsername already exists, try another one:");
+			
+			
+			username = sc.nextLine();
+			
+			boolean validEntry3 = false;
+			
+			while(validEntry3 == false) {
+				
+				if(username.equals("")) {
+					System.out.println("Enter in a valid username:");
+					username = sc.nextLine();
+				} else {
+					validEntry3 = true;
+				}
+			}
+			
+			if(accountType.equals("1")) {
+				customerUsernameExists = customerRegistrationDao.getUserExists(username);
+				if(customerUsernameExists == false) {
+					validEntry = true;
+				}
+				
+			} else if(accountType.equals("2")) {
+				employeeUsernameExists = employeeRegistrationDao.getUserExists(username);
+				if(employeeUsernameExists == false) {
+					validEntry = true;
+				}
+
+			} else if(accountType.equals("3")) {
+				adminUsernameExists = adminRegistrationDao.getUserExists(username);
+				if(adminUsernameExists == false) {
+					validEntry = true;
+				}
+
+			}
+			
+		}
 		
 		System.out.println("\nEnter in your desired password:");
 		
@@ -147,16 +249,19 @@ public class RegistrationDialogue {
 		}
 		
 
-		}
+		
 		
 		if(accountType.equals("1")) {
-				cr.registerUser(id, username, password);
+			customerRegistrationDao.addUser(id, username, password);
 		} else if(accountType.equals("2")) {
-				er.registerUser(id, username, password);
+			employeeRegistrationDao.addUser(id, username, password);
 		} else if(accountType.equals("3")) {
-				ar.registerUser(id, username, password);
+			adminRegistrationDao.addUser(id, username, password);
 		}
 		
+		System.out.println("Account created successfully!");
 		
+		}
+		}
 	}
 }
