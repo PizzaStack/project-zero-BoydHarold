@@ -1,13 +1,13 @@
 package com.revature;
 
-import com.revature.daoimp.AdminRegistrationDaoImp;
+import com.revature.dao.AdminRegistrationDao;
 
 public class AdminRegistration {
 
 	
 	public boolean registerUser(String administratorId, String username, String password) {
 		
-		AdminRegistrationDaoImp adminRegistrationDao = new AdminRegistrationDaoImp();
+		AdminRegistrationDao adminRegistrationDao = new AdminRegistrationDao();
 		boolean userExists = adminRegistrationDao.getUserExists(username);
 		boolean administratorOnboarded = adminRegistrationDao.getAdminById(Integer.parseInt(administratorId));
 		boolean success = false;

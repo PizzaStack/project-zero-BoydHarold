@@ -1,12 +1,12 @@
 package com.revature;
 
-import com.revature.daoimp.EmployeeRegistrationDaoImp;
+import com.revature.dao.EmployeeRegistrationDao;
 
 public class EmployeeRegistration{
 
 	
 	public boolean registerUser(String employeeId, String username, String password) {
-		EmployeeRegistrationDaoImp employeeRegistrationDao = new EmployeeRegistrationDaoImp();
+		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
 		boolean userExists = employeeRegistrationDao.getUserExists(username);
 		boolean employeeOnboarded = employeeRegistrationDao.getEmployeeById(Integer.parseInt(employeeId));
 		boolean success = false;

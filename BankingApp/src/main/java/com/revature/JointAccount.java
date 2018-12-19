@@ -4,19 +4,21 @@ package com.revature;
 import java.text.DecimalFormat;
 
 import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CustomerDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.JointAccountDao;
+import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
-import com.revature.daoimp.CheckingAccountDaoImp;
-import com.revature.daoimp.CustomerDaoImp;
-import com.revature.daoimp.JointAccountDaoImp;
-import com.revature.daoimp.SavingsAccountDaoImp;
+import com.revature.jdbcinfo.EstablishConnection;
+import com.revature.dao.SavingsAccountDao;
 
 public class JointAccount{
 	DecimalFormat df = new DecimalFormat("#0.00");
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
-	JointAccountDao jointAccountDao = new JointAccountDaoImp();
+	EstablishConnection establishConnection = new EstablishConnection();
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
+	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
 
 	public boolean withdrawl(int customerId, double amount) {
 		double currentBalance = jointAccountDao.getBalance(customerId);
@@ -55,7 +57,7 @@ public class JointAccount{
 	}
 
 	public void applyForAccount(int customerId1, int customerId2) {
-		CustomerDao customerDao = new CustomerDaoImp();
+		CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
 		boolean customerCheck = false;
 		
 		if(customerId1 == customerId2) {

@@ -5,9 +5,9 @@ import java.util.Scanner;
 import com.revature.AdminRegistration;
 import com.revature.CustomerRegistration;
 import com.revature.EmployeeRegistration;
-import com.revature.daoimp.AdminRegistrationDaoImp;
-import com.revature.daoimp.CustomerRegistrationDaoImp;
-import com.revature.daoimp.EmployeeRegistrationDaoImp;
+import com.revature.dao.AdminRegistrationDao;
+import com.revature.dao.CustomerRegistrationDao;
+import com.revature.dao.EmployeeRegistrationDao;
 
 public class RegistrationDialogue {
 	CustomerDialogue cd = new CustomerDialogue();
@@ -60,9 +60,9 @@ public class RegistrationDialogue {
 		}
 		
 		
-		CustomerRegistrationDaoImp customerRegistrationDao = new CustomerRegistrationDaoImp();
-		EmployeeRegistrationDaoImp employeeRegistrationDao = new EmployeeRegistrationDaoImp();
-		AdminRegistrationDaoImp adminRegistrationDao = new AdminRegistrationDaoImp();
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
+		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
+		AdminRegistrationDao adminRegistrationDao = new AdminRegistrationDao();
 		
 		boolean hasCustomerAccount = false;;
 		boolean hasEmployeeAccount = false;

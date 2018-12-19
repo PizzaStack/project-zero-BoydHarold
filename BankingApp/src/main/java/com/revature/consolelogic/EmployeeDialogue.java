@@ -1,15 +1,19 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.text.DecimalFormat;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.revature.Customer;
 import com.revature.Employee;
 import com.revature.dao.CustomerDao;
+import com.revature.dao.CustomerDao;
 import com.revature.dao.EmployeeDao;
-import com.revature.daoimp.CustomerDaoImp;
-import com.revature.daoimp.EmployeeDaoImp;
+import com.revature.jdbcinfo.EstablishConnection;
+import com.revature.dao.EmployeeDao;
 
 
 public class EmployeeDialogue {
@@ -28,7 +32,9 @@ public class EmployeeDialogue {
 	private Employee employee = new Employee();
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public void addNewEmployee() {
+	public void addNewEmployee(Connection connection) {
+//		EstablishConnection establishConnection = new EstablishConnection();
+		EmployeeDao employeeDao = new EmployeeDao(connection);
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -195,7 +201,6 @@ public class EmployeeDialogue {
 			month = "";
 			year = "";
 		} else {
-			EmployeeDao employeeDao = new EmployeeDaoImp();
 			employeeDao.addEmployee(employee);
 			int employeeId = employeeDao.getEmployeeId(employee);
 			System.out.println("\nCommited!");
@@ -218,12 +223,12 @@ public class EmployeeDialogue {
 		return isNumeric;
 	}
 	
-	public void displayEmployee() {
+	public void displayEmployee(Connection connection) {
+		EmployeeDao employeeDao = new EmployeeDao(connection);
 		System.out.println("Enter in the Employee ID:");
 		int employeeId = Integer.parseInt(sc.nextLine());
 		boolean exists = false;
 		
-		EmployeeDao employeeDao = new EmployeeDaoImp();
 		Employee employee = employeeDao.getEmployeeById(employeeId);
 		if(employee != null){
 	        	exists = true;
@@ -254,5 +259,6 @@ public class EmployeeDialogue {
 		} else {
 			System.out.println("Employee does not exist!");
 		}
+		
 	}
 }

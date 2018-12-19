@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class Customer {
+	private int customerId;
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -19,13 +20,14 @@ public class Customer {
 	private String phoneNumber;
 	private int customerIsActive;
 	
-	public Customer(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber) {
+	public Customer(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
 		this.birthDate = birthDate;
 		this.emailAddress = emailAddress;
 		this.phoneNumber = phoneNumber;
+		this.customerIsActive = status;
 	}
 	
 	public Customer() {
@@ -60,6 +62,10 @@ public class Customer {
 	public void setCustomerIsActive(int customerIsActive) {
 		this.customerIsActive = customerIsActive;
 	}
+	
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
 	public String getCustomerFirstName() {
 		return this.firstName;
@@ -87,6 +93,10 @@ public class Customer {
 	
 	public int getCustomerIsActive() {
 		return this.customerIsActive;
+	}
+	
+	public int getCustomerId() {
+		return this.customerId;
 	}
 	
 }

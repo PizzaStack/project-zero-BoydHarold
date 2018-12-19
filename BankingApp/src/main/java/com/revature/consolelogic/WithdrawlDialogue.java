@@ -7,11 +7,11 @@ import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.JointAccountDao;
 import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
-import com.revature.daoimp.CheckingAccountDaoImp;
-import com.revature.daoimp.JointAccountDaoImp;
-import com.revature.daoimp.SavingsAccountDaoImp;
+import com.revature.dao.SavingsAccountDao;
 
 public class WithdrawlDialogue {
 	boolean validEntry = false;
@@ -22,9 +22,9 @@ public class WithdrawlDialogue {
 	JointAccount ja = new JointAccount();
 	DecimalFormat df = new DecimalFormat("#0.00");
 	String source;
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
-	JointAccountDao jointAccountDao = new JointAccountDaoImp();
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+	JointAccountDao jointAccountDao = new JointAccountDao();
 	
 	
 	public void withdrawl(int customerId) {

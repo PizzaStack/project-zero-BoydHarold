@@ -5,12 +5,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class JDBCConnectionInfo {
+public class EstablishConnection {
+	private ArrayList<String> connectionInfo;
+	private Connection connection;
 	
-	public ArrayList<String> getJDBCCredentials() {
-		ArrayList<String> connectionInfo = new ArrayList<String>();
+	public Connection establishConnection() {
+		connectionInfo = new ArrayList<String>();
 		try
 		(
 		FileInputStream fis = new FileInputStream("C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\JDBCConnectionInfo.txt");
@@ -29,13 +34,32 @@ public class JDBCConnectionInfo {
 				count++;
 
 			}
-		}
-			catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {
 			
 		}
 		
-		return connectionInfo;
+		try {
+			if (connection == null) {
+				connection = DriverManager.getConnection(connectionInfo.get(2), connectionInfo.get(0), connectionInfo.get(1));
+			} else {
+				return connection;
+			}
+		} catch (SQLException e) {
+			
+		}
+		
+		return connection;
+
 	}
+	
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			
+		}
+	}
+	
 }

@@ -9,8 +9,7 @@ import com.revature.Administrator;
 import com.revature.Employee;
 import com.revature.dao.AdministratorDao;
 import com.revature.dao.EmployeeDao;
-import com.revature.daoimp.AdministratorDaoImp;
-import com.revature.daoimp.EmployeeDaoImp;
+import com.revature.dao.EmployeeDao;
 
 
 public class AdministratorDialogue {
@@ -196,7 +195,7 @@ public class AdministratorDialogue {
 			year = "";
 		} else {
 			
-			AdministratorDao administratorDao = new AdministratorDaoImp();
+			AdministratorDao administratorDao = new AdministratorDao();
 			administratorDao.addAdministrator(administrator);
 			int administratorId = administratorDao.getAdministratorId(administrator);
 			
@@ -225,7 +224,7 @@ public class AdministratorDialogue {
 		int administratorId = Integer.parseInt(sc.nextLine());
 		boolean exists = false;
 		
-		AdministratorDao administratorDao = new AdministratorDaoImp();
+		AdministratorDao administratorDao = new AdministratorDao();
 		Administrator administrator = administratorDao.getAdministratorById(administratorId);
 		if(administrator != null){
 	        	exists = true;

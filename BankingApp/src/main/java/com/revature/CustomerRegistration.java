@@ -9,15 +9,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
-import com.revature.daoimp.AdminRegistrationDaoImp;
-import com.revature.daoimp.CustomerRegistrationDaoImp;
+import com.revature.dao.AdminRegistrationDao;
+import com.revature.dao.CustomerRegistrationDao;
 
 public class CustomerRegistration{
 
 	
 	public boolean registerUser(String customerId, String username, String password) {
 		
-		CustomerRegistrationDaoImp customerRegistrationDao = new CustomerRegistrationDaoImp();
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
 		boolean userExists = customerRegistrationDao.getUserExists(username);
 		boolean customerOnboarded = customerRegistrationDao.getCustomerById(Integer.parseInt(customerId));
 		boolean success = false;

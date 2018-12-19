@@ -1,5 +1,6 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.time.Year;
 import java.util.Scanner;
@@ -9,13 +10,14 @@ import com.revature.Customer;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CustomerDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.JointAccountDao;
+import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
-import com.revature.daoimp.CheckingAccountDaoImp;
-import com.revature.daoimp.CustomerDaoImp;
-import com.revature.daoimp.JointAccountDaoImp;
-import com.revature.daoimp.SavingsAccountDaoImp;
+import com.revature.jdbcinfo.EstablishConnection;
+import com.revature.dao.SavingsAccountDao;
 
 public class CustomerDialogue {
 	private String firstName = "";
@@ -35,11 +37,12 @@ public class CustomerDialogue {
 	private JointAccount ja = new JointAccount();
 	DecimalFormat df = new DecimalFormat("#0.00");
 	Customer customer = new Customer();
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
-	JointAccountDao jointAccountDao = new JointAccountDaoImp();
+	EstablishConnection establishConnection = new EstablishConnection();
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
+	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
 	
-	public void addNewCustomer() {
+	public void addNewCustomer(Connection connection) {
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -169,7 +172,7 @@ public class CustomerDialogue {
 		
 		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		Customer customer = new Customer(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
+		Customer customer = new Customer(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 1);
 		
 		System.out.println("\nPlease review the following information:");
 		System.out.println(customer.getCustomerFirstName());
@@ -206,7 +209,7 @@ public class CustomerDialogue {
 			year = "";
 		} else {
 
-			CustomerDao customerDao = new CustomerDaoImp();
+			CustomerDao customerDao = new CustomerDao(connection);
 			customerDao.addCustomer(customer);
 			int customerId = customerDao.getCustomerId(customer);
 			System.out.println("\nCommited!");
@@ -229,7 +232,7 @@ public class CustomerDialogue {
 		return isNumeric;
 	}
 	
-	public void displayCustomer() {
+	public void displayCustomer(Connection connection) {
 		System.out.println("Enter in the Customer ID:");
 		int customerId = Integer.parseInt(sc.nextLine());
 		boolean validEntry = false;
@@ -244,7 +247,7 @@ public class CustomerDialogue {
 			}
 		}
 		
-		CustomerDao customerDao = new CustomerDaoImp();
+		CustomerDao customerDao = new CustomerDao(connection);
 		Customer customer = customerDao.getCustomerById(customerId);
 		if(customer != null){
 	        	exists = true;
@@ -262,7 +265,7 @@ public class CustomerDialogue {
 		System.out.println("Birth Date: " + customer.getCustomerBirthDate());
 		System.out.println("Email Address: " + customer.getCustomerEmailAddress());
 		System.out.println("Phone Number: " + customer.getCustomerPhoneNumber());
-		int status = customerDao.getStatus(customerId);
+		int status = customer.getCustomerIsActive();
 		String statusString = "";
 		if(status == 0) {
 			statusString = "Disabled";
@@ -280,7 +283,7 @@ public class CustomerDialogue {
 			checkingAccountStatus = "Active";
 		}
 		
-		if(checkingAccountApprovalStatus.equals("u")) {
+		if(checkingAccountApprovalStatus == null) {
 			checkingAccountApprovalStatus = "Customer has not applied.";
 		} else if (checkingAccountApprovalStatus.equals("p")) {
 			checkingAccountApprovalStatus = "Customer approval pending.";
@@ -304,7 +307,7 @@ public class CustomerDialogue {
 			savingsAccountStatus = "Active";
 		}
 		
-		if(savingsAccountApprovalStatus.equals("u")) {
+		if(savingsAccountApprovalStatus == null) {
 			savingsAccountApprovalStatus = "Customer has not applied.";
 		} else if (savingsAccountApprovalStatus.equals("p")) {
 			savingsAccountApprovalStatus = "Customer approval pending.";
@@ -328,7 +331,7 @@ public class CustomerDialogue {
 			jointAccountStatus = "Active";
 		}
 		
-		if(jointAccountApprovalStatus.equals("u")) {
+		if(jointAccountApprovalStatus == null) {
 			jointAccountApprovalStatus = "Customer has not applied.";
 		} else if (jointAccountApprovalStatus.equals("p")) {
 			jointAccountApprovalStatus = "Customer approval pending.";

@@ -6,8 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.revature.consolelogic.AdministratorDialogue;
@@ -22,13 +24,14 @@ import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
 import com.revature.consolelogic.WithdrawlDialogue;
 import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.CustomerDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.JointAccountDao;
+import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
-import com.revature.daoimp.CheckingAccountDaoImp;
-import com.revature.daoimp.CustomerDaoImp;
-import com.revature.daoimp.JointAccountDaoImp;
-import com.revature.daoimp.SavingsAccountDaoImp;
+import com.revature.jdbcinfo.EstablishConnection;
+import com.revature.dao.SavingsAccountDao;
 
 
 /**
@@ -41,19 +44,42 @@ public class App
     public static void main( String[] args )
     {
     	
-    	CustomerDao customerDao = new CustomerDaoImp();
+       	EmployeeDialogue ed = new EmployeeDialogue();
+       	CustomerDialogue cd = new CustomerDialogue();
+ 
+       	
+       	
+		EstablishConnection establishConnection = new EstablishConnection();
+ 
+		
+//    	cd.addNewCustomer(establishConnection.establishConnection());
+     	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
+    
+     	
+     	for (Customer customer : customerDao.getAllCustomers()) {
+     		System.out.println("Names: " + customer.getCustomerFirstName());
+     	}
+     	
+//     	cd.displayCustomer(establishConnection.establishConnection());
+
+     	establishConnection.closeConnection();
+     	
+//     	ed.displayEmployee();
+   	
     	
-    	CheckingAccountDao checkingAccountDao = new CheckingAccountDaoImp();
-    	SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImp();
-    	JointAccountDao jointAccountDao = new JointAccountDaoImp();
+//    	CustomerDao customerDao = new CustomerDao();
+    	
+//    	CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+//    	SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+//    	JointAccountDao jointAccountDao = new JointAccountDao();
     	
 //    	checkingAccountDao.setBalance(1, 500.43);
     	
-    	SavingsAccount savingsAccount = new SavingsAccount();
-    	
-    	CheckingAccount ca = new CheckingAccount();
-    	
-    	JointAccount ja = new JointAccount();
+//    	SavingsAccount savingsAccount = new SavingsAccount();
+//    	
+//    	CheckingAccount ca = new CheckingAccount();
+//    	
+//    	JointAccount ja = new JointAccount();
     	
     	
     	
@@ -65,7 +91,7 @@ public class App
 //    	System.out.println(df.format(jointAccountDao.getBalance(2)));
     	
     	
-    	RegistrationDialogue rd = new RegistrationDialogue();
+//    	RegistrationDialogue rd = new RegistrationDialogue();
     	
 //    	rd.register();
     	
@@ -81,39 +107,38 @@ public class App
     	
 //    	jdbc.establishConnection();
     	
-    	Initialize init = new Initialize();
-    	init.init();
-    	AdministratorDialogue ad = new AdministratorDialogue();
+//    	Initialize init = new Initialize();
+    //	init.init();
+//    	AdministratorDialogue ad = new AdministratorDialogue();
     //	ad.
 //    	ad.addNewAdministrator();
 //    	ad.displayAdministrator();
 //    	ad.addNewAdministrator();
-    	Approval approval = new Approval();
+//    	Approval approval = new Approval();
 //    	approval.approve(1,"3");
 //    	approval.deny(1,"3");
     	
     	
-   	CustomerDialogue cd = new CustomerDialogue();
+//   	CustomerDialogue cd = new CustomerDialogue();
    	
    	
 //   	cd.displayCustomer();
-   	CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+//   	CustomerPortalDialogue cpd = new CustomerPortalDialogue();
    	
 //   	cpd.customerOptions(1);
    	
-   	EmployeeDialogue ed = new EmployeeDialogue();
-   	
+
 //   	RegistrationDialogue rd = new RegistrationDialogue();
+//   	
+//   	LoginDialogue ld = new LoginDialogue();
+//   	
+//   	WithdrawlDialogue wd = new WithdrawlDialogue();
+//   	
+//   	DepositDialogue dd = new DepositDialogue();
+//   	
+//   	ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
    	
-   	LoginDialogue ld = new LoginDialogue();
-   	
-   	WithdrawlDialogue wd = new WithdrawlDialogue();
-   	
-   	DepositDialogue dd = new DepositDialogue();
-   	
-   	ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
-   	
-   	wd.withdrawl(1);
+//   	wd.withdrawl(1);
 //   	cd.addNewCustomer();
 //   afad.apply(1);
 
@@ -128,8 +153,7 @@ public class App
    	
 //   	rd.register();
    	
-//   	ed.addNewEmployee();
-//   	ed.displayEmployee();
+
 //    	int customerId = 1;
 //    	
 //    	JointAccount ja = new JointAccount();
