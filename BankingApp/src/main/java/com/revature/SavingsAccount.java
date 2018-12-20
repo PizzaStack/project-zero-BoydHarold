@@ -2,13 +2,10 @@ package com.revature;
 
 import java.text.DecimalFormat;
 
-import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.JointAccountDao;
-import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.JointAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
-import com.revature.dao.SavingsAccountDao;
 
 public class SavingsAccount {
 	DecimalFormat df = new DecimalFormat("#0.00");
@@ -16,54 +13,140 @@ public class SavingsAccount {
 	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
 	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
 	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
+	private int accountNumber;
+	private int customerId;
+	private int status;
+	private String approvalStatus;
+	private double balance;
 
+	public SavingsAccount(int accountNumber, int customerId, int status, String approvalStatus, double balance){
+		this.accountNumber = accountNumber;
+		this.customerId = customerId;
+		this.status = status;
+		this.approvalStatus = approvalStatus;
+		this.balance = balance;
+	}
+	
+	public SavingsAccount() {
+		
+	}
 
 	
+	public int getAccountNumber() {
+		return accountNumber;
+	}
+
+
+
+	public void setAccountNumber(int accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+
+
+	public int getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
+
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+
+
+
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+
+
+
+	public double getBalance() {
+		return balance;
+	}
+
+
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+
+
 	public boolean withdrawl(int customerId, double amount) {
-		double currentBalance = savingsAccountDao.getBalance(customerId);
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+		double currentBalance = savingsAccount.getBalance();
 		double newBalance = currentBalance - amount;
-		if(newBalance < 0) {
-			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance) + " remaining in your account!");
+		if (newBalance < 0) {
+			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance)
+					+ " remaining in your account!");
 			return false;
 		} else {
-			savingsAccountDao.setBalance(customerId, newBalance);
-		return true;
+			savingsAccount.setBalance(newBalance);
+			savingsAccountDao.updateSavingsAccount(savingsAccount);
+			return true;
 		}
 	}
 
 	public void deposit(int customerId, double amount) {
-		double currentBalance = savingsAccountDao.getBalance(customerId);
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+		double currentBalance = savingsAccount.getBalance();
 		double newBalance = currentBalance + amount;
-		savingsAccountDao.setBalance(customerId, newBalance);
+		savingsAccount.setBalance(newBalance);
+		savingsAccountDao.updateSavingsAccount(savingsAccount);
 	}
 
 	public void transfer(int customerId, double amount, String source, String destination) {
-		CheckingAccount ca = new CheckingAccount();
+		SavingsAccount ca = new SavingsAccount();
 		JointAccount ja = new JointAccount();
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+		CheckingAccount checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
 		
-		if(destination.equals("Checking")) {
+		if(destination.equals("Savings")) {
 			withdrawl(customerId, amount);
 			ca.deposit(customerId, amount);
-			System.out.println("New Savings Account Balance: $" + df.format(savingsAccountDao.getBalance(customerId)));
-			System.out.println("New Checking Account Balance: $" + df.format(checkingAccountDao.getBalance(customerId)));
+			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
+			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
 		} else if(destination.equals("Joint")) {
 			withdrawl(customerId, amount);
 			ja.deposit(customerId, amount);
-			System.out.println("New Savings Account Balance: $" + df.format(savingsAccountDao.getBalance(customerId)));
-			System.out.println("New Joint Account Balance: $" + df.format(jointAccountDao.getBalance(customerId)));
+			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
+			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 		}
 	}
 
 	public void applyForAccount(int customerId) {
-		String approvalStatus = savingsAccountDao.getApprovalStatus(customerId);
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+		String approvalStatus = savingsAccount.getApprovalStatus();
 		if (approvalStatus.equals("p")) {
 			System.out.println("Approval already pending!");
 		} else {
 			
 			if(approvalStatus.equals("d")) {
-			savingsAccountDao.applyForAccount(customerId);
+			savingsAccount.setApprovalStatus("p");
+			savingsAccountDao.updateSavingsAccount(savingsAccount);
+				
 			System.out.println("Applied for Savings Account!");
-			
 			} else {
 				System.out.println("You already have an account!");
 			}

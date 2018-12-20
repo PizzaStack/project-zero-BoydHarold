@@ -173,14 +173,13 @@ public class CustomerDialogue {
 		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
 		Customer customer = new Customer(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 1);
-		
 		System.out.println("\nPlease review the following information:");
-		System.out.println(customer.getCustomerFirstName());
-		System.out.println(customer.getCustomerLastName());
-		System.out.println(customer.getCustomerAddress());
-		System.out.println(customer.getCustomerBirthDate());
-		System.out.println(customer.getCustomerEmailAddress());
-		System.out.println(customer.getCustomerPhoneNumber());
+		System.out.println("First Name: " + customer.getCustomerFirstName());
+		System.out.println("Last Name: " + customer.getCustomerLastName());
+		System.out.println("Address: " + customer.getCustomerAddress());
+		System.out.println("Birth Date: " + customer.getCustomerBirthDate());
+		System.out.println("Email Address: " + customer.getCustomerEmailAddress());
+		System.out.println("Phone Number: " + customer.getCustomerPhoneNumber());
 		
 		System.out.println("\nCommit? (Y/N)");
 		commit = sc.nextLine().toLowerCase();
@@ -211,7 +210,18 @@ public class CustomerDialogue {
 
 			CustomerDao customerDao = new CustomerDao(connection);
 			customerDao.addCustomer(customer);
-			int customerId = customerDao.getCustomerId(customer);
+			int customerId = 0;
+			
+			for(Customer getCustomer : customerDao.getAllCustomers()) {
+				if(firstName.equals(getCustomer.getCustomerFirstName()) 
+						&& lastName.equals(getCustomer.getCustomerLastName()) 
+						&& emailAddress.equals(getCustomer.getCustomerEmailAddress())
+						&& address.equals(getCustomer.getCustomerAddress())
+						&& birthDate.equals(getCustomer.getCustomerBirthDate())){
+					customerId = getCustomer.getCustomerId();
+				}
+			}
+			
 			System.out.println("\nCommited!");
 			System.out.println("\nCustomer ID generated! Make sure to write this down!\nCustomer ID: " + customerId);
 		}
@@ -257,7 +267,32 @@ public class CustomerDialogue {
 	    		
 		
 		if(exists) {
-			
+		CheckingAccount checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
+		
+		if(checkingAccount == null) {
+			checkingAccount = new CheckingAccount();
+			checkingAccount.setStatus(0);
+			checkingAccount.setApprovalStatus(null);
+			checkingAccount.setBalance(0.00);
+			System.out.println("DIDNT EXIST");
+		}
+		
+		if(savingsAccount == null) {
+			savingsAccount = new SavingsAccount();
+			savingsAccount.setStatus(0);
+			savingsAccount.setApprovalStatus(null);
+			savingsAccount.setBalance(0.00);
+		}
+		
+		if(jointAccount == null) {
+			jointAccount = new JointAccount();
+			jointAccount.setStatus(0);
+			jointAccount.setApprovalStatus(null);
+			jointAccount.setBalance(0.00);
+		}
+		
 		System.out.println("Displaying General Customer Information for Customer ID: " + customerId);
 		System.out.println("First Name: " + customer.getCustomerFirstName());
 		System.out.println("Last Name: " + customer.getCustomerLastName());
@@ -274,9 +309,10 @@ public class CustomerDialogue {
 		}
 		System.out.println("Status: " + statusString);
 		System.out.println("\nDisplaying Checking Account Information for Customer ID: " + customerId);
-		String checkingAccountStatus = String.valueOf(checkingAccountDao.getStatus(customerId));
-		String checkingAccountApprovalStatus = checkingAccountDao.getApprovalStatus(customerId);
-		String checkingAccountBalance = String.valueOf(df.format(checkingAccountDao.getBalance(customerId)));
+
+		String checkingAccountStatus = String.valueOf(checkingAccount.getStatus());
+		String checkingAccountApprovalStatus = checkingAccount.getApprovalStatus();
+		String checkingAccountBalance = String.valueOf(df.format(checkingAccount.getBalance()));
 		if(checkingAccountStatus.equals("0")) {
 			checkingAccountStatus = "Disabled";
 		} else if (checkingAccountStatus.equals("1")) {
@@ -298,9 +334,9 @@ public class CustomerDialogue {
 		System.out.println("Checking Account Balance: $" + checkingAccountBalance);
 		
 		System.out.println("\nDisplaying Savings Account Information for Customer ID: " + customerId);
-		String savingsAccountStatus = String.valueOf(savingsAccountDao.getStatus(customerId));
-		String savingsAccountApprovalStatus = savingsAccountDao.getApprovalStatus(customerId);
-		String savingsAccountBalance = String.valueOf(df.format(savingsAccountDao.getBalance(customerId)));
+		String savingsAccountStatus = String.valueOf(savingsAccount.getStatus());
+		String savingsAccountApprovalStatus = savingsAccount.getApprovalStatus();
+		String savingsAccountBalance = String.valueOf(df.format(savingsAccount.getBalance()));
 		if(savingsAccountStatus.equals("0")) {
 			savingsAccountStatus = "Disabled";
 		} else if (savingsAccountStatus.equals("1")) {
@@ -322,9 +358,9 @@ public class CustomerDialogue {
 		System.out.println("Savings Account Balance: $" + savingsAccountBalance);
 		
 		System.out.println("\nDisplaying Joint Account Information for Customer ID: " + customerId);
-		String jointAccountStatus = String.valueOf(jointAccountDao.getStatus(customerId));
-		String jointAccountApprovalStatus = jointAccountDao.getApprovalStatus(customerId);
-		String jointAccountBalance = String.valueOf(df.format(jointAccountDao.getBalance(customerId)));
+		String jointAccountStatus = String.valueOf(jointAccount.getStatus());
+		String jointAccountApprovalStatus = jointAccount.getApprovalStatus();
+		String jointAccountBalance = String.valueOf(df.format(jointAccount.getBalance()));
 		if(jointAccountStatus.equals("0")) {
 			jointAccountStatus = "Disabled";
 		} else if (jointAccountStatus.equals("1")) {

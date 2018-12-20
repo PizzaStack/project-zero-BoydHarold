@@ -1,5 +1,6 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.time.Year;
 import java.util.Scanner;
@@ -28,7 +29,7 @@ public class AdministratorDialogue {
 	private Administrator administrator = new Administrator();
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public void addNewAdministrator() {
+	public void addNewAdministrator(Connection connection) {
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -158,15 +159,15 @@ public class AdministratorDialogue {
 		
 		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		Administrator administrator = new Administrator(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
+		Administrator administrator = new Administrator(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 1);
 		
 		System.out.println("\nPlease review the following information:");
-		System.out.println(administrator.getAdministratorFirstName());
-		System.out.println(administrator.getAdministratorLastName());
-		System.out.println(administrator.getAdministratorAddress());
-		System.out.println(administrator.getAdministratorBirthDate());
-		System.out.println(administrator.getAdministratorEmailAddress());
-		System.out.println(administrator.getAdministratorPhoneNumber());
+		System.out.println("First Name: " + administrator.getAdministratorFirstName());
+		System.out.println("Last Name: " + administrator.getAdministratorLastName());
+		System.out.println("Address: " + administrator.getAdministratorAddress());
+		System.out.println("Birth Date: " + administrator.getAdministratorBirthDate());
+		System.out.println("Email Address: " + administrator.getAdministratorEmailAddress());
+		System.out.println("Phone Number: " + administrator.getAdministratorPhoneNumber());
 		
 		System.out.println("\nCommit? (Y/N)");
 		commit = sc.nextLine().toLowerCase();
@@ -195,9 +196,21 @@ public class AdministratorDialogue {
 			year = "";
 		} else {
 			
-			AdministratorDao administratorDao = new AdministratorDao();
+			AdministratorDao administratorDao = new AdministratorDao(connection);
 			administratorDao.addAdministrator(administrator);
-			int administratorId = administratorDao.getAdministratorId(administrator);
+			int administratorId = 0;
+			
+			for(Administrator getAllAdministrators : administratorDao.getAllAdministrators()) {
+				if(firstName.equals(getAllAdministrators.getAdministratorFirstName())
+						&& lastName.equals(getAllAdministrators.getAdministratorLastName())
+						&& emailAddress.equals(getAllAdministrators.getAdministratorEmailAddress())
+						&& address.equals(getAllAdministrators.getAdministratorAddress())
+						&& birthDate.equals(getAllAdministrators.getAdministratorBirthDate())
+						&& phoneNumber.equals(getAllAdministrators.getAdministratorPhoneNumber()))
+						{
+					administratorId = getAllAdministrators.getAdministratorId();
+				}
+			}
 			
 			System.out.println("\nCommited!");
 			System.out.println("\nAdministrator ID generated! Make sure to write this down!\nAdministrator ID: " + administratorId);
@@ -219,12 +232,12 @@ public class AdministratorDialogue {
 		return isNumeric;
 	}
 	
-	public void displayAdministrator() {
+	public void displayAdministrator(Connection connection) {
 		System.out.println("Enter in the Administrator ID:");
 		int administratorId = Integer.parseInt(sc.nextLine());
 		boolean exists = false;
 		
-		AdministratorDao administratorDao = new AdministratorDao();
+		AdministratorDao administratorDao = new AdministratorDao(connection);
 		Administrator administrator = administratorDao.getAdministratorById(administratorId);
 		if(administrator != null){
 	        	exists = true;
@@ -240,7 +253,7 @@ public class AdministratorDialogue {
 		System.out.println("Email Address: " + administrator.getAdministratorEmailAddress());
 		System.out.println("Phone Number: " + administrator.getAdministratorPhoneNumber());
 		
-		int status = administratorDao.getStatus(administratorId);
+		int status = administrator.getAdministratorIsActive();
 		String statusString = "";
 		if(status == 0) {
 			statusString = "Disabled";

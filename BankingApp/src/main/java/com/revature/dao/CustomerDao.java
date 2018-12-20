@@ -88,30 +88,5 @@ public class CustomerDao{
 		
 	}
 
-	
-	public int getCustomerId(Customer customer) {
-		int id = 0;
-		try {
-			PreparedStatement preGetCustomerId = null;
-			String getCustomerId = "SELECT CustomerId FROM Customer WHERE FirstName = ? AND LastName = ? AND Address = ? AND BirthDate = ? AND EmailAddress = ? AND PhoneNumber = ?;";
-			preGetCustomerId = connection.prepareStatement(getCustomerId);
-			preGetCustomerId.setString(1,customer.getCustomerFirstName());
-			preGetCustomerId.setString(2,customer.getCustomerLastName());
-			preGetCustomerId.setString(3,customer.getCustomerAddress());
-			preGetCustomerId.setString(4,customer.getCustomerBirthDate());
-			preGetCustomerId.setString(5,customer.getCustomerEmailAddress());
-			preGetCustomerId.setString(6,customer.getCustomerPhoneNumber());
-			ResultSet rs = preGetCustomerId.executeQuery();
-			
-			while(rs.next()) {
-				id = rs.getInt(1);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return id;
-
-	}
 
 }

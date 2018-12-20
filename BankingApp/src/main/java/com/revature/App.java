@@ -43,24 +43,29 @@ public class App
 	static DecimalFormat df = new DecimalFormat("#0.00");
     public static void main( String[] args )
     {
-    	
-       	EmployeeDialogue ed = new EmployeeDialogue();
        	CustomerDialogue cd = new CustomerDialogue();
- 
+       	EmployeeDialogue ed = new EmployeeDialogue();
+       	AdministratorDialogue ad = new AdministratorDialogue();
+
+       	
+
+       	
        	
        	
 		EstablishConnection establishConnection = new EstablishConnection();
  
 		
 //    	cd.addNewCustomer(establishConnection.establishConnection());
-     	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
-    
+//     	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
+
+   
+//     	ed.addNewEmployee(establishConnection.establishConnection());
+//     	ed.displayEmployee(establishConnection.establishConnection());
+//     	
+//		ad.addNewAdministrator(establishConnection.establishConnection());
+//		ad.displayAdministrator(establishConnection.establishConnection());
      	
-     	for (Customer customer : customerDao.getAllCustomers()) {
-     		System.out.println("Names: " + customer.getCustomerFirstName());
-     	}
-     	
-//     	cd.displayCustomer(establishConnection.establishConnection());
+     	cd.displayCustomer(establishConnection.establishConnection());
 
      	establishConnection.closeConnection();
      	

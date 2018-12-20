@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.revature.dao.CheckingAccountDao;
+import com.revature.SavingsAccount;
+import com.revature.dao.SavingsAccountDao;
 import com.revature.dao.SavingsAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
 
@@ -21,100 +23,55 @@ public class SavingsAccountDao{
 	}
 
 	
-	public double getBalance(int id) {
+	public List<SavingsAccount> getAllSavingsAccounts(){
+		List<SavingsAccount> savingsAccounts = new ArrayList<>();
 		try {
-			PreparedStatement preGetBalance = connection.prepareStatement("SELECT Balance FROM SavingsAccount WHERE CustomerId = ?;");
-			preGetBalance.setInt(1, id);
-			ResultSet rs = preGetBalance.executeQuery();
+			PreparedStatement preGetAllSavingsAccounts = null;
+			preGetAllSavingsAccounts = connection.prepareStatement("SELECT * FROM SavingsAccount;");
+			ResultSet rs = preGetAllSavingsAccounts.executeQuery();
+			SavingsAccount savingsAccount = null;
 			while(rs.next()) {
-				balance = rs.getDouble(1);
+				savingsAccount = new SavingsAccount(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getDouble(5));
+				savingsAccounts.add(savingsAccount);
 			}
-		
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 		}
 		
-		return balance;
+		return savingsAccounts;
 	}
-
 	
-	public void setBalance(int id, double balance) {
+	public SavingsAccount getSavingsAccountById(int customerId) {
+		SavingsAccount savingsAccount = new SavingsAccount();
 		try {
-			PreparedStatement preSetBalance = connection.prepareStatement("UPDATE SavingsAccount SET Balance = ? WHERE CustomerId = ?;");
-			preSetBalance.setDouble(1, balance);
-			preSetBalance.setInt(2, id);
-			preSetBalance.executeUpdate();
-			
-		} catch (SQLException e) {
-			
-		}
-		
-	}
-
-	
-	public int getStatus(int id) {
-		int status = 0;
-		try {
-			PreparedStatement preGetStatus = connection.prepareStatement("SELECT Status FROM SavingsAccount WHERE CustomerId = ?;");
-			preGetStatus.setInt(1, id);
-			ResultSet rs = preGetStatus.executeQuery();
+			PreparedStatement preGetSavingsAccount = null;
+			preGetSavingsAccount = connection.prepareStatement("SELECT * FROM SavingsAccount WHERE CustomerId = ?");
+			preGetSavingsAccount.setInt(1, customerId);
+			ResultSet rs = preGetSavingsAccount.executeQuery();
+			savingsAccount = null;
 			while(rs.next()) {
-				status = rs.getInt(1);
+				savingsAccount = new SavingsAccount(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getDouble(5));
 			}
-		
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return status;
-	}
-
-	
-	public String getApprovalStatus(int id) {
-		try {
-			PreparedStatement preGetApprovalStatus = connection.prepareStatement("SELECT ApprovalStatus FROM SavingsAccount WHERE CustomerId = ?;");
-			preGetApprovalStatus.setInt(1, id);
-			ResultSet rs = preGetApprovalStatus.executeQuery();
-			while(rs.next()) {
-				approvalStatus = rs.getString(1);
-			}
-		
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return approvalStatus;
-	}
-
-	
-	public void applyForAccount(int id) {
-		try {
-			PreparedStatement preApplyForAccount = connection.prepareStatement("UPDATE SavingsAccount SET ApprovalStatus = 'p' WHERE CustomerId = ?;");
-			preApplyForAccount.setInt(1, id);
-			preApplyForAccount.executeUpdate();
-			
 		} catch (SQLException e) {
 			
 		}
 		
+		
+		return savingsAccount;
 	}
 
-	
-	public boolean getAccountExists(int id) {
-		boolean exists = false;
+	public void updateSavingsAccount(SavingsAccount savingsAccount) {
 		try {
-			PreparedStatement preGetExists = connection.prepareStatement("SELECT * FROM SavingsAccount WHERE CustomerId = ?;");
-			preGetExists.setInt(1, id);
-			ResultSet rs = preGetExists.executeQuery();
-			while(rs.next()) {
-				exists = true;
-			}
-			
+			PreparedStatement preUpdateSavingsAccount = connection.prepareStatement("UPDATE SavingsAccount SET Status = ?, ApprovalStatus = ?, Balance = ? WHERE CustomerId = ?;");
+			preUpdateSavingsAccount.setInt(1, savingsAccount.getStatus());
+			preUpdateSavingsAccount.setString(2, savingsAccount.getApprovalStatus());
+			preUpdateSavingsAccount.setDouble(3, savingsAccount.getBalance());
+			preUpdateSavingsAccount.setInt(4, savingsAccount.getCustomerId());
+			preUpdateSavingsAccount.executeUpdate();
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 		}
-		
-		return exists;
 	}
 
 }

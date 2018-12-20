@@ -8,14 +8,16 @@ public class Administrator {
 	private String emailAddress;
 	private String phoneNumber;
 	private int administratorIsActive;
+	private int administratorId;
 			
-	public Administrator(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber) {
+	public Administrator(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
 		this.birthDate = birthDate;
 		this.emailAddress = emailAddress;
 		this.phoneNumber = phoneNumber;
+		this.administratorIsActive = status;
 	}
 	
 	public Administrator() {
@@ -50,6 +52,10 @@ public class Administrator {
 			public void setAdministratorIsActive(int administratorIsActive) {
 				this.administratorIsActive = administratorIsActive;
 			}
+			
+			public void setAdministratorId(int administratorId) {
+				this.administratorId = administratorId;
+			}
 
 			public String getAdministratorFirstName() {
 				return this.firstName;
@@ -77,6 +83,10 @@ public class Administrator {
 			
 			public int getAdministratorIsActive() {
 				return this.administratorIsActive;
+			}
+			
+			public int getAdministratorId() {
+				return this.administratorId;
 			}
 			
 	

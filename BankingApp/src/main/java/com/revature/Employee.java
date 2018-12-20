@@ -8,14 +8,16 @@ public class Employee {
 	private String emailAddress;
 	private String phoneNumber;
 	private int employeeIsActive;
+	private int employeeId;
 	
-	public Employee(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber) {
+	public Employee(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
 		this.birthDate = birthDate;
 		this.emailAddress = emailAddress;
 		this.phoneNumber = phoneNumber;
+		this.employeeIsActive = status;
 	}
 	
 	public Employee() {
@@ -51,6 +53,10 @@ public class Employee {
 			public void setEmployeeIsActive(int employeeIsActive) {
 				this.employeeIsActive = employeeIsActive;
 			}
+			
+			public void setEmployeeId(int employeeId) {
+				this.employeeId = employeeId;
+			}
 
 			public String getEmployeeFirstName() {
 				return this.firstName;
@@ -78,6 +84,10 @@ public class Employee {
 			
 			public int getEmployeeIsActive() {
 				return this.employeeIsActive;
+			}
+			
+			public int getEmployeeId() {
+				return this.employeeId;
 			}
 		
 	}

@@ -33,7 +33,6 @@ public class EmployeeDialogue {
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
 	public void addNewEmployee(Connection connection) {
-//		EstablishConnection establishConnection = new EstablishConnection();
 		EmployeeDao employeeDao = new EmployeeDao(connection);
 		while(commit.equals("n")) {
 			
@@ -165,15 +164,15 @@ public class EmployeeDialogue {
 
 		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		Employee employee = new Employee(firstName, lastName, address, birthDate, emailAddress, phoneNumber);
+		Employee employee = new Employee(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 1);
 		
 		System.out.println("\nPlease review the following information:");
-		System.out.println(employee.getEmployeeFirstName());
-		System.out.println(employee.getEmployeeLastName());
-		System.out.println(employee.getEmployeeAddress());
-		System.out.println(employee.getEmployeeBirthDate());
-		System.out.println(employee.getEmployeeEmailAddress());
-		System.out.println(employee.getEmployeePhoneNumber());
+		System.out.println("First Name: " + employee.getEmployeeFirstName());
+		System.out.println("Last Name: " + employee.getEmployeeLastName());
+		System.out.println("Address: " + employee.getEmployeeAddress());
+		System.out.println("Birth Date: " + employee.getEmployeeBirthDate());
+		System.out.println("Email Address: " + employee.getEmployeeEmailAddress());
+		System.out.println("Phone Number: " + employee.getEmployeePhoneNumber());
 		
 		System.out.println("\nCommit? (Y/N)");
 		commit = sc.nextLine().toLowerCase();
@@ -202,7 +201,21 @@ public class EmployeeDialogue {
 			year = "";
 		} else {
 			employeeDao.addEmployee(employee);
-			int employeeId = employeeDao.getEmployeeId(employee);
+			
+			int employeeId = 0;
+			
+			for(Employee getAllEmployees : employeeDao.getAllEmployees()) {
+				if(firstName.equals(getAllEmployees.getEmployeeFirstName())
+						&& lastName.equals(getAllEmployees.getEmployeeLastName())
+						&& emailAddress.equals(getAllEmployees.getEmployeeEmailAddress())
+						&& address.equals(getAllEmployees.getEmployeeAddress())
+						&& birthDate.equals(getAllEmployees.getEmployeeBirthDate())
+						&& phoneNumber.equals(getAllEmployees.getEmployeePhoneNumber()))
+						{
+					employeeId = getAllEmployees.getEmployeeId();
+				}
+			}
+			
 			System.out.println("\nCommited!");
 			System.out.println("\nEmployee ID generated! Make sure to write this down!\nEmployee ID: " + employeeId);
 		}
@@ -247,7 +260,7 @@ public class EmployeeDialogue {
 		System.out.println("Phone Number: " + employee.getEmployeePhoneNumber());
 		
 		
-		int status = employeeDao.getStatus(employeeId);
+		int status = employee.getEmployeeIsActive();
 		String statusString = "";
 		if(status == 0) {
 			statusString = "Disabled";
