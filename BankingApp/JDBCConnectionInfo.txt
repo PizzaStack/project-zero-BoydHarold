@@ -1,3 +1,0 @@
-bankingapp
-bb020794
-jdbc:postgresql://bankingapp.cnvqf94bbq5z.us-east-2.rds.amazonaws.com:5432/bankingapp
