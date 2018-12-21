@@ -262,8 +262,9 @@ public class CustomerDialogue {
 				System.out.println("Invalid entry! Please enter a numerical value!");
 			}
 		}
-		
+
 		CustomerDao customerDao = new CustomerDao(connection);
+
 		Customer customer = customerDao.getCustomerById(customerId);
 		if(customer != null){
 	        	exists = true;

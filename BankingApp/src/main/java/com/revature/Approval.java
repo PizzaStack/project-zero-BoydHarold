@@ -56,7 +56,16 @@ public class Approval {
 	public void listPendingChecking(Connection connection) {
 		ApprovalDao approvalDao = new ApprovalDao(connection);
 		List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+		int pendingCount = 0;
 		
+		for(Approval checkingAccount : checkingAccounts) {
+			if(checkingAccount.getApprovalStatus().equals("p")) {
+				pendingCount++;
+			}
+		}
+		
+		if(pendingCount>0) {
+		System.out.println("\nDisplaying pending Checking Accounts:");
 		for(Approval checkingAccount : checkingAccounts) {
 			if(checkingAccount.getApprovalStatus().equals("p")) {
 			System.out.println("\nCustomer Id: " + checkingAccount.getCustomerId());
@@ -64,12 +73,26 @@ public class Approval {
 			System.out.println("Approval Status: Pending");
 			}
 		}
+		
+		} else {
+			System.out.println("\nThere are not pending Checking Accounts!");
+		}
 
 	}
 	
 	public void listPendingSavings(Connection connection) {
 		ApprovalDao approvalDao = new ApprovalDao(connection);
 		List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+		int pendingCount = 0;
+		
+		for(Approval savingsAccount : savingsAccounts) {
+			if(savingsAccount.getApprovalStatus().equals("p")) {
+				pendingCount++;
+			}
+		}
+		
+		if(pendingCount>0) {
+		System.out.println("\nDisplaying pending Savings Accounts:");
 		
 		for(Approval savingsAccount : savingsAccounts) {
 			if(savingsAccount.getApprovalStatus().equals("p")) {
@@ -78,11 +101,25 @@ public class Approval {
 			System.out.println("Approval Status: Pending");
 			}
 		}
+		
+		} else {
+			System.out.println("\nThere are not pending Savings Accounts!");
+		}
 	}
 	
 	public void listPendingJoint(Connection connection) {
 		ApprovalDao approvalDao = new ApprovalDao(connection);
 		List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
+		int pendingCount = 0;
+		
+		for(Approval jointAccount : jointAccounts) {
+			if(jointAccount.getApprovalStatus().equals("p")) {
+				pendingCount++;
+			}
+		}
+		
+		if(pendingCount>0) {
+		System.out.println("\nDisplaying pending Joint Accounts:");
 		
 		for(Approval jointAccount : jointAccounts) {
 			if(jointAccount.getApprovalStatus().equals("p")) {
@@ -90,6 +127,9 @@ public class Approval {
 			System.out.println("Full Names: '" + jointAccount.getFirstName() + " " + jointAccount.getLastName() + "' and '" + jointAccount.getFirstName2() + " " + jointAccount.getLastName2() + "'");
 			System.out.println("Approval Status: Pending");
 			}
+		}
+		} else {
+			System.out.println("\nThere are not pending Joint Accounts!");
 		}
 	}
 	

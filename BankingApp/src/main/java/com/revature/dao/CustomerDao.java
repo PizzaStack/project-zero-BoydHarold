@@ -42,12 +42,13 @@ public class CustomerDao{
 	public Customer getCustomerById(int id) {
 		try {
 			PreparedStatement preGetCustomer = null;
-			String getCustomer = "SELECT * FROM Customer WHERE CustomerId = ?";
-			preGetCustomer = connection.prepareStatement(getCustomer);
+			preGetCustomer = connection.prepareStatement("SELECT * FROM Customer WHERE CustomerId = ?");
 			preGetCustomer.setInt(1, id);
 			ResultSet rs = preGetCustomer.executeQuery();
 			customer = null;
+
 			while(rs.next()) {
+
 				customer = new Customer(rs.getString(2),
 						rs.getString(3),
 						rs.getString(4),

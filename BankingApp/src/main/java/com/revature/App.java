@@ -8,10 +8,12 @@ import com.revature.consolelogic.CustomerDialogue;
 import com.revature.consolelogic.CustomerPortalDialogue;
 import com.revature.consolelogic.DepositDialogue;
 import com.revature.consolelogic.EmployeeDialogue;
+import com.revature.consolelogic.EmployeePortalDialogue;
 import com.revature.consolelogic.LoginDialogue;
 import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
 import com.revature.consolelogic.WithdrawlDialogue;
+import com.revature.dao.AdministrativeFunctionsDao;
 import com.revature.jdbcinfo.EstablishConnection;
 
 
@@ -44,7 +46,15 @@ public class App
        	
 		EstablishConnection establishConnection = new EstablishConnection();
 		
-		cpd.customerOptions(1, establishConnection.establishConnection());
+		
+		EmployeePortalDialogue epd = new EmployeePortalDialogue();
+		
+		
+		epd.employeeOptions(establishConnection.establishConnection());
+		
+//		AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao(establishConnection.establishConnection());
+//		ar.registerUser("1", "admin", "PLOK1plok1", establishConnection.establishConnection());
+//		cpd.customerOptions(1, establishConnection.establishConnection());
 //		cd.addNewCustomer(establishConnection.establishConnection());
 //		approval.approve(3, "1", establishConnection.establishConnection());
 //		approval.deny(3, "2", establishConnection.establishConnection());
@@ -58,7 +68,7 @@ public class App
 //		wd.withdrawl(1, establishConnection.establishConnection());
 //		td.transfer(1, establishConnection.establishConnection());
 //		dd.deposit(1, establishConnection.establishConnection());
-//		afad.apply(4, establishConnection.establishConnection());
+//		afad.apply(2, establishConnection.establishConnection());
 //    	cd.addNewCustomer(establishConnection.establishConnection());
 //     	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
 //		ad.addNewAdministrator(establishConnection.establishConnection());
