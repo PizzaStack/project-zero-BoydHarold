@@ -8,531 +8,306 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.revature.dao.ApprovalDao;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.JointAccountDao;
+import com.revature.dao.SavingsAccountDao;
 
 public class Approval {
-	private String checkingFilePath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Checking\\";
-	File checkingCustomerIdFile = new File(checkingFilePath + "CustomerId.txt");
-	File checkingCustomerAccountStatusFile = new File(checkingFilePath + "CustomerAccountStatus.txt");
-	File checkingCustomerAccountApprovalStatusFile = new File(checkingFilePath + "CustomerAccountApprovalStatus.txt");
-	private String savingsFilePath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Savings\\";
-	File savingsCustomerIdFile = new File(savingsFilePath + "CustomerId.txt");
-	File savingsCustomerAccountStatusFile = new File(savingsFilePath + "CustomerAccountStatus.txt");
-	File savingsCustomerAccountApprovalStatusFile = new File(savingsFilePath + "CustomerAccountApprovalStatus.txt");
-	private String jointFilePath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Account\\Joint\\";
-	File jointCustomerIdFile1 = new File(jointFilePath + "CustomerId1.txt");
-	File jointCustomerIdFile2 = new File(jointFilePath + "CustomerId2.txt");
-	File jointCustomerAccountStatusFile = new File(jointFilePath + "CustomerAccountStatus.txt");
-	File jointCustomerAccountApprovalStatusFile = new File(jointFilePath + "CustomerAccountApprovalStatus.txt");
-	File customerJointAccountBalanceFile = new File(jointFilePath + "CustomerJointAccountBalance.txt");
-	File approvalStatusFileLocation;
-	File accountStatusLocation;
+	private int customerId;
+	private int customerId2;
+	private int status;
+	private String approvalStatus;
+	private String firstName;
+	private String lastName;
+	private String firstName2;
+	private String lastName2;
 	CheckingAccount ca = new CheckingAccount();
 	SavingsAccount sa = new SavingsAccount();
 	JointAccount ja = new JointAccount();
 	
+	public Approval(int customerId, int status, String approvalStatus, String firstName, String lastName) {
+		this.customerId = customerId;
+		this.status = status;
+		this.approvalStatus = approvalStatus;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 	
-	public void listPendingChecking() {
-		try
-		(
-				FileInputStream fisChecking = new FileInputStream(checkingCustomerAccountApprovalStatusFile);
-				BufferedReader brChecking = new BufferedReader(new InputStreamReader(fisChecking));
-		) {
-			String list = "";
-			
-			int id = 0;
-			
-			while((list = brChecking.readLine()) != null) {
-				
-				if(list.equals("p")) {
-					System.out.println("Customer Id: " + id + " \nStatus: Pending\n");
-				}
-				id++;
+	public Approval(int customerId1, int customerId2, int status, String approvalStatus, String firstName, String lastName, String firstName2, String lastName2) {
+		this.customerId = customerId1;
+		this.customerId2 = customerId2;
+		this.status = status;
+		this.approvalStatus = approvalStatus;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.firstName2 = firstName2;
+		this.lastName2 = lastName2;
+	}
+	
+	public Approval() {
+		
+	}
+	
+	public void listPendingChecking(Connection connection) {
+		ApprovalDao approvalDao = new ApprovalDao(connection);
+		List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+		
+		for(Approval checkingAccount : checkingAccounts) {
+			if(checkingAccount.getApprovalStatus().equals("p")) {
+			System.out.println("\nCustomer Id: " + checkingAccount.getCustomerId());
+			System.out.println("Full Name: " + checkingAccount.getFirstName() + " " + checkingAccount.getLastName());
+			System.out.println("Approval Status: Pending");
 			}
-			
-		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
+		}
+
+	}
+	
+	public void listPendingSavings(Connection connection) {
+		ApprovalDao approvalDao = new ApprovalDao(connection);
+		List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+		
+		for(Approval savingsAccount : savingsAccounts) {
+			if(savingsAccount.getApprovalStatus().equals("p")) {
+			System.out.println("\nCustomer Id: " + savingsAccount.getCustomerId());
+			System.out.println("Full Name: " + savingsAccount.getFirstName() + " " + savingsAccount.getLastName());
+			System.out.println("Approval Status: Pending");
+			}
 		}
 	}
 	
-	public void listPendingSavings() {
-		try
-		(
-				FileInputStream fisSavings = new FileInputStream(savingsCustomerAccountApprovalStatusFile);
-				BufferedReader brSavings = new BufferedReader(new InputStreamReader(fisSavings));
-		) {
-			String list = "";
-			
-			int id = 0;
-			
-			while((list = brSavings.readLine()) != null) {
-				
-				if(list.equals("p")) {
-					System.out.println("Customer Id: " + id + " \nStatus: Pending\n");
-				}
-				id++;
+	public void listPendingJoint(Connection connection) {
+		ApprovalDao approvalDao = new ApprovalDao(connection);
+		List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
+		
+		for(Approval jointAccount : jointAccounts) {
+			if(jointAccount.getApprovalStatus().equals("p")) {
+			System.out.println("\nCustomer Ids: '" + jointAccount.getCustomerId() + "' and '" + jointAccount.getCustomerId2() + "'");
+			System.out.println("Full Names: '" + jointAccount.getFirstName() + " " + jointAccount.getLastName() + "' and '" + jointAccount.getFirstName2() + " " + jointAccount.getLastName2() + "'");
+			System.out.println("Approval Status: Pending");
 			}
-			
-		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
 		}
 	}
 	
-	public void listPendingJoint() {
-		try
-		(
-				FileInputStream fisJoint = new FileInputStream(jointCustomerAccountApprovalStatusFile);
-				BufferedReader brJoint = new BufferedReader(new InputStreamReader(fisJoint));
-				
-				
-		) {
-			String list = "";
-			
-			int id = 0;
-			
-			while((list = brJoint.readLine()) != null) {
-				
-				if(list.equals("p")) {
-					System.out.println("Customer Id1: " + getCustomerId1(id) + "\nCustomer Id2: " + getCustomerId2(id) + "\nStatus: Pending\n");
-				}
-				id++;
-			}
-			
-		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
-		}
-	}
-	
-	public void approve(int customerId, String accountType) {
+	public void approve(int customerId, String accountType, Connection connection) {
 		String approvalStatus = "u";
 
+		ApprovalDao approvalDao = new ApprovalDao(connection);
+
+
+
+		
+		Approval checkingAccountChosen = new Approval();
+		Approval savingsAccountChosen = new Approval();
+		Approval jointAccountChosen = new Approval();
+		
 		
 		if(accountType.equals("1")) {
-			approvalStatusFileLocation = checkingCustomerAccountApprovalStatusFile;
-			accountStatusLocation = checkingCustomerAccountStatusFile;
-			approvalStatus = ca.getApprovalStatus(customerId);
+			List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+			for(Approval checkingAccount : checkingAccounts) {
+				if(checkingAccount.getCustomerId() == customerId) {
+					checkingAccountChosen.setCustomerId(checkingAccount.getCustomerId());
+					checkingAccountChosen.setFirstName(checkingAccount.getFirstName());
+					checkingAccountChosen.setLastName(checkingAccount.getLastName());
+					checkingAccountChosen.setStatus(checkingAccount.getStatus());
+					checkingAccountChosen.setApprovalStatus(checkingAccount.getApprovalStatus());
+				}
+			}
+			approvalStatus = checkingAccountChosen.getApprovalStatus();
 		} else if(accountType.equals("2")) {
-			approvalStatusFileLocation = savingsCustomerAccountApprovalStatusFile;
-			accountStatusLocation = savingsCustomerAccountStatusFile;
-			approvalStatus = sa.getApprovalStatus(customerId);
+			List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+			for(Approval savingsAccount : savingsAccounts) {
+				if(savingsAccount.getCustomerId() == customerId) {
+					savingsAccountChosen.setCustomerId(savingsAccount.getCustomerId());
+					savingsAccountChosen.setFirstName(savingsAccount.getFirstName());
+					savingsAccountChosen.setLastName(savingsAccount.getLastName());
+					savingsAccountChosen.setStatus(savingsAccount.getStatus());
+					savingsAccountChosen.setApprovalStatus(savingsAccount.getApprovalStatus());
+				}
+			}
+			approvalStatus = savingsAccountChosen.getApprovalStatus();
 		} else if(accountType.equals("3")) {
-			approvalStatusFileLocation = jointCustomerAccountApprovalStatusFile;
-			accountStatusLocation = jointCustomerAccountStatusFile;
-			customerId = ja.getPosition(customerId);
-			approvalStatus = ja.getApprovalStatus(customerId);
+			List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
+			for(Approval jointAccount : jointAccounts) {
+				if(jointAccount.getCustomerId() == customerId) {
+					jointAccountChosen.setCustomerId(jointAccount.getCustomerId());
+					jointAccountChosen.setFirstName(jointAccount.getFirstName());
+					jointAccountChosen.setLastName(jointAccount.getLastName());
+					jointAccountChosen.setFirstName2(jointAccount.getFirstName2());
+					jointAccountChosen.setLastName2(jointAccount.getLastName2());
+					jointAccountChosen.setStatus(jointAccount.getStatus());
+					jointAccountChosen.setApprovalStatus(jointAccount.getApprovalStatus());
+				}
+			}
+			approvalStatus = jointAccountChosen.getApprovalStatus();
 		}
 		
 		
 		if(approvalStatus.equals("p")) {
 		
-			ArrayList<String> alOne = new ArrayList<String>();
-			ArrayList<String> alTwo = new ArrayList<String>();
-			ArrayList<String> alThree = new ArrayList<String>();
-
-			try (FileInputStream fisGetAccountApprovalStatus = new FileInputStream(approvalStatusFileLocation);
-					BufferedReader brGetAccountApprovalStatus = new BufferedReader(
-							new InputStreamReader(fisGetAccountApprovalStatus));) {
-				String line = "";
-				while ((line = brGetAccountApprovalStatus.readLine()) != null) {
-					alOne.add(line);
-				}
-
-				for (int i = 0; i < alOne.size(); i++) {
-					if (i < customerId) {
-						alTwo.add(alOne.get(i));
-					} else if (i > customerId) {
-						alThree.add(alOne.get(i));
-					}
-				}
-
-				alOne.clear();
-				alOne.addAll(alTwo);
-				alOne.add("a");
-				alOne.addAll(alThree);
-
-			} catch (FileNotFoundException e) {
-
-			} catch (IOException e) {
-
+			if(accountType.equals("1")) {
+				checkingAccountChosen.setStatus(1);
+				checkingAccountChosen.setApprovalStatus("a");
+				approvalDao.updateCheckingAccount(checkingAccountChosen);
+			} else if(accountType.equals("2")) {
+				savingsAccountChosen.setStatus(1);
+				savingsAccountChosen.setApprovalStatus("a");
+				approvalDao.updateSavingsAccount(savingsAccountChosen);
+			} else if(accountType.equals("3")) {
+				jointAccountChosen.setStatus(1);
+				jointAccountChosen.setApprovalStatus("a");
+				approvalDao.updateJointAccount(jointAccountChosen);
 			}
-
-			approvalStatusFileLocation.delete();
-
-			try (FileOutputStream fosSetAccountApprovalStatus = new FileOutputStream(approvalStatusFileLocation,
-					true); PrintStream psSetAccountApprovalStatus = new PrintStream(fosSetAccountApprovalStatus);) {
-				for (int i = 0; i < alOne.size(); i++) {
-					psSetAccountApprovalStatus.println(alOne.get(i));
-				}
-			} catch (FileNotFoundException e) {
-
-			} catch (IOException e) {
-
-			}
-
+			
 			System.out.println("Account approved!");
 			
-			alOne.clear();
-			alTwo.clear();
-			alThree.clear();
-
-			try (FileInputStream fisGetAccountApprovalStatus = new FileInputStream(accountStatusLocation);
-					BufferedReader brGetAccountApprovalStatus = new BufferedReader(
-							new InputStreamReader(fisGetAccountApprovalStatus));) {
-				String line = "";
-				while ((line = brGetAccountApprovalStatus.readLine()) != null) {
-					alOne.add(line);
-				}
-
-				for (int i = 0; i < alOne.size(); i++) {
-					if (i < customerId) {
-						alTwo.add(alOne.get(i));
-					} else if (i > customerId) {
-						alThree.add(alOne.get(i));
-					}
-				}
-
-				alOne.clear();
-				alOne.addAll(alTwo);
-				alOne.add("1");
-				alOne.addAll(alThree);
-
-			} catch (FileNotFoundException e) {
-
-			} catch (IOException e) {
-
-			}
-
-			accountStatusLocation.delete();
-
-			try (FileOutputStream fosSetAccountApprovalStatus = new FileOutputStream(accountStatusLocation,
-					true); PrintStream psSetAccountApprovalStatus = new PrintStream(fosSetAccountApprovalStatus);) {
-				for (int i = 0; i < alOne.size(); i++) {
-					psSetAccountApprovalStatus.println(alOne.get(i));
-				}
-			} catch (FileNotFoundException e) {
-
-			} catch (IOException e) {
-
-			}
-
-			
 		} else {
 			System.out.println("Approval not pending for customer!");
 		}
 	}
 	
-	public void deny(int customerId, String accountType) {
+	public void deny(int customerId, String accountType, Connection connection) {
 		String approvalStatus = "u";
-		boolean jointAccount = false;
+
+		ApprovalDao approvalDao = new ApprovalDao(connection);
+
+
+
+		
+		Approval checkingAccountChosen = new Approval();
+		Approval savingsAccountChosen = new Approval();
+		Approval jointAccountChosen = new Approval();
+		
+
 		
 		if(accountType.equals("1")) {
-			approvalStatusFileLocation = checkingCustomerAccountApprovalStatusFile;
-			approvalStatus = ca.getApprovalStatus(customerId);
+			List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+			for(Approval checkingAccount : checkingAccounts) {
+				if(checkingAccount.getCustomerId() == customerId) {
+					checkingAccountChosen.setCustomerId(checkingAccount.getCustomerId());
+					checkingAccountChosen.setFirstName(checkingAccount.getFirstName());
+					checkingAccountChosen.setLastName(checkingAccount.getLastName());
+					checkingAccountChosen.setStatus(checkingAccount.getStatus());
+					checkingAccountChosen.setApprovalStatus(checkingAccount.getApprovalStatus());
+				}
+			}
+			approvalStatus = checkingAccountChosen.getApprovalStatus();
 		} else if(accountType.equals("2")) {
-			approvalStatusFileLocation = savingsCustomerAccountApprovalStatusFile;
-			approvalStatus = sa.getApprovalStatus(customerId);
+			List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+			for(Approval savingsAccount : savingsAccounts) {
+				if(savingsAccount.getCustomerId() == customerId) {
+					savingsAccountChosen.setCustomerId(savingsAccount.getCustomerId());
+					savingsAccountChosen.setFirstName(savingsAccount.getFirstName());
+					savingsAccountChosen.setLastName(savingsAccount.getLastName());
+					savingsAccountChosen.setStatus(savingsAccount.getStatus());
+					savingsAccountChosen.setApprovalStatus(savingsAccount.getApprovalStatus());
+				}
+			}
+			approvalStatus = savingsAccountChosen.getApprovalStatus();
 		} else if(accountType.equals("3")) {
-			approvalStatusFileLocation = jointCustomerAccountApprovalStatusFile;
-			customerId = ja.getPosition(customerId);
-			approvalStatus = ja.getApprovalStatus(customerId);
-			jointAccount = true;
+			List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
+			for(Approval jointAccount : jointAccounts) {
+				if(jointAccount.getCustomerId() == customerId) {
+					jointAccountChosen.setCustomerId(jointAccount.getCustomerId());
+					jointAccountChosen.setFirstName(jointAccount.getFirstName());
+					jointAccountChosen.setLastName(jointAccount.getLastName());
+					jointAccountChosen.setFirstName2(jointAccount.getFirstName2());
+					jointAccountChosen.setLastName2(jointAccount.getLastName2());
+					jointAccountChosen.setStatus(jointAccount.getStatus());
+					jointAccountChosen.setApprovalStatus(jointAccount.getApprovalStatus());
+				}
+			}
+			approvalStatus = jointAccountChosen.getApprovalStatus();
 		}
 		
-		
-		
-		
+
 		if(approvalStatus.equals("p")) {
-		
-			ArrayList<String> alOne = new ArrayList<String>();
-			ArrayList<String> alTwo = new ArrayList<String>();
-			ArrayList<String> alThree = new ArrayList<String>();
-			
-			ArrayList<String> alFour = new ArrayList<String>();
-			ArrayList<String> alFive = new ArrayList<String>();
-			ArrayList<String> alSix = new ArrayList<String>();
-			
-			ArrayList<String> alSeven = new ArrayList<String>();
-			ArrayList<String> alEight = new ArrayList<String>();
-			ArrayList<String> alNine = new ArrayList<String>();
-			
-			ArrayList<String> alTen = new ArrayList<String>();
-			ArrayList<String> alEleven = new ArrayList<String>();
-			ArrayList<String> alTwelve = new ArrayList<String>();
-			
-			ArrayList<String> alThirteen = new ArrayList<String>();
-			ArrayList<String> alFourteen = new ArrayList<String>();
-			ArrayList<String> alFifteen = new ArrayList<String>();
-			
-
-			try (FileInputStream fisGetAccountApprovalStatus = new FileInputStream(approvalStatusFileLocation);
-					BufferedReader brGetAccountApprovalStatus = new BufferedReader(
-							new InputStreamReader(fisGetAccountApprovalStatus));) {
-				String line = "";
-				while ((line = brGetAccountApprovalStatus.readLine()) != null) {
-					alOne.add(line);
-				}
-
-				for (int i = 0; i < alOne.size(); i++) {
-					if (i < customerId) {
-						alTwo.add(alOne.get(i));
-					} else if (i > customerId) {
-						alThree.add(alOne.get(i));
-					}
-				}
-
-				alOne.clear();
-				alOne.addAll(alTwo);
-				alOne.add("d");
-				alOne.addAll(alThree);
-
-			} catch (FileNotFoundException e) {
-
-			} catch (IOException e) {
-
-			}
-
-			approvalStatusFileLocation.delete();
-
-			try (FileOutputStream fosSetAccountApprovalStatus = new FileOutputStream(approvalStatusFileLocation,
-					true); PrintStream psSetAccountApprovalStatus = new PrintStream(fosSetAccountApprovalStatus);) {
-				for (int i = 0; i < alOne.size(); i++) {
-					psSetAccountApprovalStatus.println(alOne.get(i));
-				}
-			} catch (FileNotFoundException e) {
-
-			} catch (IOException e) {
-
-			}
-
-			System.out.println("Account denied!");
-			
-			if(jointAccount) {
-				
-				alOne.clear();
-				alTwo.clear();
-				alThree.clear();
-
-				try (FileInputStream fisGetCustomerId1 = new FileInputStream(jointCustomerIdFile1);
-						BufferedReader brGetCustomerId1 = new BufferedReader(
-								new InputStreamReader(fisGetCustomerId1));
-						
-						FileInputStream fisGetCustomerId2 = new FileInputStream(jointCustomerIdFile2);
-						BufferedReader brGetCustomerId2 = new BufferedReader(
-								new InputStreamReader(fisGetCustomerId2));
-						
-						FileInputStream fisGetAccountStatus = new FileInputStream(jointCustomerAccountStatusFile);
-						BufferedReader brGetAccountStatus = new BufferedReader(
-								new InputStreamReader(fisGetAccountStatus));
-						
-						FileInputStream fisGetAccountApprovalStatus = new FileInputStream(jointCustomerAccountApprovalStatusFile);
-						BufferedReader brGetAccountApprovalStatus = new BufferedReader(
-								new InputStreamReader(fisGetAccountApprovalStatus));
-						
-						FileInputStream fisGetAccountBalance = new FileInputStream(customerJointAccountBalanceFile);
-						BufferedReader brGetAccountBalance = new BufferedReader(
-								new InputStreamReader(fisGetAccountBalance));
-						
-						
-						
-						
-						) {
-					String line = "";
-					while ((line = brGetCustomerId1.readLine()) != null) {
-						alOne.add(line);
-					}
-
-					for (int i = 0; i < alOne.size(); i++) {
-						if (i < customerId) {
-							alTwo.add(alOne.get(i));
-						} else if (i > customerId) {
-							alThree.add(alOne.get(i));
-						}
-					}
-
-					alOne.clear();
-					alOne.addAll(alTwo);
-					alOne.addAll(alThree);
-
-					line = "";
-					while ((line = brGetCustomerId2.readLine()) != null) {
-						alFour.add(line);
-					}
-
-					for (int i = 0; i < alFour.size(); i++) {
-						if (i < customerId) {
-							alFive.add(alFour.get(i));
-						} else if (i > customerId) {
-							alSix.add(alFour.get(i));
-						}
-					}
-
-					alFour.clear();
-					alFour.addAll(alFive);
-					alFour.addAll(alSix);
-					
-					line = "";
-					while ((line = brGetAccountStatus.readLine()) != null) {
-						alSeven.add(line);
-					}
-
-					for (int i = 0; i < alSeven.size(); i++) {
-						if (i < customerId) {
-							alEight.add(alSeven.get(i));
-						} else if (i > customerId) {
-							alNine.add(alSeven.get(i));
-						}
-					}
-
-					alSeven.clear();
-					alSeven.addAll(alEight);
-					alSeven.addAll(alNine);
-				
-					
-					line = "";
-					while ((line = brGetAccountApprovalStatus.readLine()) != null) {
-						alTen.add(line);
-					}
-
-					for (int i = 0; i < alTen.size(); i++) {
-						if (i < customerId) {
-							alEleven.add(alTen.get(i));
-						} else if (i > customerId) {
-							alTwelve.add(alTen.get(i));
-						}
-					}
-
-					alTen.clear();
-					alTen.addAll(alEleven);
-					alTen.addAll(alTwelve);
-					
-					line = "";
-					while ((line = brGetAccountBalance.readLine()) != null) {
-						alThirteen.add(line);
-					}
-
-					for (int i = 0; i < alThirteen.size(); i++) {
-						if (i < customerId) {
-							alFourteen.add(alThirteen.get(i));
-						} else if (i > customerId) {
-							alFifteen.add(alThirteen.get(i));
-						}
-					}
-
-					alThirteen.clear();
-					alThirteen.addAll(alFourteen);
-					alThirteen.addAll(alFifteen);
-
-				} catch (FileNotFoundException e) {
-
-				} catch (IOException e) {
-
-				}
-
-				approvalStatusFileLocation.delete();
-
-				
-				try (FileOutputStream fosSetCustomerId1 = new FileOutputStream(jointCustomerIdFile1,
-						true); PrintStream psSetCustomerId1 = new PrintStream(fosSetCustomerId1);
-						
-						FileOutputStream fosSetCustomerId2 = new FileOutputStream(jointCustomerIdFile2,
-								true); PrintStream psSetCustomerId2 = new PrintStream(fosSetCustomerId2);
-						
-						FileOutputStream fosSetCustomerAccountStatusFile = new FileOutputStream(jointCustomerAccountStatusFile,
-								true); PrintStream psSetCustomerAccountStatusFile = new PrintStream(fosSetCustomerAccountStatusFile);
-						
-						FileOutputStream fosSetAccountApprovalStatus = new FileOutputStream(jointCustomerAccountApprovalStatusFile,
-								true); PrintStream psSetAccountApprovalStatus = new PrintStream(fosSetAccountApprovalStatus);
-						
-						FileOutputStream fosSetJointAccountBalance = new FileOutputStream(customerJointAccountBalanceFile,
-								true); PrintStream psSetJointAccountBalance = new PrintStream(fosSetJointAccountBalance);
-						
-						) {
-					for (int i = 0; i < alOne.size(); i++) {
-						psSetAccountApprovalStatus.println(alOne.get(i));
-					}
-					
-					for (int i = 0; i < alFour.size(); i++) {
-						psSetAccountApprovalStatus.println(alFour.get(i));
-					}
-					
-					for (int i = 0; i < alSeven.size(); i++) {
-						psSetAccountApprovalStatus.println(alSeven.get(i));
-					}
-					
-					for (int i = 0; i < alEleven.size(); i++) {
-						psSetAccountApprovalStatus.println(alEleven.get(i));
-					}
-					
-					for (int i = 0; i < alFourteen.size(); i++) {
-						psSetAccountApprovalStatus.println(alFourteen.get(i));
-					}
-				} catch (FileNotFoundException e) {
-
-				} catch (IOException e) {
-
-				}
-				
+			if(accountType.equals("1")) {
+				checkingAccountChosen.setStatus(0);
+				checkingAccountChosen.setApprovalStatus("d");
+				approvalDao.updateCheckingAccount(checkingAccountChosen);
+			} else if(accountType.equals("2")) {
+				savingsAccountChosen.setStatus(0);
+				savingsAccountChosen.setApprovalStatus("d");
+				approvalDao.updateSavingsAccount(savingsAccountChosen);
+			} else if(accountType.equals("3")) {
+				approvalDao.deleteJointAccount(jointAccountChosen);
 			}
 			
+			System.out.println("Approval denied!");
 		} else {
 			System.out.println("Approval not pending for customer!");
 		}
 	}
-	
-	public int getCustomerId1(int position) {
-		int customerId1 = 0;
-		
-		try
-		(
-				FileInputStream fisCustomerId1 = new FileInputStream(jointCustomerIdFile1);
-				BufferedReader brCustomerId1 = new BufferedReader(new InputStreamReader(fisCustomerId1));
-		) {
-			String line = "";
-			int count = 0;
-			while((line = brCustomerId1.readLine()) != null) {
-				if(count == position) {
-					customerId1 = Integer.parseInt(line);
-				}
-				count++;
-			}
-		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
-		}
-		
-		return customerId1;
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 	
-	public int getCustomerId2(int position) {
-		int customerId2 = 0;
-		try
-		(
-				FileInputStream fisCustomerId2 = new FileInputStream(jointCustomerIdFile2);
-				BufferedReader brCustomerId2 = new BufferedReader(new InputStreamReader(fisCustomerId2));
-		) {
-			String line = "";
-			int count = 0;
-			while((line = brCustomerId2.readLine()) != null) {
-				if(count == position) {
-					customerId2 = Integer.parseInt(line);
-				}
-				count++;
-			}
-		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
-		}
-		
+	public int getCustomerId2() {
 		return customerId2;
 	}
+
+	public void setCustomerId2(int customerId2) {
+		this.customerId2 = customerId2;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getFirstName2() {
+		return firstName2;
+	}
+
+	public void setFirstName2(String firstName2) {
+		this.firstName2 = firstName2;
+	}
+
+	public String getLastName2() {
+		return lastName2;
+	}
+
+	public void setLastName2(String lastName2) {
+		this.lastName2 = lastName2;
+	}
+
 	
 	
 }

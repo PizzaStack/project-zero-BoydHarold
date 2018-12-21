@@ -6,95 +6,76 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.revature.Customer;
+import com.revature.CustomerRegistration;
 import com.revature.dao.CustomerRegistrationDao;
 import com.revature.jdbcinfo.EstablishConnection;
 
 public class CustomerRegistrationDao{
 	private Connection connection;
-	private Customer customer;
 	
 	public CustomerRegistrationDao(Connection connection) {
 		this.connection = connection;
 	}
 
-	
-	public boolean getCustomerById(int id) {
-		boolean exists = false;
+	public List<CustomerRegistration> getAllCustomerUsers(){
+		List<CustomerRegistration> customerUserList = new ArrayList<>();
+		CustomerRegistration customerUser = null;
 		try {
-			PreparedStatement preGetCustomer = null;
-			String getCustomer = "SELECT * FROM Customer WHERE CustomerId = ?";
-			preGetCustomer = connection.prepareStatement(getCustomer);
-			preGetCustomer.setInt(1, id);
-			ResultSet rs = preGetCustomer.executeQuery();
+			PreparedStatement preGetAllCustomerUsers = null;
+			String getAllCustomerUsers = "SELECT * FROM CustomerUsers;";
+			preGetAllCustomerUsers = connection.prepareStatement(getAllCustomerUsers);
+			ResultSet rs = preGetAllCustomerUsers.executeQuery();
+
 			while(rs.next()) {
-				exists = true;
+				customerUser = new CustomerRegistration(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+				customerUser.setUserId(rs.getInt(1));
+				customerUserList.add(customerUser);
+			}
+		} catch (SQLException e) {
+			
+		}
+		
+		return customerUserList;
+	}
+	
+	public CustomerRegistration getCustomerUserByUsername(String username) {
+			CustomerRegistration customerUser = null;
+		try {
+			PreparedStatement preGetCustomerRegistration = null;
+			String getCustomerRegistration = "SELECT * FROM CustomerUsers WHERE Username = ?";
+			preGetCustomerRegistration = connection.prepareStatement(getCustomerRegistration);
+			preGetCustomerRegistration.setString(1, username);
+			ResultSet rs = preGetCustomerRegistration.executeQuery();
+			while(rs.next()) {
+				customerUser = new CustomerRegistration(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+				customerUser.setUserId(rs.getInt(1));
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return exists;
+		return customerUser;
 	}
-
 	
-	public boolean getUserExists(String username) {
-		boolean exists = false;
+	public void addCustomerUser(CustomerRegistration customerUser) {
 		try {
-			PreparedStatement preGetCustomer = null;
-			String getCustomer = "SELECT * FROM CustomerUsers WHERE Username = ?";
-			preGetCustomer = connection.prepareStatement(getCustomer);
-			preGetCustomer.setString(1, username);
-			ResultSet rs = preGetCustomer.executeQuery();
-			while(rs.next()) {
-				exists = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return exists;
-	}
-
-	
-	public void addUser(String customerId, String username, String password) {
-		try {
-			PreparedStatement preAddCustomer = null;
-			String addCustomer = "INSERT INTO CustomerUsers(CustomerId, Username, Password, Status) VALUES (?,?,?,?)";
-			preAddCustomer = connection.prepareStatement(addCustomer);
-			preAddCustomer.setInt(1,Integer.parseInt(customerId));
-			preAddCustomer.setString(2,username);
-			preAddCustomer.setString(3,password);
-			preAddCustomer.setInt(4,1);
-			preAddCustomer.executeUpdate();
+			PreparedStatement preAddCustomerUser = null;
+			String addCustomerUser = "INSERT INTO CustomerUsers(CustomerId, Username, Password, Status) VALUES (?,?,?,?)";
+			preAddCustomerUser = connection.prepareStatement(addCustomerUser);
+			preAddCustomerUser.setInt(1,customerUser.getCustomerId());
+			preAddCustomerUser.setString(2,customerUser.getUsername());
+			preAddCustomerUser.setString(3,customerUser.getPassword());
+			preAddCustomerUser.setInt(4,customerUser.getStatus());
+			preAddCustomerUser.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-	}
-
-	
-	public boolean getUserAlreadyHasAccount(int id) {
-		boolean exists = false;
-		try {
-			PreparedStatement preGetCustomer = null;
-			String getCustomer = "SELECT * FROM CustomerUsers WHERE CustomerId = ?";
-			preGetCustomer = connection.prepareStatement(getCustomer);
-			preGetCustomer.setInt(1, id);
-			ResultSet rs = preGetCustomer.executeQuery();
-			while(rs.next()) {
-				exists = true;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return exists;
 	}
 
 }

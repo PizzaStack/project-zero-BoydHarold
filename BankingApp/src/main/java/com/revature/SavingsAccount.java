@@ -90,46 +90,63 @@ public class SavingsAccount {
 		this.balance = balance;
 	}
 
+	public void initialize(int customerId) {
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+		
+		if(savingsAccount == null) {
+			savingsAccount = new SavingsAccount();
+			savingsAccount.setCustomerId(customerId);
+			savingsAccount.setStatus(0);
+			savingsAccount.setApprovalStatus("u");
+			savingsAccount.setBalance(0.00);
+			savingsAccountDao.addSavingsAccount(savingsAccount);
+		}
+		
+	}
 
-
-	public boolean withdrawl(int customerId, double amount) {
+	public double withdrawl(int customerId, double amount) {
 		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 		double currentBalance = savingsAccount.getBalance();
 		double newBalance = currentBalance - amount;
 		if (newBalance < 0) {
 			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance)
 					+ " remaining in your account!");
-			return false;
+			return currentBalance;
 		} else {
 			savingsAccount.setBalance(newBalance);
 			savingsAccountDao.updateSavingsAccount(savingsAccount);
-			return true;
+			return newBalance;
 		}
 	}
 
-	public void deposit(int customerId, double amount) {
+	public double deposit(int customerId, double amount) {
 		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 		double currentBalance = savingsAccount.getBalance();
 		double newBalance = currentBalance + amount;
 		savingsAccount.setBalance(newBalance);
 		savingsAccountDao.updateSavingsAccount(savingsAccount);
+		return newBalance;
 	}
 
 	public void transfer(int customerId, double amount, String source, String destination) {
-		SavingsAccount ca = new SavingsAccount();
-		JointAccount ja = new JointAccount();
 		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 		CheckingAccount checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
 		
-		if(destination.equals("Savings")) {
+		if(destination.equals("Checking")) {
 			withdrawl(customerId, amount);
-			ca.deposit(customerId, amount);
+			checkingAccount.deposit(customerId, amount);
+			savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+			checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
 			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
 		} else if(destination.equals("Joint")) {
 			withdrawl(customerId, amount);
-			ja.deposit(customerId, amount);
+			jointAccount.deposit(customerId, amount);
+			savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+			checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 		}
@@ -142,7 +159,7 @@ public class SavingsAccount {
 			System.out.println("Approval already pending!");
 		} else {
 			
-			if(approvalStatus.equals("d")) {
+			if(approvalStatus.equals("d") || approvalStatus.equals("u")) {
 			savingsAccount.setApprovalStatus("p");
 			savingsAccountDao.updateSavingsAccount(savingsAccount);
 				

@@ -6,93 +6,79 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.revature.AdminRegistration;
 import com.revature.Administrator;
+import com.revature.CustomerRegistration;
 import com.revature.dao.AdminRegistrationDao;
 import com.revature.jdbcinfo.EstablishConnection;
 
 public class AdminRegistrationDao{
 	private Connection connection;
-	private Administrator administrator;
 	
 	public AdminRegistrationDao(Connection connection) {
 		this.connection = connection;
 	}
 
-	public boolean getAdminById(int id) {
-		boolean exists = false;
+	
+	public List<AdminRegistration> getAllAdministratorUsers(){
+		List<AdminRegistration> administratorUserList = new ArrayList<>();
+		AdminRegistration administratorUser = null;
 		try {
-			PreparedStatement preGetAdministrator = null;
-			String getAdministrator = "SELECT * FROM Administrator WHERE AdministratorId = ?";
-			preGetAdministrator = connection.prepareStatement(getAdministrator);
-			preGetAdministrator.setInt(1, id);
-			ResultSet rs = preGetAdministrator.executeQuery();
-			while(rs.next()) {
-				exists = true;
-			}
+			PreparedStatement preGetAllAdministratorUsers = null;
+			String getAllAdministratorUsers = "SELECT * FROM AdministratorUsers;";
+			preGetAllAdministratorUsers = connection.prepareStatement(getAllAdministratorUsers);
+			ResultSet rs = preGetAllAdministratorUsers.executeQuery();
 
+			while(rs.next()) {
+				administratorUser = new AdminRegistration(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+				administratorUser.setUserId(rs.getInt(1));
+				administratorUserList.add(administratorUser);
+			}
+		} catch (SQLException e) {
+			
+		}
+		
+		return administratorUserList;
+	}
+	
+	public AdminRegistration getAdministratorUserByUsername(String username) {
+			AdminRegistration administratorUser = null;
+		try {
+			PreparedStatement preGetAdminRegistration = null;
+			String getAdminRegistration = "SELECT * FROM AdministratorUsers WHERE Username = ?";
+			preGetAdminRegistration = connection.prepareStatement(getAdminRegistration);
+			preGetAdminRegistration.setString(1, username);
+			ResultSet rs = preGetAdminRegistration.executeQuery();
+			while(rs.next()) {
+				administratorUser = new AdminRegistration(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+				administratorUser.setUserId(rs.getInt(1));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return exists;
+		return administratorUser;
 	}
-
-	public boolean getUserExists(String username) {
-		boolean exists = false;
+	
+	public void addAdministratorUser(AdminRegistration administratorUser) {
 		try {
-			PreparedStatement preGetAdministrator = null;
-			String getAdministrator = "SELECT * FROM AdministratorUsers WHERE Username = ?";
-			preGetAdministrator = connection.prepareStatement(getAdministrator);
-			preGetAdministrator.setString(1, username);
-			ResultSet rs = preGetAdministrator.executeQuery();
-			while(rs.next()) {
-				exists = true;
-			}
-
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return exists;
-	}
-
-	public void addUser(String administratorId, String username, String password) {
-		try {
-			PreparedStatement preAddAdministrator = null;
-			String addAdministrator = "INSERT INTO AdministratorUsers(AdministratorId, Username, Password, Status) VALUES (?,?,?,?)";
-			preAddAdministrator = connection.prepareStatement(addAdministrator);
-			preAddAdministrator.setInt(1,Integer.parseInt(administratorId));
-			preAddAdministrator.setString(2,username);
-			preAddAdministrator.setString(3,password);
-			preAddAdministrator.setInt(4,1);
-			preAddAdministrator.executeUpdate();
+			PreparedStatement preAddAdministratorUser = null;
+			String addAdministratorUser = "INSERT INTO AdministratorUsers(AdministratorId, Username, Password, Status) VALUES (?,?,?,?)";
+			preAddAdministratorUser = connection.prepareStatement(addAdministratorUser);
+			preAddAdministratorUser.setInt(1,administratorUser.getAdministratorId());
+			preAddAdministratorUser.setString(2,administratorUser.getUsername());
+			preAddAdministratorUser.setString(3,administratorUser.getPassword());
+			preAddAdministratorUser.setInt(4,administratorUser.getStatus());
+			preAddAdministratorUser.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 	}
-
-	public boolean getUserAlreadyHasAccount(int id) {
-		boolean exists = false;
-		try {
-			PreparedStatement preGetAdministrator = null;
-			String getAdministrator = "SELECT * FROM AdministratorUsers WHERE AdministratorId = ?";
-			preGetAdministrator = connection.prepareStatement(getAdministrator);
-			preGetAdministrator.setInt(1, id);
-			ResultSet rs = preGetAdministrator.executeQuery();
-			while(rs.next()) {
-				exists = true;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return exists;
-	}
+	
 
 }

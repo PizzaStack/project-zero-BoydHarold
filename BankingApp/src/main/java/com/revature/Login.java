@@ -1,136 +1,94 @@
 package com.revature;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.util.List;
+
+import com.revature.dao.AdminRegistrationDao;
+import com.revature.dao.CustomerRegistrationDao;
+import com.revature.dao.EmployeeRegistrationDao;
 
 public class Login {
-	private int positionUsername = 0;
-	private int finalUsernamePosition;
-	private int positionPassword = 0;
-	private int finalPasswordPosition;
-	private String customerAuthenticationPath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Authentication\\Customer\\";
-	File customerUsernamesFile = new File(customerAuthenticationPath + "Usernames.txt");
-	File customerPasswordFile = new File(customerAuthenticationPath + "Passwords.txt");
-	private String employeeAuthenticationPath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Authentication\\Employee\\";
-	File employeeUsernamesFile = new File(employeeAuthenticationPath + "Usernames.txt");
-	File employeePasswordFile = new File(employeeAuthenticationPath + "Passwords.txt");
-	private String adminAuthenticationPath = "C:\\Users\\boydt\\Desktop\\Project0\\project-zero-BoydHarold\\BankingApp\\PseudoDB\\PseudoTables\\Authentication\\Administrator\\";
-	File adminUsernamesFile = new File(adminAuthenticationPath + "Usernames.txt");
-	File adminPasswordFile = new File(adminAuthenticationPath + "Passwords.txt");
+
 	
-	public boolean validateCredentials(String accountType, String username, String password) {
+	public boolean validateCredentials(String accountType, String username, String password, Connection connection) {
 		boolean validatedUsername = false;
 		boolean validatedPassword = false;
 		boolean validatedCredentials = false;
 		
 		
 		if(accountType.equals("1")) {
-		try 
-		(
-		FileInputStream fisUsername = new FileInputStream(customerUsernamesFile);
-		BufferedReader brUsername = new BufferedReader(new InputStreamReader(fisUsername));
-				
-		FileInputStream fisPassword = new FileInputStream(customerPasswordFile);
-		BufferedReader brPassword = new BufferedReader(new InputStreamReader(fisPassword));
-				
-		) {
-			String line = "";
-			while((line = brUsername.readLine()) != null) {
-				positionUsername++;
-				if(line.equals(username)) {
-					validatedUsername = true;
-					finalUsernamePosition = positionUsername;
-				}
-			}
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
+		List<CustomerRegistration> customerRegistrations = customerRegistrationDao.getAllCustomerUsers();
 			
-			String line2 = "";
-			while((line2 = brPassword.readLine()) != null) {
-				positionPassword++;
-				if(line2.equals(password)) {
-					validatedPassword = true;
-					finalPasswordPosition = positionPassword;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
-		}
-		} else if (accountType.equals("2")) {
-			try 
-			(
-			FileInputStream fisUsername = new FileInputStream(employeeUsernamesFile);
-			BufferedReader brUsername = new BufferedReader(new InputStreamReader(fisUsername));
-					
-			FileInputStream fisPassword = new FileInputStream(employeePasswordFile);
-			BufferedReader brPassword = new BufferedReader(new InputStreamReader(fisPassword));
-					
-			) {
-				String line = "";
-				while((line = brUsername.readLine()) != null) {
-					positionUsername++;
-					if(line.equals(username)) {
-						validatedUsername = true;
-						finalUsernamePosition = positionUsername;
-					}
-				}
-				
-				String line2 = "";
-				while((line2 = brPassword.readLine()) != null) {
-					positionPassword++;
-					if(line2.equals(password)) {
-						validatedPassword = true;
-						finalPasswordPosition = positionPassword;
-					}
-				}
-			} catch (FileNotFoundException e) {
-				
-			} catch (IOException e) {
-				
-			}
-		} else if (accountType.equals("3")) {
-			try 
-			(
-			FileInputStream fisUsername = new FileInputStream(adminUsernamesFile);
-			BufferedReader brUsername = new BufferedReader(new InputStreamReader(fisUsername));
-					
-			FileInputStream fisPassword = new FileInputStream(adminPasswordFile);
-			BufferedReader brPassword = new BufferedReader(new InputStreamReader(fisPassword));
-					
-			) {
-				String line = "";
-				while((line = brUsername.readLine()) != null) {
-					positionUsername++;
-					if(line.equals(username)) {
-						validatedUsername = true;
-						finalUsernamePosition = positionUsername;
-					}
-				}
-				
-				String line2 = "";
-				while((line2 = brPassword.readLine()) != null) {
-					positionPassword++;
-					if(line2.equals(password)) {
-						validatedPassword = true;
-						finalPasswordPosition = positionPassword;
-					}
-				}
-			} catch (FileNotFoundException e) {
-				
-			} catch (IOException e) {
-				
+		for(CustomerRegistration customerRegistration : customerRegistrations) {
+			if(customerRegistration.getUsername().equals(username)) {
+				validatedUsername = true;
 			}
 		}
 		
-		if((validatedUsername == true && validatedPassword == true) && (finalUsernamePosition == finalPasswordPosition)) {
-			validatedCredentials = true;
+		CustomerRegistration customerRegistration = customerRegistrationDao.getCustomerUserByUsername(username);
+		
+		if(customerRegistration == null) {
+			System.out.println("Account does not exist!\n");
+		} else if(customerRegistration.getPassword().equals(password)) {
+			validatedPassword = true;
 		} else {
-			validatedCredentials = false;
+			System.out.println("Invalid password!\n");
 		}
+		
+		if(validatedUsername == true && validatedPassword == true) {
+			validatedCredentials = true;
+		}
+			
+		} else if (accountType.equals("2")) {
+			EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao(connection);
+			List<EmployeeRegistration> employeeRegistrations = employeeRegistrationDao.getAllEmployeeUsers();
+				
+			for(EmployeeRegistration employeeRegistration : employeeRegistrations) {
+				if(employeeRegistration.getUsername().equals(username)) {
+					validatedUsername = true;
+				}
+			}
+			
+			EmployeeRegistration employeeRegistration = employeeRegistrationDao.getEmployeeUserByUsername(username);
+			
+			if(employeeRegistration == null) {
+				System.out.println("Account does not exist!\n");
+			} else if(employeeRegistration.getPassword().equals(password)) {
+				validatedPassword = true;
+			} else {
+				System.out.println("Invalid password!\n");
+			}
+			
+			if(validatedUsername == true && validatedPassword == true) {
+				validatedCredentials = true;
+			}
+		} else if (accountType.equals("3")) {
+			AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao(connection);
+			List<AdminRegistration> administratorRegistrations = administratorRegistrationDao.getAllAdministratorUsers();
+				
+			for(AdminRegistration administratorRegistration : administratorRegistrations) {
+				if(administratorRegistration.getUsername().equals(username)) {
+					validatedUsername = true;
+				}
+			}
+			
+			AdminRegistration administratorRegistration = administratorRegistrationDao.getAdministratorUserByUsername(username);
+			
+			if(administratorRegistration == null) {
+				System.out.println("Account does not exist!\n");
+			} else if(administratorRegistration.getPassword().equals(password)) {
+				validatedPassword = true;
+			} else {
+				System.out.println("Invalid password!\n");
+			}
+			
+			if(validatedUsername == true && validatedPassword == true) {
+				validatedCredentials = true;
+			}
+		}
+		
+	
 		
 		return validatedCredentials;
 	}

@@ -222,6 +222,12 @@ public class CustomerDialogue {
 				}
 			}
 			
+			CheckingAccount checkingAccount = new CheckingAccount();
+			SavingsAccount savingsAccount = new SavingsAccount();
+			
+			checkingAccount.initialize(customerId);
+			savingsAccount.initialize(customerId);
+			
 			System.out.println("\nCommited!");
 			System.out.println("\nCustomer ID generated! Make sure to write this down!\nCustomer ID: " + customerId);
 		}

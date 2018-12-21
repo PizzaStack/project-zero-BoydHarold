@@ -1,8 +1,10 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 import com.revature.CheckingAccount;
+import com.revature.Customer;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 
@@ -12,7 +14,7 @@ public class ApplyForAccountDialogue {
 	SavingsAccount sa = new SavingsAccount();
 	JointAccount ja = new JointAccount();
 	
-	public void apply(int customerId) {
+	public void apply(int customerId, Connection connection) {
 		System.out.println("\nWhich type of account would you like to apply for?");
 		System.out.println("\n1. Checking");
 		System.out.println("2. Savings");
@@ -51,7 +53,7 @@ public class ApplyForAccountDialogue {
 				}
 			}
 
-			ja.applyForAccount(customerId, Integer.parseInt(customerId2));
+			ja.applyForAccount(customerId, Integer.parseInt(customerId2), connection);
 		}
 	}
 	

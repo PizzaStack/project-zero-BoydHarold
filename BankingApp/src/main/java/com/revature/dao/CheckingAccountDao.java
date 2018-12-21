@@ -72,6 +72,20 @@ public class CheckingAccountDao{
 			
 		}
 	}
+	
+	public void addCheckingAccount(CheckingAccount checkingAccount) {
+		try {
+			PreparedStatement preAddCheckingAccount = connection.prepareStatement("INSERT INTO CheckingAccount (CustomerId, Status, ApprovalStatus, Balance) VALUES (?,?,?,?);");
+			preAddCheckingAccount.setInt(1, checkingAccount.getCustomerId());
+			preAddCheckingAccount.setInt(2, checkingAccount.getStatus());
+			preAddCheckingAccount.setString(3, checkingAccount.getApprovalStatus());
+			preAddCheckingAccount.setDouble(4, checkingAccount.getBalance());
+			preAddCheckingAccount.executeUpdate();
+
+		} catch (SQLException e) {
+			
+		}
+	}
 
 
 }

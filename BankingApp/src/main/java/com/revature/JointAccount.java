@@ -16,6 +16,7 @@ public class JointAccount{
 	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
 	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
 	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
+	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
 	private int accountNumber;
 	private int customerId1;
 	private int customerId2;
@@ -84,84 +85,78 @@ public class JointAccount{
 		
 	}
 	
-	public boolean withdrawl(int customerId, double amount) {
+	public double withdrawl(int customerId, double amount) {
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
 		double currentBalance = jointAccount.getBalance();
 		double newBalance = currentBalance - amount;
 		if (newBalance < 0) {
 			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance)
 					+ " remaining in your account!");
-			return false;
+			return currentBalance;
 		} else {
 			jointAccount.setBalance(newBalance);
 			jointAccountDao.updateJointAccount(jointAccount);
-			return true;
+			return newBalance;
 		}
 	}
 
-	public void deposit(int customerId, double amount) {
+	public double deposit(int customerId, double amount) {
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
 		double currentBalance = jointAccount.getBalance();
 		double newBalance = currentBalance + amount;
 		jointAccount.setBalance(newBalance);
 		jointAccountDao.updateJointAccount(jointAccount);
+		return newBalance;
 	}
 
 	public void transfer(int customerId, double amount, String source, String destination) {
-		CheckingAccount ca = new CheckingAccount();
-		JointAccount sa = new JointAccount();
-		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 		CheckingAccount checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
 
 		if (destination.equals("Checking")) {
 			withdrawl(customerId, amount);
-			ca.deposit(customerId, amount);
+			checkingAccount.deposit(customerId, amount);
+			savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+			checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
-		} else if (destination.equals("Joint")) {
+		} else if (destination.equals("Savings")) {
 			withdrawl(customerId, amount);
-			sa.deposit(customerId, amount);
+			savingsAccount.deposit(customerId, amount);
+			savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
+			checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
+			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
 		}
 	}
 
-	public void applyForAccount(int customerId) {
-		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
-		String approvalStatus = savingsAccount.getApprovalStatus();
-		if (approvalStatus.equals("p")) {
-			System.out.println("Approval already pending!");
-		} else {
-			
-			if(approvalStatus.equals("d")) {
-			savingsAccount.setApprovalStatus("p");
-			savingsAccountDao.updateSavingsAccount(savingsAccount);
-				
-			System.out.println("Applied for Savings Account!");
-			} else {
-				System.out.println("You already have an account!");
-			}
-		}
-	}
 	
 	public void applyForAccount(int customerId1, int customerId2, Connection connection) {
 		boolean customerCheck = false;
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId1);
+		String approvalStatus = "0";
+		
+		
 		if(customerId1 == customerId2) {
 			System.out.println("You cannot open a joint account with yourself!");
 		} else {
-		Customer customer = new Customer();
-		CustomerDao customerDao = new CustomerDao(connection);
-		customer = customerDao.getCustomerById(customerId2);
+		Customer customer = customerDao.getCustomerById(customerId2);
 		if(customer == null) {
 		customerCheck = false;
+		} else {
+			customerCheck = true;
 		}
 		
-		String approvalStatus = jointAccount.getApprovalStatus();
+		
+		if(jointAccount != null) {
+			approvalStatus = jointAccount.getApprovalStatus();
+		}
 		
 		if (approvalStatus.equals("p")) {
-			System.out.println("Approval already pending!");
+			System.out.println("You already have an approval pending for a Joint Account!");
 		} else {
 		
 				
@@ -172,24 +167,27 @@ public class JointAccount{
 			JointAccount jointAccount1 = jointAccountDao.getJointAccountById(customerId1);
 			JointAccount jointAccount2 = jointAccountDao.getJointAccountById(customerId2);
 	
-				
 			if(jointAccount1 != null || jointAccount2 != null) {
 				System.out.println("Either you or the requested customer already have a joint account!");
 			} else {
 
+			jointAccount1 = new JointAccount();
+	
 			jointAccount1.setApprovalStatus("p");
-			jointAccount2.setApprovalStatus("p");
-				
-			jointAccountDao.updateJointAccount(jointAccount1);
-			jointAccountDao.updateJointAccount(jointAccount2);
+			jointAccount1.setBalance(0.00);
+			jointAccount1.setStatus(0);
+			jointAccount1.setCustomerId1(customerId1);
+			jointAccount1.setCustomerId2(customerId2);
 			
-			System.out.println("Applied for Joint Account!");
+			jointAccountDao.addJointAccount(jointAccount1);
+			
+			System.out.println("Applied for joint account!");
 			}
 			} else {
-				System.out.println("You already have an account!");
+				System.out.println("You already have an account! You are only allowed to have one joint account.");
 		} 
 		} else {
-			System.out.println("The customer you wish to open a Joint Account with does not exist!");
+			System.out.println("The customer you wish to open a joint account with does not exist!");
 		}
 
 		}

@@ -1,5 +1,6 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 import com.revature.Login;
@@ -11,7 +12,7 @@ public class LoginDialogue {
 	String password;
 	Login login = new Login();
 	
-	public void login() {
+	public void login(Connection connection) {
 		System.out.println("Welcome to the Bank of Revature!");
 		System.out.println("\nPlease choose what you would like to do today:");
 		System.out.println("\n1. Login");
@@ -32,7 +33,7 @@ public class LoginDialogue {
 		}
 		
 		if(choice.equals("2")) {
-			rd.register();
+			rd.register(connection);
 		} else {
 			System.out.println("\nChoose a login type:");
 			System.out.println("1. Customer");
@@ -87,12 +88,12 @@ public class LoginDialogue {
 				}
 			}
 			
-			boolean loginValidated = login.validateCredentials(loginType, username, password);
+			boolean loginValidated = login.validateCredentials(loginType, username, password, connection);
 			if(loginValidated) {
 				System.out.println("Login successful!");
 				loginSuccessful = true;
 			} else {
-				System.out.println("Login failed. Invalid credentials!");
+				System.out.println("Login failed. Try again!");
 				loginSuccessful = false;
 			}
 			

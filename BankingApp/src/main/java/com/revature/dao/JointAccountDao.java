@@ -75,4 +75,19 @@ public class JointAccountDao{
 			
 		}
 	}
+	
+	public void addJointAccount(JointAccount jointAccount) {
+		try {
+			PreparedStatement preAddJointAccount = connection.prepareStatement("INSERT INTO JointAccount (CustomerId1, CustomerId2, Status, ApprovalStatus, Balance) VALUES (?,?,?,?,?);");
+			preAddJointAccount.setInt(1, jointAccount.getCustomerId1());
+			preAddJointAccount.setInt(2, jointAccount.getCustomerId2());
+			preAddJointAccount.setInt(3, jointAccount.getStatus());
+			preAddJointAccount.setString(4, jointAccount.getApprovalStatus());
+			preAddJointAccount.setDouble(5, jointAccount.getBalance());
+			preAddJointAccount.executeUpdate();
+
+		} catch (SQLException e) {
+			
+		}
+	}
 }

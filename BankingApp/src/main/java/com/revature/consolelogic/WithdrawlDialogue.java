@@ -1,5 +1,6 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -17,26 +18,49 @@ public class WithdrawlDialogue {
 	boolean validEntry = false;
 	double amount;
 	Scanner sc = new Scanner(System.in);
-	CheckingAccount ca = new CheckingAccount();
-	SavingsAccount sa = new SavingsAccount();
-	JointAccount ja = new JointAccount();
+
 	DecimalFormat df = new DecimalFormat("#0.00");
 	String source;
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
-	JointAccountDao jointAccountDao = new JointAccountDao();
+
 	
 	
-	public void withdrawl(int customerId) {
+	public void withdrawl(int customerId, Connection connection) {
 		
-		double checkingBalance = checkingAccountDao.getBalance(customerId);
-		double savingsBalance = savingsAccountDao.getBalance(customerId);
-		double jointBalance = jointAccountDao.getBalance(customerId);
+		CheckingAccountDao checkingAccountDao = new CheckingAccountDao(connection);
+		SavingsAccountDao savingsAccountDao = new SavingsAccountDao(connection);
+		JointAccountDao jointAccountDao = new JointAccountDao(connection);
+		
+		CheckingAccount ca = checkingAccountDao.getCheckingAccountById(customerId);
+		SavingsAccount sa = savingsAccountDao.getSavingsAccountById(customerId);
+		JointAccount ja = jointAccountDao.getJointAccountById(customerId);
+		
+		if(ca == null) {
+			ca = new CheckingAccount();
+			ca.setBalance(0.00);
+			ca.setStatus(0);
+			
+		}
+		
+		if(sa == null) {
+			sa = new SavingsAccount();
+			sa.setBalance(0.00);
+			sa.setStatus(0);
+		}
+		
+		if(ja == null) {
+			ja = new JointAccount();
+			ja.setBalance(0.00);
+			ja.setStatus(0);
+		}
+		
+		double checkingBalance = ca.getBalance();
+		double savingsBalance = sa.getBalance();
+		double jointBalance = ja.getBalance();
 		
     	
-    	String checkingAccountStatus = String.valueOf(checkingAccountDao.getStatus(customerId));
-    	String savingsAccountStatus = String.valueOf(savingsAccountDao.getStatus(customerId));
-    	String jointAccountStatus = String.valueOf(jointAccountDao.getStatus(customerId));
+    	String checkingAccountStatus = String.valueOf(ca.getStatus());
+    	String savingsAccountStatus = String.valueOf(sa.getStatus());
+    	String jointAccountStatus = String.valueOf(ja.getStatus());
     	
     	System.out.println("Which account would you like to withdrawl from?\n");
     	if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -260,18 +284,15 @@ public class WithdrawlDialogue {
 
     	
     	if(source.equals("Checking")) {
-    		ca.withdrawl(customerId, amount);
-    		double newBalance = checkingAccountDao.getBalance(customerId);
+    		double newBalance = ca.withdrawl(customerId, amount);
     		System.out.println("\n$" + df.format(amount) + " withdrawn from checking account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
     	} else if(source.equals("Savings")) {
-    		sa.withdrawl(customerId, amount);
-    		double newBalance = savingsAccountDao.getBalance(customerId);
+    		double newBalance = sa.withdrawl(customerId, amount);
     		System.out.println("\n$" + df.format(amount) + " withdrawn from savings account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
     	} else if(source.equals("Joint")) {
-    		ja.withdrawl(customerId, amount);
-    		double newBalance = jointAccountDao.getBalance(customerId);
+    		double newBalance = ja.withdrawl(customerId, amount);
     		System.out.println("\n$" + df.format(amount) + " withdrawn from joint account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
     	}

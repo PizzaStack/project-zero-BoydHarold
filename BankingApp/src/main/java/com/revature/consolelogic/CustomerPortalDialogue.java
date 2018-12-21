@@ -1,11 +1,15 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
 import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
+import com.revature.dao.CheckingAccountDao;
+import com.revature.dao.JointAccountDao;
+import com.revature.dao.SavingsAccountDao;
 
 public class CustomerPortalDialogue {
 	CheckingAccount ca = new CheckingAccount();
@@ -18,10 +22,33 @@ public class CustomerPortalDialogue {
 	DecimalFormat df = new DecimalFormat("#0.00");
 	Scanner sc = new Scanner(System.in);
 	
-	public void customerOptions(int customerId) {
-    	String checkingAccountStatus = ca.getAccountStatus(customerId);
-    	String savingsAccountStatus = sa.getAccountStatus(customerId);
-    	String jointAccountStatus = ja.getAccountStatus(ja.getPosition(customerId));
+	public void customerOptions(int customerId, Connection connection) {
+		CheckingAccountDao checkingAccountDao = new CheckingAccountDao(connection);
+		SavingsAccountDao savingsAccountDao = new SavingsAccountDao(connection);
+		JointAccountDao jointAccountDao = new JointAccountDao(connection);
+		
+		ca = checkingAccountDao.getCheckingAccountById(customerId);
+		sa = savingsAccountDao.getSavingsAccountById(customerId);
+		ja = jointAccountDao.getJointAccountById(customerId);
+		
+		if(ca == null) {
+			ca = new CheckingAccount();
+			ca.setStatus(0);
+		}
+		
+		if(sa == null) {
+			sa = new SavingsAccount();
+			sa.setStatus(0);
+		}
+		
+		if(ja == null) {
+			ja = new JointAccount();
+			ja.setStatus(0);
+		}
+		
+    	String checkingAccountStatus = String.valueOf(ca.getStatus());
+    	String savingsAccountStatus = String.valueOf(sa.getStatus());
+    	String jointAccountStatus = String.valueOf(ja.getStatus());
     	int numOfAccounts = 0;
     	
     	if(checkingAccountStatus.equals("1")) {
@@ -75,11 +102,11 @@ public class CustomerPortalDialogue {
 					}
 					
 					if(choice.equals("1")) {
-						wd.withdrawl(customerId);
+						wd.withdrawl(customerId, connection);
 					} else if(choice.equals("2")) {
-						dd.deposit(customerId);
+						dd.deposit(customerId, connection);
 					} else if(choice.equals("3")) {
-						td.transfer(customerId);
+						td.transfer(customerId, connection);
 					}
 					
 					} else {
@@ -98,13 +125,13 @@ public class CustomerPortalDialogue {
 						}
 						
 						if(choice.equals("1")) {
-							wd.withdrawl(customerId);
+							wd.withdrawl(customerId, connection);
 						} else if(choice.equals("2")) {
-							dd.deposit(customerId);
+							dd.deposit(customerId, connection);
 						}
 					}
 				} else {
-					afad.apply(customerId);
+					afad.apply(customerId, connection);
 				}
 			
 		} else {
@@ -121,7 +148,7 @@ public class CustomerPortalDialogue {
 				}
 			}
 			
-			afad.apply(customerId);
+			afad.apply(customerId, connection);
 		}
 		
 		

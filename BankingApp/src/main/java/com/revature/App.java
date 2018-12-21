@@ -1,37 +1,18 @@
 package com.revature;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.sql.Connection;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
+import java.text.DecimalFormat;
 import com.revature.consolelogic.AdministratorDialogue;
 import com.revature.consolelogic.ApplyForAccountDialogue;
 import com.revature.consolelogic.CustomerDialogue;
 import com.revature.consolelogic.CustomerPortalDialogue;
 import com.revature.consolelogic.DepositDialogue;
 import com.revature.consolelogic.EmployeeDialogue;
-import com.revature.consolelogic.Initialize;
 import com.revature.consolelogic.LoginDialogue;
 import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
 import com.revature.consolelogic.WithdrawlDialogue;
-import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CustomerDao;
-import com.revature.dao.CustomerDao;
-import com.revature.dao.JointAccountDao;
-import com.revature.dao.JointAccountDao;
-import com.revature.dao.SavingsAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
-import com.revature.dao.SavingsAccountDao;
 
 
 /**
@@ -46,18 +27,41 @@ public class App
        	CustomerDialogue cd = new CustomerDialogue();
        	EmployeeDialogue ed = new EmployeeDialogue();
        	AdministratorDialogue ad = new AdministratorDialogue();
-
+       	RegistrationDialogue rd = new RegistrationDialogue();
+       	Approval approval = new Approval();
        	
-
-       	
-       	
+       	CustomerRegistration cr = new CustomerRegistration();
+       	EmployeeRegistration er = new EmployeeRegistration();
+       	AdminRegistration ar = new AdminRegistration();
+       	CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+       	WithdrawlDialogue wd = new WithdrawlDialogue();
+       	DepositDialogue dd = new DepositDialogue();
+       	TransferDialogue td = new TransferDialogue();
+       	ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+       	LoginDialogue ld = new LoginDialogue();
+       	Login login = new Login();
+ 
        	
 		EstablishConnection establishConnection = new EstablishConnection();
- 
 		
+		cpd.customerOptions(1, establishConnection.establishConnection());
+//		cd.addNewCustomer(establishConnection.establishConnection());
+//		approval.approve(3, "1", establishConnection.establishConnection());
+//		approval.deny(3, "2", establishConnection.establishConnection());
+//		ld.login(establishConnection.establishConnection());
+//		approval.listPendingSavings(establishConnection.establishConnection());
+//		rd.register(establishConnection.establishConnection());
+		
+//		ar.registerUser("3", "frankie", "PLOK1plok2", establishConnection.establishConnection());
+//		er.registerUser("2", "frankie", "hotsauce", establishConnection.establishConnection());
+//		cr.registerUser("2", "johnson", "PLOK1plok1", establishConnection.establishConnection());
+//		wd.withdrawl(1, establishConnection.establishConnection());
+//		td.transfer(1, establishConnection.establishConnection());
+//		dd.deposit(1, establishConnection.establishConnection());
+//		afad.apply(4, establishConnection.establishConnection());
 //    	cd.addNewCustomer(establishConnection.establishConnection());
 //     	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
-
+//		ad.addNewAdministrator(establishConnection.establishConnection());
    
 //     	ed.addNewEmployee(establishConnection.establishConnection());
 //     	ed.displayEmployee(establishConnection.establishConnection());
@@ -65,7 +69,7 @@ public class App
 //		ad.addNewAdministrator(establishConnection.establishConnection());
 //		ad.displayAdministrator(establishConnection.establishConnection());
      	
-     	cd.displayCustomer(establishConnection.establishConnection());
+//     	cd.displayCustomer(establishConnection.establishConnection());
 
      	establishConnection.closeConnection();
      	

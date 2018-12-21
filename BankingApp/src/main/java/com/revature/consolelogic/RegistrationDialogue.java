@@ -1,12 +1,21 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.revature.AdminRegistration;
+import com.revature.Administrator;
+import com.revature.Customer;
 import com.revature.CustomerRegistration;
+import com.revature.Employee;
 import com.revature.EmployeeRegistration;
 import com.revature.dao.AdminRegistrationDao;
+import com.revature.dao.AdministratorDao;
+import com.revature.dao.CustomerDao;
 import com.revature.dao.CustomerRegistrationDao;
+import com.revature.dao.EmployeeDao;
 import com.revature.dao.EmployeeRegistrationDao;
 
 public class RegistrationDialogue {
@@ -18,7 +27,7 @@ public class RegistrationDialogue {
 	String username;
 	String password;
 	
-	public void register() {
+	public void register(Connection connection) {
 		System.out.println("\nWhich type of account would you like to Register?\n");
 		System.out.println("1. Customer");
 		System.out.println("2. Employee");
@@ -60,9 +69,9 @@ public class RegistrationDialogue {
 		}
 		
 		
-		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
-		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
-		AdminRegistrationDao adminRegistrationDao = new AdminRegistrationDao();
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
+		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao(connection);
+		AdminRegistrationDao adminRegistrationDao = new AdminRegistrationDao(connection);
 		
 		boolean hasCustomerAccount = false;;
 		boolean hasEmployeeAccount = false;
@@ -77,32 +86,77 @@ public class RegistrationDialogue {
 		
 		
 		if(accountType.equals("1")) {
-			hasCustomerAccount = customerRegistrationDao.getUserAlreadyHasAccount(Integer.parseInt(id));
+			
+			List<CustomerRegistration> customerUsers = customerRegistrationDao.getAllCustomerUsers();
+			
+			for(CustomerRegistration customerUser : customerUsers) {
+				if(customerUser.getCustomerId() == Integer.parseInt(id)) {
+					hasCustomerAccount = true;
+				}
+			}
+			
+			CustomerDao customerDao = new CustomerDao(connection);
+			Customer customer = customerDao.getCustomerById(Integer.parseInt(id));
+			
+			if(customer != null) {
+				customerOnboarded = true;
+			}
+			
 			if(hasCustomerAccount == false) {
 				validEntry = true;
 			}
 			
-			customerOnboarded = customerRegistrationDao.getCustomerById(Integer.parseInt(id));
 			if(customerOnboarded == true) {
 				validEntry2 = true;
 			}
 		} else if(accountType.equals("2")) {
-			hasEmployeeAccount = employeeRegistrationDao.getUserAlreadyHasAccount(Integer.parseInt(id));
+
+			List<EmployeeRegistration> employeeUsers = employeeRegistrationDao.getAllEmployeeUsers();
+			
+			for(EmployeeRegistration employeeUser : employeeUsers) {
+				if(employeeUser.getEmployeeId() == Integer.parseInt(id)) {
+					hasEmployeeAccount = true;
+				}
+			}
+			
+			EmployeeDao employeeDao = new EmployeeDao(connection);
+			Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
+			
+			if(employee != null) {
+				employeeOnboarded = true;
+			}
+			
+			
 			if(hasEmployeeAccount == false) {
 				validEntry = true;
 			}
 			
-			employeeOnboarded = employeeRegistrationDao.getEmployeeById(Integer.parseInt(id));
 			if(employeeOnboarded == true) {
 				validEntry2 = true;
 			}
 		} else if(accountType.equals("3")) {
-			hasAdministratorAccount = adminRegistrationDao.getUserAlreadyHasAccount(Integer.parseInt(id));
+
+			List<AdminRegistration> administratorUsers = adminRegistrationDao.getAllAdministratorUsers();
+			
+			for(AdminRegistration administratorUser : administratorUsers) {
+				if(administratorUser.getAdministratorId() == Integer.parseInt(id)) {
+					hasAdministratorAccount = true;
+				}
+			}
+			
+			
+			AdministratorDao administratorDao = new AdministratorDao(connection);
+			Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
+			
+			if(administrator != null) {
+				administratorOnboarded = true;
+			}
+			
+			
 			if(hasAdministratorAccount == false) {
 				validEntry = true;
 			}
 			
-			administratorOnboarded = adminRegistrationDao.getAdminById(Integer.parseInt(id));
 			if(administratorOnboarded == true) {
 				validEntry2 = true;
 			}
@@ -148,19 +202,37 @@ public class RegistrationDialogue {
 		validEntry = false;
 		
 		if(accountType.equals("1")) {
-			customerUsernameExists = customerRegistrationDao.getUserExists(username);
+			
+			CustomerRegistration customerUser = customerRegistrationDao.getCustomerUserByUsername(username);
+			
+			if(customerUser != null) {
+				customerUsernameExists = true;
+			}
+			
 			if(customerUsernameExists == false) {
 				validEntry = true;
 			}
 			
 		} else if(accountType.equals("2")) {
-			employeeUsernameExists = employeeRegistrationDao.getUserExists(username);
+
+			EmployeeRegistration employeeUser = employeeRegistrationDao.getEmployeeUserByUsername(username);
+			
+			if(employeeUser != null) {
+				employeeUsernameExists = true;
+			}
+			
 			if(employeeUsernameExists == false) {
 				validEntry = true;
 			}
 
 		} else if(accountType.equals("3")) {
-			adminUsernameExists = adminRegistrationDao.getUserExists(username);
+
+			AdminRegistration administratorUser = adminRegistrationDao.getAdministratorUserByUsername(username);
+			
+			if(administratorUser != null) {
+				adminUsernameExists = true;
+			}
+			
 			if(adminUsernameExists == false) {
 				validEntry = true;
 			}
@@ -186,19 +258,34 @@ public class RegistrationDialogue {
 			}
 			
 			if(accountType.equals("1")) {
-				customerUsernameExists = customerRegistrationDao.getUserExists(username);
+				CustomerRegistration customerUser = customerRegistrationDao.getCustomerUserByUsername(username);
+				
+				if(customerUser != null) {
+					customerUsernameExists = true;
+				}
+				
 				if(customerUsernameExists == false) {
 					validEntry = true;
 				}
 				
 			} else if(accountType.equals("2")) {
-				employeeUsernameExists = employeeRegistrationDao.getUserExists(username);
+				EmployeeRegistration employeeUser = employeeRegistrationDao.getEmployeeUserByUsername(username);
+				
+				if(employeeUser != null) {
+					employeeUsernameExists = true;
+				}
+				
 				if(employeeUsernameExists == false) {
 					validEntry = true;
 				}
 
 			} else if(accountType.equals("3")) {
-				adminUsernameExists = adminRegistrationDao.getUserExists(username);
+				AdminRegistration administratorUser = adminRegistrationDao.getAdministratorUserByUsername(username);
+				
+				if(administratorUser != null) {
+					adminUsernameExists = true;
+				}
+				
 				if(adminUsernameExists == false) {
 					validEntry = true;
 				}
@@ -252,11 +339,29 @@ public class RegistrationDialogue {
 		
 		
 		if(accountType.equals("1")) {
-			customerRegistrationDao.addUser(id, username, password);
+			CustomerRegistration customerUser = new CustomerRegistration();
+			customerUser.setCustomerId(Integer.parseInt(id));
+			customerUser.setUsername(username);
+			customerUser.setPassword(password);
+			customerUser.setStatus(1);
+			
+			customerRegistrationDao.addCustomerUser(customerUser);
 		} else if(accountType.equals("2")) {
-			employeeRegistrationDao.addUser(id, username, password);
+			EmployeeRegistration employeeUser = new EmployeeRegistration();
+			employeeUser.setEmployeeId(Integer.parseInt(id));
+			employeeUser.setUsername(username);
+			employeeUser.setPassword(password);
+			employeeUser.setStatus(1);
+			
+			employeeRegistrationDao.addEmployeeUser(employeeUser);
 		} else if(accountType.equals("3")) {
-			adminRegistrationDao.addUser(id, username, password);
+			AdminRegistration administratorUser = new AdminRegistration();
+			administratorUser.setAdministratorId(Integer.parseInt(id));
+			administratorUser.setUsername(username);
+			administratorUser.setPassword(password);
+			administratorUser.setStatus(1);
+			
+			adminRegistrationDao.addAdministratorUser(administratorUser);
 		}
 		
 		System.out.println("Account created successfully!");

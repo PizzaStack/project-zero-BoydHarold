@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.revature.CheckingAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.SavingsAccountDao;
 import com.revature.dao.SavingsAccountDao;
@@ -68,6 +69,20 @@ public class SavingsAccountDao{
 			preUpdateSavingsAccount.setDouble(3, savingsAccount.getBalance());
 			preUpdateSavingsAccount.setInt(4, savingsAccount.getCustomerId());
 			preUpdateSavingsAccount.executeUpdate();
+
+		} catch (SQLException e) {
+			
+		}
+	}
+	
+	public void addSavingsAccount(SavingsAccount savingsAccount) {
+		try {
+			PreparedStatement preAddSavingsAccount = connection.prepareStatement("INSERT INTO SavingsAccount (CustomerId, Status, ApprovalStatus, Balance) VALUES (?,?,?,?);");
+			preAddSavingsAccount.setInt(1, savingsAccount.getCustomerId());
+			preAddSavingsAccount.setInt(2, savingsAccount.getStatus());
+			preAddSavingsAccount.setString(3, savingsAccount.getApprovalStatus());
+			preAddSavingsAccount.setDouble(4, savingsAccount.getBalance());
+			preAddSavingsAccount.executeUpdate();
 
 		} catch (SQLException e) {
 			
