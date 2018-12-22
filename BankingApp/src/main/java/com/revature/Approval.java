@@ -137,17 +137,26 @@ public class Approval {
 		String approvalStatus = "u";
 
 		ApprovalDao approvalDao = new ApprovalDao(connection);
-
-
-
 		
 		Approval checkingAccountChosen = new Approval();
 		Approval savingsAccountChosen = new Approval();
 		Approval jointAccountChosen = new Approval();
 		
+		int pendingCount = 0;
+		List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+		List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+		List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
+
 		
-		if(accountType.equals("1")) {
-			List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+		if(accountType.equals("1")) {	
+			for(Approval checkingAccount : checkingAccounts) {
+				if(checkingAccount.getApprovalStatus().equals("p")) {
+					pendingCount++;
+				}
+			}
+
+			if(pendingCount>0) {
+			
 			for(Approval checkingAccount : checkingAccounts) {
 				if(checkingAccount.getCustomerId() == customerId) {
 					checkingAccountChosen.setCustomerId(checkingAccount.getCustomerId());
@@ -156,10 +165,19 @@ public class Approval {
 					checkingAccountChosen.setStatus(checkingAccount.getStatus());
 					checkingAccountChosen.setApprovalStatus(checkingAccount.getApprovalStatus());
 				}
+				
 			}
+
 			approvalStatus = checkingAccountChosen.getApprovalStatus();
+			}
 		} else if(accountType.equals("2")) {
-			List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+			for(Approval savingsAccount : savingsAccounts) {
+				if(savingsAccount.getApprovalStatus().equals("p")) {
+					pendingCount++;
+				}
+			}
+			
+			if(pendingCount>0) {
 			for(Approval savingsAccount : savingsAccounts) {
 				if(savingsAccount.getCustomerId() == customerId) {
 					savingsAccountChosen.setCustomerId(savingsAccount.getCustomerId());
@@ -168,10 +186,19 @@ public class Approval {
 					savingsAccountChosen.setStatus(savingsAccount.getStatus());
 					savingsAccountChosen.setApprovalStatus(savingsAccount.getApprovalStatus());
 				}
+				
 			}
 			approvalStatus = savingsAccountChosen.getApprovalStatus();
+			}
 		} else if(accountType.equals("3")) {
-			List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
+
+			for(Approval jointAccount : jointAccounts) {
+				if(jointAccount.getApprovalStatus().equals("p")) {
+					pendingCount++;
+				}
+			}
+			
+			if(pendingCount>0) {
 			for(Approval jointAccount : jointAccounts) {
 				if(jointAccount.getCustomerId() == customerId) {
 					jointAccountChosen.setCustomerId(jointAccount.getCustomerId());
@@ -182,8 +209,11 @@ public class Approval {
 					jointAccountChosen.setStatus(jointAccount.getStatus());
 					jointAccountChosen.setApprovalStatus(jointAccount.getApprovalStatus());
 				}
+				
 			}
+			
 			approvalStatus = jointAccountChosen.getApprovalStatus();
+			}
 		}
 		
 		
@@ -208,6 +238,8 @@ public class Approval {
 		} else {
 			System.out.println("Approval not pending for customer!");
 		}
+		
+		
 	}
 	
 	public void deny(int customerId, String accountType, Connection connection) {
@@ -222,10 +254,19 @@ public class Approval {
 		Approval savingsAccountChosen = new Approval();
 		Approval jointAccountChosen = new Approval();
 		
-
+		int pendingCount = 0;
+		List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+		List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+		List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
 		
 		if(accountType.equals("1")) {
-			List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
+			for(Approval checkingAccount : checkingAccounts) {
+				if(checkingAccount.getApprovalStatus().equals("p")) {
+					pendingCount++;
+				}
+			}
+
+			if(pendingCount>0) {
 			for(Approval checkingAccount : checkingAccounts) {
 				if(checkingAccount.getCustomerId() == customerId) {
 					checkingAccountChosen.setCustomerId(checkingAccount.getCustomerId());
@@ -236,8 +277,15 @@ public class Approval {
 				}
 			}
 			approvalStatus = checkingAccountChosen.getApprovalStatus();
+			}
 		} else if(accountType.equals("2")) {
-			List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
+			for(Approval savingsAccount : savingsAccounts) {
+				if(savingsAccount.getApprovalStatus().equals("p")) {
+					pendingCount++;
+				}
+			}
+			
+			if(pendingCount>0) {
 			for(Approval savingsAccount : savingsAccounts) {
 				if(savingsAccount.getCustomerId() == customerId) {
 					savingsAccountChosen.setCustomerId(savingsAccount.getCustomerId());
@@ -248,10 +296,17 @@ public class Approval {
 				}
 			}
 			approvalStatus = savingsAccountChosen.getApprovalStatus();
+			}
 		} else if(accountType.equals("3")) {
-			List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
 			for(Approval jointAccount : jointAccounts) {
-				if(jointAccount.getCustomerId() == customerId) {
+				if(jointAccount.getApprovalStatus().equals("p")) {
+					pendingCount++;
+				}
+			}
+			
+			if(pendingCount>0) {
+			for(Approval jointAccount : jointAccounts) {
+				if(jointAccount.getCustomerId() == customerId || jointAccount.getCustomerId2() == customerId) {
 					jointAccountChosen.setCustomerId(jointAccount.getCustomerId());
 					jointAccountChosen.setFirstName(jointAccount.getFirstName());
 					jointAccountChosen.setLastName(jointAccount.getLastName());
@@ -262,6 +317,7 @@ public class Approval {
 				}
 			}
 			approvalStatus = jointAccountChosen.getApprovalStatus();
+			}
 		}
 		
 

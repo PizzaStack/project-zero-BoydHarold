@@ -8,10 +8,7 @@ import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.JointAccountDao;
-import com.revature.dao.JointAccountDao;
-import com.revature.dao.SavingsAccountDao;
 import com.revature.dao.SavingsAccountDao;
 
 public class WithdrawlDialogue {
@@ -71,6 +68,37 @@ public class WithdrawlDialogue {
         	System.out.println("\n1. Checking");
         	System.out.println("2. Savings");
         	System.out.println("3. Joint");
+        	System.out.println("4. Back");
+        	source = sc.nextLine();
+        	
+        	while(validEntry == false) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3") || source.equals("4")) {
+            		validEntry = true;
+            	} else {
+            		validEntry = false;
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, 3, or 4.");
+            		source = sc.nextLine();
+            	}
+            	}
+        	
+        	if(source.equals("1")) {
+        		source = "Checking";
+        	} else if(source.equals("2")) {
+        		source = "Savings";
+        	} else if(source.equals("3")) {
+        		source = "Joint";
+        	} else if(source.equals("4")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
+        	}
+        	
+    	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
+    		System.out.println("Current Balances:");
+    		System.out.println("Checking Balance: $" + df.format(checkingBalance));
+    		System.out.println("Savings Balance: $" + df.format(savingsBalance));
+        	System.out.println("\n1. Checking");
+        	System.out.println("2. Savings");
+        	System.out.println("3. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
@@ -88,31 +116,8 @@ public class WithdrawlDialogue {
         	} else if(source.equals("2")) {
         		source = "Savings";
         	} else if(source.equals("3")) {
-        		source = "Joint";
-        	}
-        	
-    	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
-    		System.out.println("Current Balances:");
-    		System.out.println("Checking Balance: $" + df.format(checkingBalance));
-    		System.out.println("Savings Balance: $" + df.format(savingsBalance));
-        	System.out.println("\n1. Checking");
-        	System.out.println("2. Savings");
-        	source = sc.nextLine();
-        	
-        	while(validEntry == false) {
-            	if(source.equals("1") || source.equals("2")) {
-            		validEntry = true;
-            	} else {
-            		validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
-            		source = sc.nextLine();
-            	}
-            	}
-        	
-        	if(source.equals("1")) {
-        		source = "Checking";
-        	} else if(source.equals("2")) {
-        		source = "Savings";
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
         	
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
@@ -121,14 +126,15 @@ public class WithdrawlDialogue {
     		System.out.println("Joint Balance: $" + df.format(jointBalance));
         	System.out.println("\n1. Checking");
         	System.out.println("2. Joint");
+        	System.out.println("3. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1") || source.equals("2")) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
             		source = sc.nextLine();
             	}
             	}
@@ -137,6 +143,9 @@ public class WithdrawlDialogue {
         		source = "Checking";
         	} else if(source.equals("2")) {
         		source = "Joint";
+        	} else if(source.equals("3")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
         	
     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -145,6 +154,34 @@ public class WithdrawlDialogue {
     		System.out.println("Joint Balance: $" + df.format(jointBalance));
         	System.out.println("\n1. Savings");
         	System.out.println("2. Joint");
+        	System.out.println("3. Back");
+        	source = sc.nextLine();
+        	
+        	while(validEntry == false) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3")) {
+            		validEntry = true;
+            	} else {
+            		validEntry = false;
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
+            		source = sc.nextLine();
+            	}
+    
+     	} 
+        	
+        	if(source.equals("1")) {
+        		source = "Savings";
+        	} else if(source.equals("2")) {
+        		source = "Joint";
+        	} else if(source.equals("3")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
+        	}
+    		
+     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
+     		System.out.println("Current Balances:");
+    		System.out.println("Joint Balance: $" + df.format(jointBalance));
+        	System.out.println("\n1. Joint");
+        	System.out.println("2. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
@@ -159,62 +196,47 @@ public class WithdrawlDialogue {
      	} 
         	
         	if(source.equals("1")) {
-        		source = "Savings";
+        		source = "Joint";
         	} else if(source.equals("2")) {
-        		source = "Joint";
-        	}
-    		
-     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
-     		System.out.println("Current Balances:");
-    		System.out.println("Joint Balance: $" + df.format(jointBalance));
-        	System.out.println("\n1. Joint");
-        	source = sc.nextLine();
-        	
-        	while(validEntry == false) {
-            	if(source.equals("1")) {
-            		validEntry = true;
-            	} else {
-            		validEntry = false;
-            		System.out.println("Invalid entry. Please enter the following value: 1.");
-            		source = sc.nextLine();
-            	}
-    
-     	} 
-        	
-        	if(source.equals("1")) {
-        		source = "Joint";
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
      	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
      		System.out.println("Current Balances:");
     		System.out.println("Savings Balance: $" + df.format(jointBalance));
         	System.out.println("\n1. Savings");
+        	System.out.println("2. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1")) {
+            	if(source.equals("1") || source.equals("2")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter the following value: 1.");
+            		System.out.println("Invalid entry. Please enter one of the following values: 1 or 2.");
             		source = sc.nextLine();
             	}
         	}
         	
         	if(source.equals("1")) {
         		source = "Savings";
+        	} else if(source.equals("2")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
      	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("0")) {
      		System.out.println("Current Balances:");
     		System.out.println("Checking Balance: $" + df.format(jointBalance));
         	System.out.println("\n1. Checking");
+        	System.out.println("2. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1")) {
+            	if(source.equals("1") || source.equals("2")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter the following value: 1.");
+            		System.out.println("Invalid entry. Please enter one of the following values: 1 or 2.");
             		source = sc.nextLine();
             	}
             	
@@ -222,6 +244,9 @@ public class WithdrawlDialogue {
         	
         	if(source.equals("1")) {
         		source = "Checking";
+        	} else if(source.equals("2")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
      	}
     	

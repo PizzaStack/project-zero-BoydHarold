@@ -19,17 +19,18 @@ public class ApplyForAccountDialogue {
 		System.out.println("\n1. Checking");
 		System.out.println("2. Savings");
 		System.out.println("3. Joint");
+		System.out.println("4. Back");
 		
 		String choice = sc.nextLine();
 		
 		boolean validEntry = false;
 		
 		while(validEntry == false) {
-			if(choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4")) {
 				validEntry = true;
 			} else {
 				validEntry = false;
-				System.out.println("Invalid entry! Please enter in either 1, 2, or 3.");
+				System.out.println("Invalid entry! Please enter in either 1, 2, 3, or 4.");
 				choice = sc.nextLine();
 			}
 		}
@@ -54,6 +55,9 @@ public class ApplyForAccountDialogue {
 			}
 
 			ja.applyForAccount(customerId, Integer.parseInt(customerId2), connection);
+		} else if(choice.equals("4")) {
+			CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+			cpd.customerOptions(customerId, connection);
 		}
 	}
 	

@@ -3,12 +3,14 @@ package com.revature;
 
 import java.text.DecimalFormat;
 import com.revature.consolelogic.AdministratorDialogue;
+import com.revature.consolelogic.AdministratorPortalDialogue;
 import com.revature.consolelogic.ApplyForAccountDialogue;
 import com.revature.consolelogic.CustomerDialogue;
 import com.revature.consolelogic.CustomerPortalDialogue;
 import com.revature.consolelogic.DepositDialogue;
 import com.revature.consolelogic.EmployeeDialogue;
 import com.revature.consolelogic.EmployeePortalDialogue;
+import com.revature.consolelogic.Initialize;
 import com.revature.consolelogic.LoginDialogue;
 import com.revature.consolelogic.RegistrationDialogue;
 import com.revature.consolelogic.TransferDialogue;
@@ -31,7 +33,7 @@ public class App
        	AdministratorDialogue ad = new AdministratorDialogue();
        	RegistrationDialogue rd = new RegistrationDialogue();
        	Approval approval = new Approval();
-       	
+       	Initialize init = new Initialize();
        	CustomerRegistration cr = new CustomerRegistration();
        	EmployeeRegistration er = new EmployeeRegistration();
        	AdminRegistration ar = new AdminRegistration();
@@ -43,22 +45,24 @@ public class App
        	LoginDialogue ld = new LoginDialogue();
        	Login login = new Login();
  
-       	
+
 		EstablishConnection establishConnection = new EstablishConnection();
 		
+		init.init(establishConnection.establishConnection());
+//		ld.login(establishConnection.establishConnection());
+//		EmployeePortalDialogue epd = new EmployeePortalDialogue();
+//		AdministratorPortalDialogue apd = new AdministratorPortalDialogue();
 		
-		EmployeePortalDialogue epd = new EmployeePortalDialogue();
+//		epd.employeeOptions(establishConnection.establishConnection());
 		
-		
-		epd.employeeOptions(establishConnection.establishConnection());
-		
+//		apd.administratorOptions(establishConnection.establishConnection());
 //		AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao(establishConnection.establishConnection());
 //		ar.registerUser("1", "admin", "PLOK1plok1", establishConnection.establishConnection());
 //		cpd.customerOptions(1, establishConnection.establishConnection());
 //		cd.addNewCustomer(establishConnection.establishConnection());
 //		approval.approve(3, "1", establishConnection.establishConnection());
 //		approval.deny(3, "2", establishConnection.establishConnection());
-//		ld.login(establishConnection.establishConnection());
+		ld.login(establishConnection.establishConnection());
 //		approval.listPendingSavings(establishConnection.establishConnection());
 //		rd.register(establishConnection.establishConnection());
 		

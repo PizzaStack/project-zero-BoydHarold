@@ -69,42 +69,51 @@ public class TransferDialogue {
         	System.out.println("\n1. Checking");
         	System.out.println("2. Savings");
         	System.out.println("3. Joint");
+        	System.out.println("4. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1") || source.equals("2") || source.equals("3")) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3") || source.equals("4")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, 3, or 4.");
             		source = sc.nextLine();
             	}
             	}
         	
         	validEntry = false;
         	
+        	if(source.equals("4")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
+        	}
+        	
         	System.out.println("\nWhich account would you like to transfer to?");
         	if(source.equals("1")) {
             	System.out.println("1. Savings");
             	System.out.println("2. Joint");
+            	System.out.println("3. Back");
             	source = "Checking";
         	} else if(source.equals("2")) {
             	System.out.println("1. Checking");
             	System.out.println("2. Joint");
+            	System.out.println("3. Back");
             	source = "Savings";
         	} else if(source.equals("3")) {
             	System.out.println("1. Checking");
             	System.out.println("2. Savings");
+            	System.out.println("3. Back");
             	source = "Joint";
-        	}
+        	} 
         	destination = sc.nextLine();
         	
         	while(validEntry == false) {
-        		if(destination.equals("1") || destination.equals("2")) {
+        		if(destination.equals("1") || destination.equals("2") || destination.equals("3")) {
         			validEntry = true;
         		} else {
         	    	validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
         	    	destination = sc.nextLine();
         		}
         	}
@@ -121,6 +130,9 @@ public class TransferDialogue {
         		destination = "Checking";
         	} else if(source.equals("Joint") && destination.equals("2")) {
         		destination = "Savings";
+        	} else if(destination.equals("3")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
     		System.out.println("Current Balances:");
@@ -128,14 +140,15 @@ public class TransferDialogue {
     		System.out.println("Savings Balance: $" + df.format(savingsBalance));
         	System.out.println("\n1. Checking");
         	System.out.println("2. Savings");
+        	System.out.println("3. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1") || source.equals("2")) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
             		source = sc.nextLine();
             	}
             	}
@@ -143,22 +156,29 @@ public class TransferDialogue {
         	
         	validEntry = false;
         	
+        	if(source.equals("3")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
+        	}
+        	
         	System.out.println("\nWhich account would you like to transfer to?");
         	if(source.equals("1")) {
             	System.out.println("1. Savings");
+            	System.out.println("2. Back");
             	source = "Checking";
         	} else if(source.equals("2")) {
             	System.out.println("1. Checking");
+            	System.out.println("2. Back");
             	source = "Savings";
-        	} 
+        	}
         	destination = sc.nextLine();
         	
         	while(validEntry == false) {
-        		if(destination.equals("1")) {
+        		if(destination.equals("1") || destination.equals("2")) {
         			validEntry = true;
         		} else {
         	    	validEntry = false;
-            		System.out.println("Invalid entry. Please enter in the following value: 1.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
         	    	destination = sc.nextLine();
         		}
         	}
@@ -167,6 +187,9 @@ public class TransferDialogue {
         		destination = "Savings";
         	} else if(source.equals("Savings") && destination.equals("1")) {
         		destination = "Checking";
+        	} else if(destination.equals("2")){
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
         	
         	
@@ -176,36 +199,44 @@ public class TransferDialogue {
     		System.out.println("Joint Balance: $" + df.format(jointBalance));
         	System.out.println("\n1. Checking");
         	System.out.println("2. Joint");
+        	System.out.println("3. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1") || source.equals("2")) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
             		source = sc.nextLine();
             	}
             	}
         	
         	validEntry = false;
         	
+        	if(source.equals("3")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
+        	}
+        	
         	System.out.println("\nWhich account would you like to transfer to?");
         	if(source.equals("1")) {
             	System.out.println("1. Joint");
+            	System.out.println("2. Back");
             	source = "Checking";
         	} else if(source.equals("2")) {
             	System.out.println("1. Checking");
+            	System.out.println("2. Back");
             	source = "Joint";
         	}
         	destination = sc.nextLine();
         	
         	while(validEntry == false) {
-        		if(destination.equals("1")) {
+        		if(destination.equals("1") || destination.equals("2")) {
         			validEntry = true;
         		} else {
         	    	validEntry = false;
-            		System.out.println("Invalid entry. Please enter in the following value: 1.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
         	    	destination = sc.nextLine();
         		}
         	}
@@ -214,6 +245,9 @@ public class TransferDialogue {
         		destination = "Joint";
         	} else if(source.equals("Joint") && destination.equals("1")) {
         		destination = "Checking";
+        	} else if(source.equals("2")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
         	
     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -222,36 +256,44 @@ public class TransferDialogue {
     		System.out.println("Joint Balance: $" + df.format(jointBalance));
         	System.out.println("\n1. Savings");
         	System.out.println("2. Joint");
+        	System.out.println("3. Back");
         	source = sc.nextLine();
         	
         	while(validEntry == false) {
-            	if(source.equals("1") || source.equals("2")) {
+            	if(source.equals("1") || source.equals("2") || source.equals("3")) {
             		validEntry = true;
             	} else {
             		validEntry = false;
-            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1, 2, or 3.");
             		source = sc.nextLine();
             	}
             	}
         	
         	validEntry = false;
         	
+        	if(source.equals("3")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
+        	}
+        	
         	System.out.println("\nWhich account would you like to transfer to?");
         	if(source.equals("1")) {
             	System.out.println("1. Joint");
+            	System.out.println("2. Back");
             	source = "Savings";
         	} else if(source.equals("2")) {
             	System.out.println("1. Savings");
+            	System.out.println("2. Back");
             	source = "Joint";
         	}
         	destination = sc.nextLine();
         	
         	while(validEntry == false) {
-        		if(destination.equals("1")) {
+        		if(destination.equals("1") || destination.equals("2")) {
         			validEntry = true;
         		} else {
         	    	validEntry = false;
-            		System.out.println("Invalid entry. Please enter in the following value: 1.");
+            		System.out.println("Invalid entry. Please enter in one of the following values: 1 or 2.");
         	    	destination = sc.nextLine();
         		}
         	}
@@ -260,6 +302,9 @@ public class TransferDialogue {
         		destination = "Joint";
         	} else if(source.equals("Joint") && destination.equals("1")) {
         		destination = "Savings";
+        	} else if(destination.equals("2")) {
+        		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+        		cpd.customerOptions(customerId, connection);
         	}
      	}
     	

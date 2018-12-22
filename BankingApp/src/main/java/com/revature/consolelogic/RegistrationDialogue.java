@@ -32,26 +32,38 @@ public class RegistrationDialogue {
 		System.out.println("1. Customer");
 		System.out.println("2. Employee");
 		System.out.println("3. Administrator");
+		System.out.println("4. Back");
 		String accountType = sc.nextLine();
 		
 		boolean validEntry = false;
 		
 		while(validEntry == false) {
-			if(accountType.equals("1") || accountType.equals("2") || accountType.equals("3")) {
+			if(accountType.equals("1") || accountType.equals("2") || accountType.equals("3") || accountType.equals("4")) {
 				validEntry = true;
 			} else {
 				validEntry = false;
-				System.out.println("Invalid entry! Please enter in either 1, 2, or 3!");
+				System.out.println("Invalid entry! Please enter in either 1, 2, 3, or 4!");
 				accountType = sc.nextLine();
 			}
 		}
 		
+		
+		
 		if(accountType.equals("1")) {
+			CustomerDialogue customerDialogue = new CustomerDialogue();
+			customerDialogue.addNewCustomer(connection);
 			System.out.println("\nEnter in your Customer ID:");
 		} else if(accountType.equals("2")) {
+			CustomerDialogue customerDialogue = new CustomerDialogue();
+			customerDialogue.addNewCustomer(connection);
 			System.out.println("\nEnter in your Employye ID:");
 		} else if(accountType.equals("3")) {
+			CustomerDialogue customerDialogue = new CustomerDialogue();
+			customerDialogue.addNewCustomer(connection);
 			System.out.println("\nEnter in your Administrator ID:");
+		} else if(accountType.equals("4")) {
+			LoginDialogue loginDialogue = new LoginDialogue();
+			loginDialogue.login(connection);
 		}
 		
 		String id = sc.nextLine();
@@ -364,7 +376,7 @@ public class RegistrationDialogue {
 			adminRegistrationDao.addAdministratorUser(administratorUser);
 		}
 		
-		System.out.println("Account created successfully!");
+		System.out.println("Account created successfully!\n");
 		
 		}
 		}

@@ -140,6 +140,6 @@ public class EmployeePortalDialogue {
 			}
 		}
 	}
-		System.out.print("\033\143");
+
 	}
 }

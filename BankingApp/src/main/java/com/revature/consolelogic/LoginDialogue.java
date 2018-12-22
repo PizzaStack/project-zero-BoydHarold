@@ -11,46 +11,56 @@ public class LoginDialogue {
 	String username;
 	String password;
 	Login login = new Login();
+	boolean loop = true;
 	
 	public void login(Connection connection) {
+		while(loop) {
 		System.out.println("Welcome to the Bank of Revature!");
 		System.out.println("\nPlease choose what you would like to do today:");
 		System.out.println("\n1. Login");
 		System.out.println("2. Register");
+		System.out.println("3. Close Application");
 		
 		String choice = sc.nextLine();
 		
 		boolean validEntry = false;
 		
 		while(validEntry == false) {
-			if(choice.equals("1") || choice.equals("2")) {
+			if(choice.equals("1") || choice.equals("2") || choice.equals("3")) {
 				validEntry = true;
 			} else {
-				System.out.println("Invalid entry! Please enter in either 1 or 2.");
+				System.out.println("Invalid entry! Please enter in either 1, 2, or 3.");
 				choice = sc.nextLine();
 				validEntry = false;
 			}
 		}
 		
-		if(choice.equals("2")) {
+		if(choice.equals("3")) {
+			System.exit(0);
+		} else if(choice.equals("2")) {
 			rd.register(connection);
 		} else {
 			System.out.println("\nChoose a login type:");
 			System.out.println("1. Customer");
 			System.out.println("2. Employee");		
 			System.out.println("3. Administrator");
+			System.out.println("4. Back");
 			String loginType = sc.nextLine();
 			
 			validEntry = false;
 			
 			while(validEntry == false) {
-				if(loginType.equals("1") || loginType.equals("2") || loginType.equals("3")) {
+				if(loginType.equals("1") || loginType.equals("2") || loginType.equals("3") || loginType.equals("4")) {
 					validEntry = true;
 				} else {
 					validEntry = false;
-					System.out.println("Invalid entry! Please enter either 1, 2, or 3.");
+					System.out.println("Invalid entry! Please enter either 1, 2, 3, or 4.");
 					loginType = sc.nextLine();
 				}
+			}
+			
+			if(loginType.equals("4")) {
+				login(connection);
 			}
 			
 			boolean loginSuccessful = false;
@@ -88,10 +98,20 @@ public class LoginDialogue {
 				}
 			}
 			
-			boolean loginValidated = login.validateCredentials(loginType, username, password, connection);
-			if(loginValidated) {
-				System.out.println("Login successful!");
+			int loginValidated = login.validateCredentials(loginType, username, password, connection);
+			if(loginValidated > 0) {
+				System.out.println("Login successful! Please wait...");
 				loginSuccessful = true;
+				if(loginType.equals("1")) {
+					CustomerPortalDialogue cpd = new CustomerPortalDialogue();
+					cpd.customerOptions(loginValidated, connection);
+				} else if(loginType.equals("2")) {
+					EmployeePortalDialogue epd = new EmployeePortalDialogue();
+					epd.employeeOptions(connection);
+				} else if(loginType.equals("3")) {
+					AdministratorPortalDialogue apd = new AdministratorPortalDialogue();
+					apd.administratorOptions(connection);
+				}
 			} else {
 				System.out.println("Login failed. Try again!");
 				loginSuccessful = false;
@@ -100,5 +120,6 @@ public class LoginDialogue {
 			}
 			
 		}
+	}
 	}
 }

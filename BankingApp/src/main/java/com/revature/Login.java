@@ -8,13 +8,13 @@ import com.revature.dao.CustomerRegistrationDao;
 import com.revature.dao.EmployeeRegistrationDao;
 
 public class Login {
-
+	private int id;
 	
-	public boolean validateCredentials(String accountType, String username, String password, Connection connection) {
+	public int validateCredentials(String accountType, String username, String password, Connection connection) {
 		boolean validatedUsername = false;
 		boolean validatedPassword = false;
 		boolean validatedCredentials = false;
-		
+		id = 0;
 		
 		if(accountType.equals("1")) {
 		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
@@ -38,6 +38,7 @@ public class Login {
 		
 		if(validatedUsername == true && validatedPassword == true) {
 			validatedCredentials = true;
+			id = customerRegistration.getCustomerId();
 		}
 			
 		} else if (accountType.equals("2")) {
@@ -62,6 +63,7 @@ public class Login {
 			
 			if(validatedUsername == true && validatedPassword == true) {
 				validatedCredentials = true;
+				id = employeeRegistration.getEmployeeId();
 			}
 		} else if (accountType.equals("3")) {
 			AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao(connection);
@@ -85,12 +87,13 @@ public class Login {
 			
 			if(validatedUsername == true && validatedPassword == true) {
 				validatedCredentials = true;
+				id = administratorRegistration.getAdministratorId();
 			}
 		}
 		
 	
 		
-		return validatedCredentials;
+		return id;
 	}
 	
 }

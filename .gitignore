@@ -467,3 +467,6 @@ ASALocalRun/
 .localhistory/
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,netbeans,visualstudio,visualstudiocode
+
+# JDBC Connection Info
+JDBCConnectionInfo.txt

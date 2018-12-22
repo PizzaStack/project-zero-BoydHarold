@@ -1,27 +1,37 @@
 package com.revature.consolelogic;
 
+import java.sql.Connection;
+
 import com.revature.AdminRegistration;
 import com.revature.Administrator;
-import com.revature.CheckingAccount;
-import com.revature.Customer;
-import com.revature.CustomerRegistration;
 import com.revature.Employee;
 import com.revature.EmployeeRegistration;
-import com.revature.JointAccount;
-import com.revature.SavingsAccount;
+import com.revature.dao.AdminRegistrationDao;
+import com.revature.dao.AdministratorDao;
+import com.revature.dao.EmployeeDao;
+import com.revature.dao.EmployeeRegistrationDao;
 
 public class Initialize {
-	Customer customer = new Customer();
-	CheckingAccount ca = new CheckingAccount();
-	SavingsAccount sa = new SavingsAccount();
-	JointAccount ja = new JointAccount();
-	Employee employee = new Employee();
-	Administrator administrator = new Administrator();
-	EmployeeRegistration employeeRegistration = new EmployeeRegistration();
-	CustomerRegistration customerRegistration = new CustomerRegistration();
-	AdminRegistration adminRegistration = new AdminRegistration();
 	
-	public void init() {
+	public void init(Connection connection) {
+		LoginDialogue loginDialogue = new LoginDialogue();
+		EmployeeRegistrationDao erd = new EmployeeRegistrationDao(connection);
+		AdminRegistrationDao ard = new AdminRegistrationDao(connection);
+		EmployeeDao employeeDao = new EmployeeDao(connection);
+		AdministratorDao administratorDao = new AdministratorDao(connection);
+		EmployeeRegistration er = new EmployeeRegistration(1,"employee","password",1);
+		AdminRegistration ar = new AdminRegistration(1,"admin","password",1);
+		Employee defaultEmployee = employeeDao.getEmployeeById(1);
+		if(defaultEmployee == null) {
+			Employee employee = new Employee("Default","Default","Default","Default","Default","Default",1);
+			Administrator administrator = new Administrator("Default","Default","Default","Default","Default","Default",1);
+			employeeDao.addEmployee(employee);
+			administratorDao.addAdministrator(administrator);
+			erd.addEmployeeUser(er);
+			ard.addAdministratorUser(ar);
+		}
 
+		loginDialogue.login(connection);
+		
 	}
 }

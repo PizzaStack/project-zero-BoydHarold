@@ -283,7 +283,6 @@ public class CustomerDialogue {
 			checkingAccount.setStatus(0);
 			checkingAccount.setApprovalStatus(null);
 			checkingAccount.setBalance(0.00);
-			System.out.println("DIDNT EXIST");
 		}
 		
 		if(savingsAccount == null) {
@@ -326,7 +325,7 @@ public class CustomerDialogue {
 			checkingAccountStatus = "Active";
 		}
 		
-		if(checkingAccountApprovalStatus == null) {
+		if(checkingAccountApprovalStatus == null || checkingAccountApprovalStatus.equals("u")) {
 			checkingAccountApprovalStatus = "Customer has not applied.";
 		} else if (checkingAccountApprovalStatus.equals("p")) {
 			checkingAccountApprovalStatus = "Customer approval pending.";
@@ -350,7 +349,7 @@ public class CustomerDialogue {
 			savingsAccountStatus = "Active";
 		}
 		
-		if(savingsAccountApprovalStatus == null) {
+		if(savingsAccountApprovalStatus == null || savingsAccountApprovalStatus.equals("u")) {
 			savingsAccountApprovalStatus = "Customer has not applied.";
 		} else if (savingsAccountApprovalStatus.equals("p")) {
 			savingsAccountApprovalStatus = "Customer approval pending.";
@@ -374,7 +373,7 @@ public class CustomerDialogue {
 			jointAccountStatus = "Active";
 		}
 		
-		if(jointAccountApprovalStatus == null) {
+		if(jointAccountApprovalStatus == null || jointAccountApprovalStatus.equals("u")) {
 			jointAccountApprovalStatus = "Customer has not applied.";
 		} else if (jointAccountApprovalStatus.equals("p")) {
 			jointAccountApprovalStatus = "Customer approval pending.";

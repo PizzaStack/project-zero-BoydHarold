@@ -12,7 +12,7 @@ public class AdministrativeFunctionsDao {
 	}
 	
 	public void cancelAccount(int id, String accountType) {
-		if(accountType.equals("Customer")) {
+		if(accountType.equals("1")) {
 			
 		try {
 			PreparedStatement preCancelCustomerAccount = connection.prepareCall("SELECT cancelcustomeraccount(?);");
@@ -21,8 +21,8 @@ public class AdministrativeFunctionsDao {
 		} catch (SQLException e) {
 			
 		}
-		
-		} else if(accountType.equals("Employee")) {
+			System.out.println("Customer account(s) disabled!");
+		} else if(accountType.equals("2")) {
 
 			try {
 				PreparedStatement preCancelEmployeeAccount = connection.prepareCall("SELECT cancelemployeeaccount(?);");
@@ -31,8 +31,8 @@ public class AdministrativeFunctionsDao {
 			} catch (SQLException e) {
 				
 			}
-			
-		} else if(accountType.equals("Administrator")) {
+			System.out.println("Employee account(s) disabled!");
+		} else if(accountType.equals("3")) {
 			
 			try {
 				PreparedStatement preCancelAdministratorAccount = connection.prepareCall("SELECT canceladminaccount(?);");
@@ -41,7 +41,9 @@ public class AdministrativeFunctionsDao {
 			} catch (SQLException e) {
 				
 			}
-			
+			System.out.println("Administrator account(s) disabled!");
 		}
+		
+		
 	}
 }
