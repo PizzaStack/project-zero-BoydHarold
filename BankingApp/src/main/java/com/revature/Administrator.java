@@ -9,8 +9,9 @@ public class Administrator {
 	private String phoneNumber;
 	private int administratorIsActive;
 	private int administratorId;
+	private String approvalStatus;
 			
-	public Administrator(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status) {
+	public Administrator(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status, String approvalStatus) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -18,6 +19,7 @@ public class Administrator {
 		this.emailAddress = emailAddress;
 		this.phoneNumber = phoneNumber;
 		this.administratorIsActive = status;
+		this.approvalStatus = approvalStatus;
 	}
 	
 	public Administrator() {
@@ -88,6 +90,16 @@ public class Administrator {
 			public int getAdministratorId() {
 				return this.administratorId;
 			}
+
+			public String getApprovalStatus() {
+				return approvalStatus;
+			}
+
+			public void setApprovalStatus(String approvalStatus) {
+				this.approvalStatus = approvalStatus;
+			}
+			
+			
 			
 	
 }

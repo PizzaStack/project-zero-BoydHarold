@@ -35,6 +35,7 @@ public class CustomerDialogue {
 	private CheckingAccount ca = new CheckingAccount();
 	private SavingsAccount sa = new SavingsAccount();
 	private JointAccount ja = new JointAccount();
+	private int customerId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	Customer customer = new Customer();
 	EstablishConnection establishConnection = new EstablishConnection();
@@ -42,7 +43,7 @@ public class CustomerDialogue {
 	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
 	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
 	
-	public void addNewCustomer(Connection connection) {
+	public int addNewCustomer(Connection connection) {
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -210,7 +211,7 @@ public class CustomerDialogue {
 
 			CustomerDao customerDao = new CustomerDao(connection);
 			customerDao.addCustomer(customer);
-			int customerId = 0;
+			customerId = 0;
 			
 			for(Customer getCustomer : customerDao.getAllCustomers()) {
 				if(firstName.equals(getCustomer.getCustomerFirstName()) 
@@ -234,6 +235,7 @@ public class CustomerDialogue {
 		
 		}
 
+		return customerId;
 	}
 
 	public boolean isNumeric(String datePart) {

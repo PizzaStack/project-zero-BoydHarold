@@ -23,8 +23,8 @@ public class Initialize {
 		AdminRegistration ar = new AdminRegistration(1,"admin","password",1);
 		Employee defaultEmployee = employeeDao.getEmployeeById(1);
 		if(defaultEmployee == null) {
-			Employee employee = new Employee("Default","Default","Default","Default","Default","Default",1);
-			Administrator administrator = new Administrator("Default","Default","Default","Default","Default","Default",1);
+			Employee employee = new Employee("Default","Default","Default","Default","Default","Default",1,"a");
+			Administrator administrator = new Administrator("Default","Default","Default","Default","Default","Default",1,"a");
 			employeeDao.addEmployee(employee);
 			administratorDao.addAdministrator(administrator);
 			erd.addEmployeeUser(er);

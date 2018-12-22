@@ -127,10 +127,10 @@ public class CheckingAccount {
 			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
 		} else if (destination.equals("Joint")) {
 			withdrawl(customerId, amount);
+			jointAccount.deposit(customerId, amount);
 			savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 			checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
 			jointAccount = jointAccountDao.getJointAccountById(customerId);
-			jointAccount.deposit(customerId, amount);
 			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 		}

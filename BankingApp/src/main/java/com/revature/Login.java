@@ -28,8 +28,12 @@ public class Login {
 		
 		CustomerRegistration customerRegistration = customerRegistrationDao.getCustomerUserByUsername(username);
 		
+		
 		if(customerRegistration == null) {
 			System.out.println("Account does not exist!\n");
+		} else if(customerRegistration.getStatus() == 0) {
+			System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.");
+			id = -1;
 		} else if(customerRegistration.getPassword().equals(password)) {
 			validatedPassword = true;
 		} else {
@@ -55,7 +59,10 @@ public class Login {
 			
 			if(employeeRegistration == null) {
 				System.out.println("Account does not exist!\n");
-			} else if(employeeRegistration.getPassword().equals(password)) {
+			} else if(employeeRegistration.getStatus() == 0) {
+				System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.");
+				id = -1;
+			}  else if(employeeRegistration.getPassword().equals(password)) {
 				validatedPassword = true;
 			} else {
 				System.out.println("Invalid password!\n");
@@ -79,7 +86,10 @@ public class Login {
 			
 			if(administratorRegistration == null) {
 				System.out.println("Account does not exist!\n");
-			} else if(administratorRegistration.getPassword().equals(password)) {
+			} else if(administratorRegistration.getStatus() == 0) {
+				System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.\n");
+				id = -1;
+			}  else if(administratorRegistration.getPassword().equals(password)) {
 				validatedPassword = true;
 			} else {
 				System.out.println("Invalid password!\n");

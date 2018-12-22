@@ -26,7 +26,7 @@ public class AdministratorDao{
 			preGetAllAdministrators = connection.prepareStatement(getAllAdministrators);
 			ResultSet rs = preGetAllAdministrators.executeQuery();
 			while(rs.next()) {
-				administrator = new Administrator(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
+				administrator = new Administrator(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9));
 				administrator.setAdministratorId(rs.getInt(1));
 				administrators.add(administrator);
 			}
@@ -52,7 +52,8 @@ public class AdministratorDao{
 						rs.getString(5),
 						rs.getString(6),
 						rs.getString(7),
-						rs.getInt(8));
+						rs.getInt(8),
+						rs.getString(9));
 			}
 
 			
@@ -67,7 +68,7 @@ public class AdministratorDao{
 	public void addAdministrator(Administrator administrator) {
 		try {
 			PreparedStatement preAddAdministrator = null;
-			String addAdministrator = "INSERT INTO Administrator(FirstName, LastName, Address, BirthDate, EmailAddress, PhoneNumber, Status) VALUES (?,?,?,?,?,?,?)";
+			String addAdministrator = "INSERT INTO Administrator(FirstName, LastName, Address, BirthDate, EmailAddress, PhoneNumber, Status, ApprovalStatus) VALUES (?,?,?,?,?,?,?,?)";
 			preAddAdministrator = connection.prepareStatement(addAdministrator);
 			preAddAdministrator.setString(1,administrator.getAdministratorFirstName());
 			preAddAdministrator.setString(2,administrator.getAdministratorLastName());
@@ -76,6 +77,7 @@ public class AdministratorDao{
 			preAddAdministrator.setString(5,administrator.getAdministratorEmailAddress());
 			preAddAdministrator.setString(6,administrator.getAdministratorPhoneNumber());
 			preAddAdministrator.setInt(7, administrator.getAdministratorIsActive());
+			preAddAdministrator.setString(8, administrator.getApprovalStatus());
 			preAddAdministrator.executeUpdate();
 			
 		} catch (SQLException e) {

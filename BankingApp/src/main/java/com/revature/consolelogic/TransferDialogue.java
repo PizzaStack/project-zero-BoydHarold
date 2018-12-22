@@ -23,7 +23,7 @@ public class TransferDialogue {
 	DecimalFormat df = new DecimalFormat("#0.00");
 
 	
-	public void transfer(int customerId, Connection connection) {
+	public void transfer(int customerId, Connection connection, String accessType) {
 		CheckingAccountDao checkingAccountDao = new CheckingAccountDao(connection);
 		SavingsAccountDao savingsAccountDao = new SavingsAccountDao(connection);
 		JointAccountDao jointAccountDao = new JointAccountDao(connection);
@@ -86,7 +86,7 @@ public class TransferDialogue {
         	
         	if(source.equals("4")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
         	System.out.println("\nWhich account would you like to transfer to?");
@@ -132,7 +132,7 @@ public class TransferDialogue {
         		destination = "Savings";
         	} else if(destination.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
     		System.out.println("Current Balances:");
@@ -158,7 +158,7 @@ public class TransferDialogue {
         	
         	if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
         	System.out.println("\nWhich account would you like to transfer to?");
@@ -189,7 +189,7 @@ public class TransferDialogue {
         		destination = "Checking";
         	} else if(destination.equals("2")){
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
         	
@@ -216,7 +216,7 @@ public class TransferDialogue {
         	
         	if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
         	System.out.println("\nWhich account would you like to transfer to?");
@@ -247,7 +247,7 @@ public class TransferDialogue {
         		destination = "Checking";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -273,7 +273,7 @@ public class TransferDialogue {
         	
         	if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
         	System.out.println("\nWhich account would you like to transfer to?");
@@ -304,7 +304,7 @@ public class TransferDialogue {
         		destination = "Savings";
         	} else if(destination.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
      	}
     	

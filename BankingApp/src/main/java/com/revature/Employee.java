@@ -9,8 +9,9 @@ public class Employee {
 	private String phoneNumber;
 	private int employeeIsActive;
 	private int employeeId;
+	private String approvalStatus;
 	
-	public Employee(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status) {
+	public Employee(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status, String approvalStatus) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -18,6 +19,7 @@ public class Employee {
 		this.emailAddress = emailAddress;
 		this.phoneNumber = phoneNumber;
 		this.employeeIsActive = status;
+		this.approvalStatus = approvalStatus;
 	}
 	
 	public Employee() {
@@ -89,6 +91,16 @@ public class Employee {
 			public int getEmployeeId() {
 				return this.employeeId;
 			}
+
+			public String getApprovalStatus() {
+				return approvalStatus;
+			}
+
+			public void setApprovalStatus(String approvalStatus) {
+				this.approvalStatus = approvalStatus;
+			}
+			
+			
 		
 	}
 

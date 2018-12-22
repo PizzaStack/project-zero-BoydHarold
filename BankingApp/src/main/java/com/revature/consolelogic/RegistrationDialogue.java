@@ -26,6 +26,7 @@ public class RegistrationDialogue {
 	EmployeeRegistration er = new EmployeeRegistration();
 	String username;
 	String password;
+	int id;
 	
 	public void register(Connection connection) {
 		System.out.println("\nWhich type of account would you like to Register?\n");
@@ -51,34 +52,18 @@ public class RegistrationDialogue {
 		
 		if(accountType.equals("1")) {
 			CustomerDialogue customerDialogue = new CustomerDialogue();
-			customerDialogue.addNewCustomer(connection);
-			System.out.println("\nEnter in your Customer ID:");
+			id = customerDialogue.addNewCustomer(connection);
 		} else if(accountType.equals("2")) {
-			CustomerDialogue customerDialogue = new CustomerDialogue();
-			customerDialogue.addNewCustomer(connection);
-			System.out.println("\nEnter in your Employye ID:");
+			EmployeeDialogue employeeDialogue = new EmployeeDialogue();
+			id = employeeDialogue.addNewEmployee(connection);
 		} else if(accountType.equals("3")) {
-			CustomerDialogue customerDialogue = new CustomerDialogue();
-			customerDialogue.addNewCustomer(connection);
-			System.out.println("\nEnter in your Administrator ID:");
+			AdministratorDialogue administratorDialogue = new AdministratorDialogue();
+			id = administratorDialogue.addNewAdministrator(connection);
 		} else if(accountType.equals("4")) {
 			LoginDialogue loginDialogue = new LoginDialogue();
 			loginDialogue.login(connection);
 		}
 		
-		String id = sc.nextLine();
-		
-		validEntry = false;
-		
-		while(validEntry == false) {
-			boolean isNumeric = cd.isNumeric(id);
-			if(isNumeric) {
-				validEntry = true;
-			} else {
-				System.out.println("Invalid entry! Please enter a valid Id!");
-				id = sc.nextLine();
-			}
-		}
 		
 		
 		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
@@ -102,13 +87,13 @@ public class RegistrationDialogue {
 			List<CustomerRegistration> customerUsers = customerRegistrationDao.getAllCustomerUsers();
 			
 			for(CustomerRegistration customerUser : customerUsers) {
-				if(customerUser.getCustomerId() == Integer.parseInt(id)) {
+				if(customerUser.getCustomerId() == id) {
 					hasCustomerAccount = true;
 				}
 			}
 			
 			CustomerDao customerDao = new CustomerDao(connection);
-			Customer customer = customerDao.getCustomerById(Integer.parseInt(id));
+			Customer customer = customerDao.getCustomerById(id);
 			
 			if(customer != null) {
 				customerOnboarded = true;
@@ -126,13 +111,13 @@ public class RegistrationDialogue {
 			List<EmployeeRegistration> employeeUsers = employeeRegistrationDao.getAllEmployeeUsers();
 			
 			for(EmployeeRegistration employeeUser : employeeUsers) {
-				if(employeeUser.getEmployeeId() == Integer.parseInt(id)) {
+				if(employeeUser.getEmployeeId() == id) {
 					hasEmployeeAccount = true;
 				}
 			}
 			
 			EmployeeDao employeeDao = new EmployeeDao(connection);
-			Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
+			Employee employee = employeeDao.getEmployeeById(id);
 			
 			if(employee != null) {
 				employeeOnboarded = true;
@@ -151,14 +136,14 @@ public class RegistrationDialogue {
 			List<AdminRegistration> administratorUsers = adminRegistrationDao.getAllAdministratorUsers();
 			
 			for(AdminRegistration administratorUser : administratorUsers) {
-				if(administratorUser.getAdministratorId() == Integer.parseInt(id)) {
+				if(administratorUser.getAdministratorId() == id) {
 					hasAdministratorAccount = true;
 				}
 			}
 			
 			
 			AdministratorDao administratorDao = new AdministratorDao(connection);
-			Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
+			Administrator administrator = administratorDao.getAdministratorById(id);
 			
 			if(administrator != null) {
 				administratorOnboarded = true;
@@ -190,7 +175,7 @@ public class RegistrationDialogue {
 			
 			
 			
-			System.out.println("\nEnter in your desired username:");
+		System.out.println("\nEnter in your desired username:");
 		
 		
 		username = sc.nextLine();
@@ -250,6 +235,7 @@ public class RegistrationDialogue {
 			}
 
 		}
+		
 		
 		while(validEntry == false) {
 			System.out.println("\nUsername already exists, try another one:");
@@ -343,42 +329,49 @@ public class RegistrationDialogue {
 				}
 			} else {
 				System.out.println("Invalid entry! Please enter in either Y or N");
-				confirm = sc.nextLine();
+				confirm = sc.nextLine().toLowerCase();
 			}
 		}
 		
-
 		
+		}
+		}
 		
 		if(accountType.equals("1")) {
 			CustomerRegistration customerUser = new CustomerRegistration();
-			customerUser.setCustomerId(Integer.parseInt(id));
+			customerUser.setCustomerId(id);
 			customerUser.setUsername(username);
 			customerUser.setPassword(password);
 			customerUser.setStatus(1);
 			
 			customerRegistrationDao.addCustomerUser(customerUser);
+			
+			System.out.println("Account created successfully!\n");
 		} else if(accountType.equals("2")) {
 			EmployeeRegistration employeeUser = new EmployeeRegistration();
-			employeeUser.setEmployeeId(Integer.parseInt(id));
+			employeeUser.setEmployeeId(id);
 			employeeUser.setUsername(username);
 			employeeUser.setPassword(password);
-			employeeUser.setStatus(1);
+			employeeUser.setStatus(0);
 			
 			employeeRegistrationDao.addEmployeeUser(employeeUser);
+			
+			System.out.println("Account pending administrator approval!\n");
 		} else if(accountType.equals("3")) {
 			AdminRegistration administratorUser = new AdminRegistration();
-			administratorUser.setAdministratorId(Integer.parseInt(id));
+			administratorUser.setAdministratorId(id);
 			administratorUser.setUsername(username);
 			administratorUser.setPassword(password);
-			administratorUser.setStatus(1);
+			administratorUser.setStatus(0);
 			
 			adminRegistrationDao.addAdministratorUser(administratorUser);
+			
+			System.out.println("Account pending administrator approval!\n");
 		}
 		
-		System.out.println("Account created successfully!\n");
+
+		
 		
 		}
-		}
-	}
+	
 }

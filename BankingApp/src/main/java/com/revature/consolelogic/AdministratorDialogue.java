@@ -27,9 +27,10 @@ public class AdministratorDialogue {
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
 	private Administrator administrator = new Administrator();
+	private int administratorId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public void addNewAdministrator(Connection connection) {
+	public int addNewAdministrator(Connection connection) {
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -159,7 +160,7 @@ public class AdministratorDialogue {
 		
 		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		Administrator administrator = new Administrator(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 1);
+		Administrator administrator = new Administrator(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 0, "p");
 		
 		System.out.println("\nPlease review the following information:");
 		System.out.println("First Name: " + administrator.getAdministratorFirstName());
@@ -198,7 +199,7 @@ public class AdministratorDialogue {
 			
 			AdministratorDao administratorDao = new AdministratorDao(connection);
 			administratorDao.addAdministrator(administrator);
-			int administratorId = 0;
+			administratorId = 0;
 			
 			for(Administrator getAllAdministrators : administratorDao.getAllAdministrators()) {
 				if(firstName.equals(getAllAdministrators.getAdministratorFirstName())
@@ -217,6 +218,8 @@ public class AdministratorDialogue {
 		}
 		
 		}
+		
+		return administratorId;
 
 	}
 

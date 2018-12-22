@@ -103,8 +103,9 @@ public class LoginDialogue {
 				System.out.println("Login successful! Please wait...");
 				loginSuccessful = true;
 				if(loginType.equals("1")) {
+					String accessType = "Customer";
 					CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-					cpd.customerOptions(loginValidated, connection);
+					cpd.customerOptions(loginValidated, connection, accessType);
 				} else if(loginType.equals("2")) {
 					EmployeePortalDialogue epd = new EmployeePortalDialogue();
 					epd.employeeOptions(connection);
@@ -112,6 +113,8 @@ public class LoginDialogue {
 					AdministratorPortalDialogue apd = new AdministratorPortalDialogue();
 					apd.administratorOptions(connection);
 				}
+			} else if(loginValidated == -1){
+				loginSuccessful = true;
 			} else {
 				System.out.println("Login failed. Try again!");
 				loginSuccessful = false;

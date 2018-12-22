@@ -21,7 +21,7 @@ public class DepositDialogue {
 	DecimalFormat df = new DecimalFormat("#0.00");
 	String source;
 	
-	public void deposit(int customerId, Connection connection) {
+	public void deposit(int customerId, Connection connection, String accessType) {
 		
 		CheckingAccountDao checkingAccountDao = new CheckingAccountDao(connection);
 		SavingsAccountDao savingsAccountDao = new SavingsAccountDao(connection);
@@ -89,7 +89,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("4")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
@@ -117,7 +117,7 @@ public class DepositDialogue {
         		source = "Savings";
         	} else if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
@@ -145,7 +145,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -174,7 +174,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
     		
      	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
@@ -199,7 +199,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
      	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
      		System.out.println("Current Balances:");
@@ -222,7 +222,7 @@ public class DepositDialogue {
         		source = "Savings";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
      	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("0")) {
      		System.out.println("Current Balances:");
@@ -246,7 +246,7 @@ public class DepositDialogue {
         		source = "Checking";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection);
+        		cpd.customerOptions(customerId, connection, accessType);
         	}
      	}
     	

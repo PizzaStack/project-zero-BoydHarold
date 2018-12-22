@@ -30,9 +30,10 @@ public class EmployeeDialogue {
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
 	private Employee employee = new Employee();
+	private int employeeId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public void addNewEmployee(Connection connection) {
+	public int addNewEmployee(Connection connection) {
 		EmployeeDao employeeDao = new EmployeeDao(connection);
 		while(commit.equals("n")) {
 			
@@ -164,7 +165,7 @@ public class EmployeeDialogue {
 
 		birthDate = String.valueOf(month) + "/" + String.valueOf(day) + "/" + String.valueOf(year);
 		
-		Employee employee = new Employee(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 1);
+		Employee employee = new Employee(firstName, lastName, address, birthDate, emailAddress, phoneNumber, 0, "p");
 		
 		System.out.println("\nPlease review the following information:");
 		System.out.println("First Name: " + employee.getEmployeeFirstName());
@@ -202,7 +203,7 @@ public class EmployeeDialogue {
 		} else {
 			employeeDao.addEmployee(employee);
 			
-			int employeeId = 0;
+			employeeId = 0;
 			
 			for(Employee getAllEmployees : employeeDao.getAllEmployees()) {
 				if(firstName.equals(getAllEmployees.getEmployeeFirstName())
@@ -222,6 +223,7 @@ public class EmployeeDialogue {
 		
 		}
 
+		return employeeId;
 	}
 
 	public boolean isNumeric(String datePart) {

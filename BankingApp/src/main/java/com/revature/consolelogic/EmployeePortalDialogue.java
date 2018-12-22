@@ -15,16 +15,17 @@ public class EmployeePortalDialogue {
 		System.out.println("\n1. View Customer Information");
 		System.out.println("2. View Pending Accountts");
 		System.out.println("3. Approve/Deny Pending Accounts");
+		System.out.println("4. Log Out");
 		String choice = sc.nextLine();
 		
 		boolean validEntry = false;
 		
 		while(validEntry == false) {
-			if(choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4")) {
 				validEntry = true;
 			} else {
 				validEntry = false;
-				System.out.println("Entry invalid! Please enter in either 1, 2, or 3.");
+				System.out.println("Entry invalid! Please enter in either 1, 2, 3, or 4.");
 				choice = sc.nextLine();
 			}
 		}
@@ -37,17 +38,18 @@ public class EmployeePortalDialogue {
 			System.out.println("\n1. Checking");
 			System.out.println("2. Savings");
 			System.out.println("3. Joint");
+			System.out.println("4. Back");
 			
 			String choice2 = sc.nextLine();
 			
 			validEntry = false;
 			
 			while(validEntry == false) {
-				if(choice2.equals("1") || choice2.equals("2") || choice2.equals("3")) {
+				if(choice2.equals("1") || choice2.equals("2") || choice2.equals("3") || choice2.equals("4")) {
 					validEntry = true;
 				} else {
 					validEntry = false;
-					System.out.println("Entry invalid! Please enter in either 1, 2, or 3.");
+					System.out.println("Entry invalid! Please enter in either 1, 2, 3, or 4.");
 					choice2 = sc.nextLine();
 				}
 			}
@@ -61,6 +63,8 @@ public class EmployeePortalDialogue {
 				approval.listPendingSavings(connection);
 			} else if(choice2.equals("3")) {
 				approval.listPendingJoint(connection);
+			} else if(choice2.equals("4")) {
+				employeeOptions(connection);
 			}
 
 		} else if(choice.equals("3")) {
@@ -68,19 +72,24 @@ public class EmployeePortalDialogue {
 			System.out.println("\n1. Checking");
 			System.out.println("2. Savings");
 			System.out.println("3. Joint");
+			System.out.println("4. Back");
 			
 			String choice2 = sc.nextLine();
 			
 			validEntry = false;
 			
 			while(validEntry == false) {
-				if(choice2.equals("1") || choice2.equals("2") || choice2.equals("3")) {
+				if(choice2.equals("1") || choice2.equals("2") || choice2.equals("3") || choice2.equals("4")) {
 					validEntry = true;
 				} else {
 					validEntry = false;
-					System.out.println("Entry invalid! Please enter in either 1, 2, or 3.");
+					System.out.println("Entry invalid! Please enter in either 1, 2, 3, or 4.");
 					choice2 = sc.nextLine();
 				}
+			}
+			
+			if(choice2.equals("4")) {
+				employeeOptions(connection);
 			}
 			
 			Approval approval = new Approval();
@@ -88,18 +97,23 @@ public class EmployeePortalDialogue {
 			System.out.println("\nWhat would you like to do?");
 			System.out.println("\n1. Approve");
 			System.out.println("2. Deny");
+			System.out.println("3. Back");
 			
 			String choice3 = sc.nextLine();
 			
 			validEntry = false;
 			while(validEntry == false) {
-				if(choice3.equals("1") || choice3.equals("2")) {
+				if(choice3.equals("1") || choice3.equals("2") || choice3.equals("3")) {
 					validEntry = true;
 				} else {
 					validEntry = false;
-					System.out.println("Invalid entry! Enter in either 1 or 2.");
+					System.out.println("Invalid entry! Enter in 1, 2, or 3.");
 					choice3 = sc.nextLine();
 				}
+			}
+			
+			if(choice3.equals("3")) {
+				employeeOptions(connection);
 			}
 			
 			System.out.println("\nEnter in the customerId:");
@@ -138,6 +152,9 @@ public class EmployeePortalDialogue {
 					approval.deny(Integer.parseInt(id), "3", connection);
 				}
 			}
+		} else if(choice.equals("4")) {
+			LoginDialogue loginDialogue = new LoginDialogue();
+			loginDialogue.login(connection);
 		}
 	}
 
