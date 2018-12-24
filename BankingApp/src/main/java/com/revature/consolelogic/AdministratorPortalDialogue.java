@@ -9,7 +9,6 @@ import com.revature.Customer;
 import com.revature.Employee;
 import com.revature.dao.AdministrativeFunctionsDao;
 import com.revature.dao.AdministratorDao;
-import com.revature.dao.ApprovalDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.EmployeeDao;
 
@@ -27,17 +26,18 @@ public class AdministratorPortalDialogue {
 		System.out.println("5. View Pending Employee/Administrator Accounts");
 		System.out.println("6. Approve/Deny Pending Employee/Administrator Accounts");
 		System.out.println("7. Cancel Accounts");
-		System.out.println("8. Log Out");
+		System.out.println("8. Enable Accounts");
+		System.out.println("9. Log Out");
 		String choice = sc.nextLine();
 		
 		boolean validEntry = false;
 		
 		while(validEntry == false) {
-			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4") || choice.equals("5") || choice.equals("6") || choice.equals("7") || choice.equals("8")) {
+			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4") || choice.equals("5") || choice.equals("6") || choice.equals("7") || choice.equals("8") || choice.equals("9")) {
 				validEntry = true;
 			} else {
 				validEntry = false;
-				System.out.println("Entry invalid! Please enter in either 1, 2, 3, 4, 5, 6, 7, or 8.");
+				System.out.println("Entry invalid! Please enter in either 1, 2, 3, 4, 5, 6, 7, 8, or 9.");
 				choice = sc.nextLine();
 			}
 		}
@@ -492,6 +492,83 @@ public class AdministratorPortalDialogue {
 			
 			
 		} else if(choice.equals("8")) {
+			System.out.println("\nWhich type of account would you like to enable?");
+			System.out.println("\n1. Customer");
+			System.out.println("2. Employee");
+			System.out.println("3. Administrator");
+			System.out.println("4. Back");
+			
+			String choice4 = sc.nextLine();
+			
+			validEntry = false;
+			while(validEntry == false) {
+				if(choice4.equals("1") || choice4.equals("2") || choice4.equals("3") || choice4.equals("4")) {
+					validEntry = true;
+				} else {
+					validEntry = false;
+					System.out.println("Invalid entry! Enter in either 1, 2, 3, or 4.");
+					choice4 = sc.nextLine();
+				}
+			}
+			
+			if(choice4.equals("4")) {
+				administratorOptions(connection);
+			}
+			
+			System.out.println("\nEnter in the id you wish to enable account(s) for:");
+			String id = sc.nextLine();
+			
+			ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+			validEntry = false;
+			while(validEntry == false) {
+					boolean isNumeric = afad.isNumeric(id);
+					if(isNumeric) {
+						validEntry = true;
+						
+						
+						if(choice4.equals("1")) {
+							CustomerDao customerDao = new CustomerDao(connection);
+							Customer customer = customerDao.getCustomerById(Integer.parseInt(id));
+							if(customer != null) {
+								validEntry = true;
+							} else {
+								validEntry = false;
+								System.out.println("Customer does not exist. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+						} else if(choice4.equals("2")) {
+							EmployeeDao employeeDao = new EmployeeDao(connection);
+							Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
+							if(employee != null) {
+								validEntry = true;
+							} else {
+								validEntry = false;
+								System.out.println("Employee does not exist. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+						} else if(choice4.equals("3")) {
+							AdministratorDao administratorDao = new AdministratorDao(connection);
+							Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
+							if(administrator != null) {
+								validEntry = true;
+							} else {
+								validEntry = false;
+								System.out.println("Administrator does not exist. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+						}			
+						
+					} else {
+						validEntry = false;
+						System.out.println("Invalid entry. Please enter in a valid id!");
+						id = sc.nextLine();
+					}
+			}
+			
+			AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao(connection);
+			
+			afd.activateAccount(Integer.parseInt(id), choice4);
+		} else if(choice.equals("9")) {
 			LoginDialogue loginDialogue = new LoginDialogue();
 			loginDialogue.login(connection);
 		}

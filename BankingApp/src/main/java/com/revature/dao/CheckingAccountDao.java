@@ -1,7 +1,6 @@
 package com.revature.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +9,8 @@ import java.util.List;
 
 import com.revature.CheckingAccount;
 import com.revature.dao.CheckingAccountDao;
-import com.revature.jdbcinfo.EstablishConnection;
 
 public class CheckingAccountDao{
-	private double balance;
 	String approvalStatus;
 	private Connection connection;
 

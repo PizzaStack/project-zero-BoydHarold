@@ -1,7 +1,6 @@
 package com.revature.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,14 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.JointAccount;
-import com.revature.SavingsAccount;
-import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.JointAccountDao;
-import com.revature.jdbcinfo.EstablishConnection;
 
 public class JointAccountDao{
 	private Connection connection;
-	private double balance;
 	String approvalStatus;
 	
 	public JointAccountDao(Connection connection) {

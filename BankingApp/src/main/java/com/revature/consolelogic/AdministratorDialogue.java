@@ -7,10 +7,7 @@ import java.util.Scanner;
 
 
 import com.revature.Administrator;
-import com.revature.Employee;
 import com.revature.dao.AdministratorDao;
-import com.revature.dao.EmployeeDao;
-import com.revature.dao.EmployeeDao;
 
 
 public class AdministratorDialogue {
@@ -26,7 +23,6 @@ public class AdministratorDialogue {
 	private boolean validEntry = false;
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
-	private Administrator administrator = new Administrator();
 	private int administratorId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	

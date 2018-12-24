@@ -3,12 +3,9 @@ package com.revature;
 import java.text.DecimalFormat;
 
 import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.JointAccountDao;
 import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
-import com.revature.dao.SavingsAccountDao;
 
 public class CheckingAccount {
 	DecimalFormat df = new DecimalFormat("#0.00");

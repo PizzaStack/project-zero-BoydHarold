@@ -1,22 +1,10 @@
 package com.revature;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.dao.ApprovalDao;
-import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.CustomerDao;
-import com.revature.dao.JointAccountDao;
-import com.revature.dao.SavingsAccountDao;
 
 public class Approval {
 	private int customerId;

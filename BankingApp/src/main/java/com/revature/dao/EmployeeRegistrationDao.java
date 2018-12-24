@@ -1,18 +1,13 @@
 package com.revature.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.revature.CustomerRegistration;
-import com.revature.Employee;
 import com.revature.EmployeeRegistration;
 import com.revature.dao.EmployeeRegistrationDao;
-import com.revature.jdbcinfo.EstablishConnection;
 
 public class EmployeeRegistrationDao{
 	private Connection connection;

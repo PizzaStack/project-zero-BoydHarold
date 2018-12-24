@@ -1,7 +1,6 @@
 package com.revature.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import com.revature.Customer;
 import com.revature.dao.CustomerDao;
-import com.revature.jdbcinfo.EstablishConnection;
 
 public class CustomerDao{
 	private Customer customer;

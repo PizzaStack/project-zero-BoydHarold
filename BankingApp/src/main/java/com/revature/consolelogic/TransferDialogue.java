@@ -8,10 +8,7 @@ import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.JointAccountDao;
-import com.revature.dao.JointAccountDao;
-import com.revature.dao.SavingsAccountDao;
 import com.revature.dao.SavingsAccountDao;
 
 public class TransferDialogue {

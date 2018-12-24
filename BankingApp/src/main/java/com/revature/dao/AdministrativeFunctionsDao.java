@@ -56,4 +56,35 @@ public class AdministrativeFunctionsDao {
 		}
 		
 	}
+	
+	public void activateAccount(int id, String accountType) {
+		if(accountType.equals("1")) {
+			try {
+				PreparedStatement preCancelCustomerAccount = connection.prepareCall("SELECT activatecustomeraccount(?);");
+				preCancelCustomerAccount.setInt(1, id);
+				preCancelCustomerAccount.executeUpdate();
+			} catch (SQLException e) {
+				
+			}
+			System.out.println("Customer account(s) enabled!");
+		} else if(accountType.equals("2")) {
+			try {
+				PreparedStatement preCancelEmployeeAccount = connection.prepareCall("SELECT activateemployeeaccount(?);");
+				preCancelEmployeeAccount.setInt(1, id);
+				preCancelEmployeeAccount.executeUpdate();
+			} catch (SQLException e) {
+				
+			}
+			System.out.println("Employee account(s) enabled!");
+		} else if(accountType.equals("3")) {
+			try {
+				PreparedStatement preCancelAdministratorAccount = connection.prepareCall("SELECT activateadminaccount(?);");
+				preCancelAdministratorAccount.setInt(1, id);
+				preCancelAdministratorAccount.executeUpdate();
+			} catch (SQLException e) {
+				
+			}
+			System.out.println("Administrator account(s) enabled!");
+		}
+	}
 }

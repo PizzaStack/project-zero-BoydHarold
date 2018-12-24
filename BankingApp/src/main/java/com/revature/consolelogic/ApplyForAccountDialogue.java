@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 import com.revature.CheckingAccount;
-import com.revature.Customer;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 

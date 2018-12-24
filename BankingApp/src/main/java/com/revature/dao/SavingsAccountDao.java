@@ -1,21 +1,17 @@
 package com.revature.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.revature.CheckingAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.SavingsAccountDao;
 import com.revature.dao.SavingsAccountDao;
-import com.revature.jdbcinfo.EstablishConnection;
 
 public class SavingsAccountDao{
-	private double balance;
 	String approvalStatus;
 	private Connection connection;
 	

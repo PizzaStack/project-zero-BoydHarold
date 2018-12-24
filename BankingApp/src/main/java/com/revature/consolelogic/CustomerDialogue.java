@@ -10,14 +10,10 @@ import com.revature.Customer;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
 import com.revature.dao.CheckingAccountDao;
-import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.CustomerDao;
-import com.revature.dao.CustomerDao;
-import com.revature.dao.JointAccountDao;
 import com.revature.dao.JointAccountDao;
 import com.revature.dao.SavingsAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
-import com.revature.dao.SavingsAccountDao;
 
 public class CustomerDialogue {
 	private String firstName = "";
@@ -32,9 +28,6 @@ public class CustomerDialogue {
 	private boolean validEntry = false;
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
-	private CheckingAccount ca = new CheckingAccount();
-	private SavingsAccount sa = new SavingsAccount();
-	private JointAccount ja = new JointAccount();
 	private int customerId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	Customer customer = new Customer();

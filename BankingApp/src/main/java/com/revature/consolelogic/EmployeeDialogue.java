@@ -1,18 +1,11 @@
 package com.revature.consolelogic;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.text.DecimalFormat;
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.revature.Customer;
 import com.revature.Employee;
-import com.revature.dao.CustomerDao;
-import com.revature.dao.CustomerDao;
-import com.revature.dao.EmployeeDao;
-import com.revature.jdbcinfo.EstablishConnection;
 import com.revature.dao.EmployeeDao;
 
 
@@ -29,7 +22,6 @@ public class EmployeeDialogue {
 	private boolean validEntry = false;
 	private String commit = "n";
 	private Scanner sc = new Scanner(System.in);
-	private Employee employee = new Employee();
 	private int employeeId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	

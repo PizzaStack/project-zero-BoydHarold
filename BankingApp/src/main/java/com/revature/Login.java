@@ -9,11 +9,12 @@ import com.revature.dao.EmployeeRegistrationDao;
 
 public class Login {
 	private int id;
+	boolean validatedCredentials = false;
 	
 	public int validateCredentials(String accountType, String username, String password, Connection connection) {
 		boolean validatedUsername = false;
 		boolean validatedPassword = false;
-		boolean validatedCredentials = false;
+
 		id = 0;
 		
 		if(accountType.equals("1")) {
