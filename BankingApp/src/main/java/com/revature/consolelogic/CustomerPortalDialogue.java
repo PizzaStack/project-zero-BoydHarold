@@ -32,7 +32,7 @@ public class CustomerPortalDialogue {
 		ca = checkingAccountDao.getCheckingAccountById(customerId);
 		sa = savingsAccountDao.getSavingsAccountById(customerId);
 		ja = jointAccountDao.getJointAccountById(customerId);
-		
+
 		if(ca == null) {
 			ca = new CheckingAccount();
 			ca.setStatus(0);
@@ -69,7 +69,7 @@ public class CustomerPortalDialogue {
     	
 		System.out.println("\nWhat would you like to do?");
 		
-		if(checkingAccountStatus.equals("1") || savingsAccountStatus.equals("2") || jointAccountStatus.equals("3")) {
+		if(checkingAccountStatus.equals("1") || savingsAccountStatus.equals("1") || jointAccountStatus.equals("1")) {
 			if(accessType.equals("Customer")) {
 			System.out.println("\n1. Manage Accounts");
 			System.out.println("2. Apply for Account(s)");

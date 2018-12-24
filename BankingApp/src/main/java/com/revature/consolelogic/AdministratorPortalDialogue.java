@@ -9,6 +9,7 @@ import com.revature.Customer;
 import com.revature.Employee;
 import com.revature.dao.AdministrativeFunctionsDao;
 import com.revature.dao.AdministratorDao;
+import com.revature.dao.ApprovalDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.EmployeeDao;
 
@@ -20,21 +21,23 @@ public class AdministratorPortalDialogue {
 	while(loop) {
 		System.out.println("\nWhat would you like to do?");
 		System.out.println("\n1. View Customer Information");
-		System.out.println("2. View Pending Accountts");
-		System.out.println("3. Approve/Deny Pending Accounts");
+		System.out.println("2. View Pending Customer Accountts");
+		System.out.println("3. Approve/Deny Pending Customer Accounts");
 		System.out.println("4. Manage Checking/Savings/Joint Accounts");
-		System.out.println("5. Cancel Accounts");
-		System.out.println("6. Log Out");
+		System.out.println("5. View Pending Employee/Administrator Accounts");
+		System.out.println("6. Approve/Deny Pending Employee/Administrator Accounts");
+		System.out.println("7. Cancel Accounts");
+		System.out.println("8. Log Out");
 		String choice = sc.nextLine();
 		
 		boolean validEntry = false;
 		
 		while(validEntry == false) {
-			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4") || choice.equals("5") || choice.equals("6")) {
+			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4") || choice.equals("5") || choice.equals("6") || choice.equals("7") || choice.equals("8")) {
 				validEntry = true;
 			} else {
 				validEntry = false;
-				System.out.println("Entry invalid! Please enter in either 1, 2, 3, 4, 5, or 6.");
+				System.out.println("Entry invalid! Please enter in either 1, 2, 3, 4, 5, 6, 7, or 8.");
 				choice = sc.nextLine();
 			}
 		}
@@ -194,7 +197,222 @@ public class AdministratorPortalDialogue {
 			String accessType = "Administrator";
 			cpd.customerOptions(Integer.parseInt(id), connection, accessType);
 			
-		} else if(choice.equals("5")) {
+		} else if(choice.equals("5")){
+			System.out.println("\nChoose which type:");
+			System.out.println("\n1. Employee");
+			System.out.println("2. Administrator");
+			System.out.println("3. Back");
+			
+			String choice7 = sc.nextLine();
+			
+			validEntry = false;
+			while(validEntry == false) {
+				if(choice7.equals("1") || choice7.equals("2") || choice7.equals("3")) {
+					validEntry = true;
+				} else {
+					validEntry = false;
+					System.out.println("Invalid entry! Please enter in either 1, 2, or 3.");
+					choice7 = sc.nextLine();
+				}
+			}
+			
+			Approval approval = new Approval();
+			if(choice7.equals("1")) {
+				approval.listPendingEmployees(connection);
+			} else if(choice7.equals("2")) {
+				approval.listPendingAdministrators(connection);
+			} else if(choice7.equals("3")) {
+				administratorOptions(connection);
+			}
+			
+		} else if(choice.equals("6")) {
+			System.out.println("\nChoose which type of account:");
+			System.out.println("\n1. Employee");
+			System.out.println("2. Administrator");
+			System.out.println("3. Back");
+			
+			String choice5 = sc.nextLine();
+			
+			validEntry = false;
+			while(validEntry == false) {
+				if(choice5.equals("1") || choice5.equals("2") || choice5.equals("3")) {
+					validEntry = true;
+				} else {
+					validEntry = false;
+					System.out.println("Invalid entry! Please enter in either 1, 2, or 3.");
+					choice5 = sc.nextLine();
+				}
+			}
+			
+			if(choice5.equals("1")){
+				System.out.println("\nWhat would you like to do?");
+				System.out.println("\n1. Approve");
+				System.out.println("2. Deny");
+				System.out.println("3. Back");
+				
+				String choice6 = sc.nextLine();
+				
+				validEntry = false;
+				while(validEntry == false) {
+					if(choice6.equals("1") || choice6.equals("2") || choice6.equals("3")) {
+						validEntry = true;
+					} else {
+						validEntry = false;
+						System.out.println("Invalid entry! Please enter in either 1, 2, or 3.");
+						choice6 = sc.nextLine();
+					}
+				}
+				
+				if(choice6.equals("1")) {
+					System.out.println("\nEnter in the employee id of the user you wish to approve:");
+					
+					String id = sc.nextLine();
+					
+					ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+					validEntry = false;
+					while(validEntry == false) {
+							boolean isNumeric = afad.isNumeric(id);
+							if(isNumeric) {
+								validEntry = true;
+								EmployeeDao employeeDao = new EmployeeDao(connection);
+								Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
+								if(employee != null) {
+									validEntry = true;
+								} else {
+									validEntry = false;
+									System.out.println("Employee does not exist. Please enter in a valid id!");
+									id = sc.nextLine();
+								}
+							} else {
+								validEntry = false;
+								System.out.println("Invalid entry. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+					}
+	
+					Approval approval = new Approval();
+					approval.approveEmployee(Integer.parseInt(id), connection);
+					
+				} else if(choice6.equals("2")) {
+					System.out.println("\nEnter in the employee id of the user you wish to deny:");
+					
+					String id = sc.nextLine();
+					
+					ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+					validEntry = false;
+					while(validEntry == false) {
+							boolean isNumeric = afad.isNumeric(id);
+							if(isNumeric) {
+								validEntry = true;
+								EmployeeDao employeeDao = new EmployeeDao(connection);
+								Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
+								if(employee != null) {
+									validEntry = true;
+								} else {
+									validEntry = false;
+									System.out.println("Employee does not exist. Please enter in a valid id!");
+									id = sc.nextLine();
+								}
+							} else {
+								validEntry = false;
+								System.out.println("Invalid entry. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+					}
+					
+					Approval approval = new Approval();
+					approval.denyEmployee(Integer.parseInt(id), connection);
+				} else if(choice6.equals("3")) {
+					administratorOptions(connection);
+				}
+			} else if(choice5.equals("2")) {
+				System.out.println("\nWhat would you like to do?");
+				System.out.println("\n1. Approve");
+				System.out.println("2. Deny");
+				System.out.println("3. Back");
+				
+				String choice6 = sc.nextLine();
+				
+				validEntry = false;
+				while(validEntry = false) {
+					if(choice6.equals("1") || choice6.equals("2") || choice6.equals("3")) {
+						validEntry = true;
+					} else {
+						validEntry = false;
+						System.out.println("Invalid entry! Please enter in either 1, 2, or 3.");
+						choice6 = sc.nextLine();
+					}
+				}
+				
+				if(choice6.equals("1")) {
+					System.out.println("\nEnter in the administrator id of the user you wish to approve:");
+					
+					String id = sc.nextLine();
+					
+					ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+					validEntry = false;
+					while(validEntry == false) {
+							boolean isNumeric = afad.isNumeric(id);
+							if(isNumeric) {
+								validEntry = true;
+								AdministratorDao administratorDao = new AdministratorDao(connection);
+								Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
+								if(administrator != null) {
+									validEntry = true;
+								} else {
+									validEntry = false;
+									System.out.println("Administrator does not exist. Please enter in a valid id!");
+									id = sc.nextLine();
+								}
+							} else {
+								validEntry = false;
+								System.out.println("Invalid entry. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+					}
+					
+					Approval approval = new Approval();
+					approval.approveAdministrator(Integer.parseInt(id), connection);
+					
+				} else if(choice6.equals("2")) {
+					System.out.println("\nEnter in the administrator id of the user you wish to deny:");
+					
+					String id = sc.nextLine();
+					
+					ApplyForAccountDialogue afad = new ApplyForAccountDialogue();
+					validEntry = false;
+					while(validEntry == false) {
+							boolean isNumeric = afad.isNumeric(id);
+							if(isNumeric) {
+								validEntry = true;
+								AdministratorDao administratorDao = new AdministratorDao(connection);
+								Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
+								if(administrator != null) {
+									validEntry = true;
+								} else {
+									validEntry = false;
+									System.out.println("Administrator does not exist. Please enter in a valid id!");
+									id = sc.nextLine();
+								}
+							} else {
+								validEntry = false;
+								System.out.println("Invalid entry. Please enter in a valid id!");
+								id = sc.nextLine();
+							}
+					}
+					
+					Approval approval = new Approval();
+					approval.denyAdministrator(Integer.parseInt(id), connection);
+				} else if(choice6.equals("3")) {
+					administratorOptions(connection);
+				}
+			
+			} else if(choice5.equals("3")) {
+				administratorOptions(connection);
+			}
+			
+		} else if(choice.equals("7")) {
+		
 			System.out.println("\nWhich type of account would you like to cancel?");
 			System.out.println("\n1. Customer");
 			System.out.println("2. Employee");
@@ -273,7 +491,7 @@ public class AdministratorPortalDialogue {
 			afd.cancelAccount(Integer.parseInt(id), choice4);
 			
 			
-		} else if(choice.equals("6")) {
+		} else if(choice.equals("8")) {
 			LoginDialogue loginDialogue = new LoginDialogue();
 			loginDialogue.login(connection);
 		}

@@ -32,7 +32,7 @@ public class Login {
 		if(customerRegistration == null) {
 			System.out.println("Account does not exist!\n");
 		} else if(customerRegistration.getStatus() == 0) {
-			System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.");
+			System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.\n");
 			id = -1;
 		} else if(customerRegistration.getPassword().equals(password)) {
 			validatedPassword = true;
@@ -60,7 +60,7 @@ public class Login {
 			if(employeeRegistration == null) {
 				System.out.println("Account does not exist!\n");
 			} else if(employeeRegistration.getStatus() == 0) {
-				System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.");
+				System.out.println("Account is disabled and must be enabled by a bank admin. Please reach out to a bank employee for further assistance.\n");
 				id = -1;
 			}  else if(employeeRegistration.getPassword().equals(password)) {
 				validatedPassword = true;

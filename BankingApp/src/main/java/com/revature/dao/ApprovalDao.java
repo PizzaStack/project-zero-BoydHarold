@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.revature.Administrator;
 import com.revature.Approval;
+import com.revature.Employee;
 
 public class ApprovalDao {
 	private Connection connection;
@@ -84,6 +86,56 @@ public class ApprovalDao {
 		
 		return jointAccounts;
 	}
+		
+	public List<Employee> getAllEmployees(){
+		List<Employee> employees = new ArrayList<>();
+		try {
+			PreparedStatement preGetAllEmployees = connection.prepareStatement("SELECT * FROM Employee;");
+			ResultSet rs = preGetAllEmployees.executeQuery();
+			Employee employee;
+			while(rs.next()) {
+				employee = new Employee(rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getString(6),
+						rs.getString(7),
+						rs.getInt(8),
+						rs.getString(9));
+				employee.setEmployeeId(rs.getInt(1));
+				employees.add(employee);
+			}
+		} catch (SQLException e) {
+			
+		}
+		
+		
+		return employees;
+	}
+	
+	public List<Administrator> getAllAdministrators(){
+		List<Administrator> administrators = new ArrayList<>();
+		try {
+		PreparedStatement preGetAllAdministrators = connection.prepareStatement("SELECT * FROM Administrator;");
+		ResultSet rs = preGetAllAdministrators.executeQuery();
+		Administrator administrator;
+		while(rs.next()) {
+			administrator = new Administrator(rs.getString(2),
+					rs.getString(3),
+					rs.getString(4),
+					rs.getString(5),
+					rs.getString(6),
+					rs.getString(7),
+					rs.getInt(8),
+					rs.getString(9));
+			administrator.setAdministratorId(rs.getInt(1));
+			administrators.add(administrator);
+		}
+		} catch (SQLException e) {
+			
+		}
+		return administrators;
+	}
 	
 	public void updateCheckingAccount(Approval approval) {
 		try {
@@ -131,6 +183,71 @@ public class ApprovalDao {
 			preDeleteJointAccount.setInt(1, approval.getCustomerId());
 			preDeleteJointAccount.setInt(2, approval.getCustomerId());
 			preDeleteJointAccount.executeUpdate();
+		} catch (SQLException e) {
+			
+		}
+	}
+	
+	public void updateEmployee(Employee employee) {
+		try {
+			PreparedStatement preUpdateEmployee = null;
+			preUpdateEmployee = connection.prepareStatement("UPDATE Employee SET Status = ?, ApprovalStatus = ? WHERE EmployeeId = ?;");
+			preUpdateEmployee.setInt(1, employee.getEmployeeIsActive());
+			preUpdateEmployee.setString(2, employee.getApprovalStatus());
+			preUpdateEmployee.setInt(3, employee.getEmployeeId());
+			preUpdateEmployee.executeUpdate();
+			preUpdateEmployee = connection.prepareStatement("UPDATE EmployeeUsers SET Status = ? WHERE EmployeeId = ?;");
+			preUpdateEmployee.setInt(1, employee.getEmployeeIsActive());
+			preUpdateEmployee.setInt(2, employee.getEmployeeId());
+			preUpdateEmployee.executeUpdate();
+
+		} catch (SQLException e) {
+			
+		}
+	}
+	
+	public void deleteEmployee(Employee employee) {
+		try {
+			PreparedStatement preDeleteEmployee = null;
+			preDeleteEmployee = connection.prepareStatement("DELETE FROM EmployeeUsers WHERE EmployeeId = ?;");
+			preDeleteEmployee.setInt(1, employee.getEmployeeId());
+			preDeleteEmployee.executeUpdate();
+			preDeleteEmployee = connection.prepareStatement("DELETE FROM Employee WHERE EmployeeId = ?;");
+			preDeleteEmployee.setInt(1, employee.getEmployeeId());
+			preDeleteEmployee.executeUpdate();
+
+		} catch (SQLException e) {
+			
+		}
+	}
+	
+	public void updateAdministrator(Administrator administrator) {
+		try {
+			PreparedStatement preUpdateAdministrator = null;
+			preUpdateAdministrator = connection.prepareStatement("UPDATE Administrator SET Status = ?, ApprovalStatus = ? WHERE AdministratorId = ?;");
+			preUpdateAdministrator.setInt(1, administrator.getAdministratorIsActive());
+			preUpdateAdministrator.setString(2, administrator.getApprovalStatus());
+			preUpdateAdministrator.setInt(3, administrator.getAdministratorId());
+			preUpdateAdministrator.executeUpdate();
+			preUpdateAdministrator = connection.prepareStatement("UPDATE AdministratorUsers SET Status = ? WHERE AdministratorId = ?;");
+			preUpdateAdministrator.setInt(1, administrator.getAdministratorIsActive());
+			preUpdateAdministrator.setInt(2, administrator.getAdministratorId());
+			preUpdateAdministrator.executeUpdate();
+		} catch (SQLException e) {
+			
+		}
+	}
+	
+	public void deleteAdministrator(Administrator administrator) {
+		try {
+			PreparedStatement preDeleteAdministrator = null;
+			preDeleteAdministrator = connection.prepareStatement("DELETE FROM AdministratorUsers WHERE AdministratorId = ?;");
+			preDeleteAdministrator.setInt(1, administrator.getAdministratorId());
+			preDeleteAdministrator.executeUpdate();
+			preDeleteAdministrator = connection.prepareStatement("DELETE FROM Administrator WHERE AdministratorId = ?;");
+			preDeleteAdministrator.setInt(1, administrator.getAdministratorId());
+			preDeleteAdministrator.executeUpdate();
+
 		} catch (SQLException e) {
 			
 		}
