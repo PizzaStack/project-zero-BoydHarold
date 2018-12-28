@@ -1,6 +1,5 @@
 package com.revature;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.revature.dao.AdminRegistrationDao;
@@ -24,11 +23,11 @@ public class AdminRegistration {
 		
 	}
 	
-	public boolean registerUser(String administratorId, String username, String password, Connection connection) {
+	public boolean registerUser(String administratorId, String username, String password) {
 		
-		AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao(connection);
+		AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao();
 		AdminRegistration administratorRegistration = administratorRegistrationDao.getAdministratorUserByUsername(username);
-		AdministratorDao administratorDao = new AdministratorDao(connection);
+		AdministratorDao administratorDao = new AdministratorDao();
 		Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(administratorId));
 		List<AdminRegistration> administratorUsers = administratorRegistrationDao.getAllAdministratorUsers();
 		

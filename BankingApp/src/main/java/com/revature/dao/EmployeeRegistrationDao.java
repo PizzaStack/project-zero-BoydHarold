@@ -1,6 +1,5 @@
 package com.revature.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,15 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.revature.EmployeeRegistration;
 import com.revature.dao.EmployeeRegistrationDao;
+import com.revature.jdbcinfo.EstablishConnection;
 
 public class EmployeeRegistrationDao{
-	private Connection connection;
-	
-	public EmployeeRegistrationDao(Connection connection) {
-		this.connection = connection;
-	}
-
-	
 	
 	public List<EmployeeRegistration> getAllEmployeeUsers(){
 		List<EmployeeRegistration> employeeUserList = new ArrayList<>();
@@ -24,7 +17,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preGetAllEmployeeUsers = null;
 			String getAllEmployeeUsers = "SELECT * FROM EmployeeUsers;";
-			preGetAllEmployeeUsers = connection.prepareStatement(getAllEmployeeUsers);
+			preGetAllEmployeeUsers = EstablishConnection.connection.prepareStatement(getAllEmployeeUsers);
 			ResultSet rs = preGetAllEmployeeUsers.executeQuery();
 
 			while(rs.next()) {
@@ -44,7 +37,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preGetEmployeeRegistration = null;
 			String getEmployeeRegistration = "SELECT * FROM EmployeeUsers WHERE Username = ?";
-			preGetEmployeeRegistration = connection.prepareStatement(getEmployeeRegistration);
+			preGetEmployeeRegistration = EstablishConnection.connection.prepareStatement(getEmployeeRegistration);
 			preGetEmployeeRegistration.setString(1, username);
 			ResultSet rs = preGetEmployeeRegistration.executeQuery();
 			while(rs.next()) {
@@ -63,7 +56,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preAddEmployeeUser = null;
 			String addEmployeeUser = "INSERT INTO EmployeeUsers(EmployeeId, Username, Password, Status) VALUES (?,?,?,?)";
-			preAddEmployeeUser = connection.prepareStatement(addEmployeeUser);
+			preAddEmployeeUser = EstablishConnection.connection.prepareStatement(addEmployeeUser);
 			preAddEmployeeUser.setInt(1,employeeUser.getEmployeeId());
 			preAddEmployeeUser.setString(2,employeeUser.getUsername());
 			preAddEmployeeUser.setString(3,employeeUser.getPassword());
@@ -84,7 +77,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preGetEmployee = null;
 			String getEmployee = "SELECT * FROM Employee WHERE EmployeeId = ?";
-			preGetEmployee = connection.prepareStatement(getEmployee);
+			preGetEmployee = EstablishConnection.connection.prepareStatement(getEmployee);
 			preGetEmployee.setInt(1, id);
 			ResultSet rs = preGetEmployee.executeQuery();
 			while(rs.next()) {
@@ -104,7 +97,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preGetEmployee = null;
 			String getEmployee = "SELECT * FROM EmployeeUsers WHERE Username = ?";
-			preGetEmployee = connection.prepareStatement(getEmployee);
+			preGetEmployee = EstablishConnection.connection.prepareStatement(getEmployee);
 			preGetEmployee.setString(1, username);
 			ResultSet rs = preGetEmployee.executeQuery();
 			while(rs.next()) {
@@ -123,7 +116,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preAddEmployee = null;
 			String addEmployee = "INSERT INTO EmployeeUsers(EmployeeId, Username, Password, Status) VALUES (?,?,?,?)";
-			preAddEmployee = connection.prepareStatement(addEmployee);
+			preAddEmployee = EstablishConnection.connection.prepareStatement(addEmployee);
 			preAddEmployee.setInt(1,Integer.parseInt(employeeId));
 			preAddEmployee.setString(2,username);
 			preAddEmployee.setString(3,password);
@@ -142,7 +135,7 @@ public class EmployeeRegistrationDao{
 		try {
 			PreparedStatement preGetEmployee = null;
 			String getEmployee = "SELECT * FROM EmployeeUsers WHERE EmployeeId = ?";
-			preGetEmployee = connection.prepareStatement(getEmployee);
+			preGetEmployee = EstablishConnection.connection.prepareStatement(getEmployee);
 			preGetEmployee.setInt(1, id);
 			ResultSet rs = preGetEmployee.executeQuery();
 			while(rs.next()) {

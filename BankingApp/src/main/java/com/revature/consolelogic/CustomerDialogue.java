@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.time.Year;
 import java.util.Scanner;
@@ -32,11 +31,11 @@ public class CustomerDialogue {
 	DecimalFormat df = new DecimalFormat("#0.00");
 	Customer customer = new Customer();
 	EstablishConnection establishConnection = new EstablishConnection();
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
-	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+	JointAccountDao jointAccountDao = new JointAccountDao();
 	
-	public int addNewCustomer(Connection connection) {
+	public int addNewCustomer() {
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -202,7 +201,7 @@ public class CustomerDialogue {
 			year = "";
 		} else {
 
-			CustomerDao customerDao = new CustomerDao(connection);
+			CustomerDao customerDao = new CustomerDao();
 			customerDao.addCustomer(customer);
 			customerId = 0;
 			
@@ -243,7 +242,7 @@ public class CustomerDialogue {
 		return isNumeric;
 	}
 	
-	public void displayCustomer(Connection connection) {
+	public void displayCustomer() {
 		System.out.println("Enter in the Customer ID:");
 		int customerId = Integer.parseInt(sc.nextLine());
 		boolean validEntry = false;
@@ -258,7 +257,7 @@ public class CustomerDialogue {
 			}
 		}
 
-		CustomerDao customerDao = new CustomerDao(connection);
+		CustomerDao customerDao = new CustomerDao();
 
 		Customer customer = customerDao.getCustomerById(customerId);
 		if(customer != null){

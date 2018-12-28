@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 import com.revature.Administrator;
@@ -16,7 +15,7 @@ public class AdministratorPortalDialogue {
 	private boolean loop = true;
 	private Scanner sc = new Scanner(System.in);
 	
-	public void administratorOptions(Connection connection) {
+	public void administratorOptions() {
 	while(loop) {
 		System.out.println("\nWhat would you like to do?");
 		System.out.println("\n1. View Customer Information");
@@ -46,7 +45,7 @@ public class AdministratorPortalDialogue {
 		
 		if(choice.equals("1")) {
 			CustomerDialogue cd = new CustomerDialogue();
-			cd.displayCustomer(connection);
+			cd.displayCustomer();
 		} else if(choice.equals("2")) {
 			System.out.println("\nChoose an account type:");
 			System.out.println("\n1. Checking");
@@ -72,13 +71,13 @@ public class AdministratorPortalDialogue {
 			Approval approval = new Approval();
 			
 			if(choice2.equals("1")) {
-				approval.listPendingChecking(connection);
+				approval.listPendingChecking();
 			} else if(choice2.equals("2")) {
-				approval.listPendingSavings(connection);
+				approval.listPendingSavings();
 			} else if(choice2.equals("3")) {
-				approval.listPendingJoint(connection);
+				approval.listPendingJoint();
 			} else if(choice2.equals("4")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 
 		} else if(choice.equals("3")) {
@@ -103,7 +102,7 @@ public class AdministratorPortalDialogue {
 			}
 			
 			if(choice2.equals("4")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 			
 			Approval approval = new Approval();
@@ -127,7 +126,7 @@ public class AdministratorPortalDialogue {
 			}
 			
 			if(choice3.equals("3")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 			
 			System.out.println("\nEnter in the customerId:");
@@ -149,21 +148,21 @@ public class AdministratorPortalDialogue {
 			
 			if(choice2.equals("1")) {
 				if(choice3.equals("1")) {
-					approval.approve(Integer.parseInt(id), "1", connection);
+					approval.approve(Integer.parseInt(id), "1");
 				} else {
-					approval.deny(Integer.parseInt(id), "1", connection);
+					approval.deny(Integer.parseInt(id), "1");
 				}
 			} else if(choice2.equals("2")) {
 				if(choice3.equals("1")) {
-					approval.approve(Integer.parseInt(id), "2", connection);
+					approval.approve(Integer.parseInt(id), "2");
 				} else {
-					approval.deny(Integer.parseInt(id), "2", connection);
+					approval.deny(Integer.parseInt(id), "2");
 				}
 			} else if(choice2.equals("3")) {
 				if(choice3.equals("1")) {
-					approval.approve(Integer.parseInt(id), "3", connection);
+					approval.approve(Integer.parseInt(id), "3");
 				} else {
-					approval.deny(Integer.parseInt(id), "3", connection);
+					approval.deny(Integer.parseInt(id), "3");
 				}
 			}
 		} else if(choice.equals("4")) {
@@ -176,7 +175,7 @@ public class AdministratorPortalDialogue {
 					boolean isNumeric = afad.isNumeric(id);
 					if(isNumeric) {
 						validEntry = true;
-						CustomerDao customerDao = new CustomerDao(connection);
+						CustomerDao customerDao = new CustomerDao();
 						Customer customer = customerDao.getCustomerById(Integer.parseInt(id));
 						if(customer != null) {
 							validEntry = true;
@@ -195,7 +194,7 @@ public class AdministratorPortalDialogue {
 			
 			CustomerPortalDialogue cpd = new CustomerPortalDialogue();
 			String accessType = "Administrator";
-			cpd.customerOptions(Integer.parseInt(id), connection, accessType);
+			cpd.customerOptions(Integer.parseInt(id), accessType);
 			
 		} else if(choice.equals("5")){
 			System.out.println("\nChoose which type:");
@@ -218,11 +217,11 @@ public class AdministratorPortalDialogue {
 			
 			Approval approval = new Approval();
 			if(choice7.equals("1")) {
-				approval.listPendingEmployees(connection);
+				approval.listPendingEmployees();
 			} else if(choice7.equals("2")) {
-				approval.listPendingAdministrators(connection);
+				approval.listPendingAdministrators();
 			} else if(choice7.equals("3")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 			
 		} else if(choice.equals("6")) {
@@ -274,7 +273,7 @@ public class AdministratorPortalDialogue {
 							boolean isNumeric = afad.isNumeric(id);
 							if(isNumeric) {
 								validEntry = true;
-								EmployeeDao employeeDao = new EmployeeDao(connection);
+								EmployeeDao employeeDao = new EmployeeDao();
 								Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
 								if(employee != null) {
 									validEntry = true;
@@ -291,7 +290,7 @@ public class AdministratorPortalDialogue {
 					}
 	
 					Approval approval = new Approval();
-					approval.approveEmployee(Integer.parseInt(id), connection);
+					approval.approveEmployee(Integer.parseInt(id));
 					
 				} else if(choice6.equals("2")) {
 					System.out.println("\nEnter in the employee id of the user you wish to deny:");
@@ -304,7 +303,7 @@ public class AdministratorPortalDialogue {
 							boolean isNumeric = afad.isNumeric(id);
 							if(isNumeric) {
 								validEntry = true;
-								EmployeeDao employeeDao = new EmployeeDao(connection);
+								EmployeeDao employeeDao = new EmployeeDao();
 								Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
 								if(employee != null) {
 									validEntry = true;
@@ -321,9 +320,9 @@ public class AdministratorPortalDialogue {
 					}
 					
 					Approval approval = new Approval();
-					approval.denyEmployee(Integer.parseInt(id), connection);
+					approval.denyEmployee(Integer.parseInt(id));
 				} else if(choice6.equals("3")) {
-					administratorOptions(connection);
+					administratorOptions();
 				}
 			} else if(choice5.equals("2")) {
 				System.out.println("\nWhat would you like to do?");
@@ -355,7 +354,7 @@ public class AdministratorPortalDialogue {
 							boolean isNumeric = afad.isNumeric(id);
 							if(isNumeric) {
 								validEntry = true;
-								AdministratorDao administratorDao = new AdministratorDao(connection);
+								AdministratorDao administratorDao = new AdministratorDao();
 								Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
 								if(administrator != null) {
 									validEntry = true;
@@ -372,7 +371,7 @@ public class AdministratorPortalDialogue {
 					}
 					
 					Approval approval = new Approval();
-					approval.approveAdministrator(Integer.parseInt(id), connection);
+					approval.approveAdministrator(Integer.parseInt(id));
 					
 				} else if(choice6.equals("2")) {
 					System.out.println("\nEnter in the administrator id of the user you wish to deny:");
@@ -385,7 +384,7 @@ public class AdministratorPortalDialogue {
 							boolean isNumeric = afad.isNumeric(id);
 							if(isNumeric) {
 								validEntry = true;
-								AdministratorDao administratorDao = new AdministratorDao(connection);
+								AdministratorDao administratorDao = new AdministratorDao();
 								Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
 								if(administrator != null) {
 									validEntry = true;
@@ -402,13 +401,13 @@ public class AdministratorPortalDialogue {
 					}
 					
 					Approval approval = new Approval();
-					approval.denyAdministrator(Integer.parseInt(id), connection);
+					approval.denyAdministrator(Integer.parseInt(id));
 				} else if(choice6.equals("3")) {
-					administratorOptions(connection);
+					administratorOptions();
 				}
 			
 			} else if(choice5.equals("3")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 			
 		} else if(choice.equals("7")) {
@@ -433,7 +432,7 @@ public class AdministratorPortalDialogue {
 			}
 			
 			if(choice4.equals("4")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 			
 			System.out.println("\nEnter in the id you wish to cancel account(s) for:");
@@ -448,7 +447,7 @@ public class AdministratorPortalDialogue {
 						
 						
 						if(choice4.equals("1")) {
-							CustomerDao customerDao = new CustomerDao(connection);
+							CustomerDao customerDao = new CustomerDao();
 							Customer customer = customerDao.getCustomerById(Integer.parseInt(id));
 							if(customer != null) {
 								validEntry = true;
@@ -458,7 +457,7 @@ public class AdministratorPortalDialogue {
 								id = sc.nextLine();
 							}
 						} else if(choice4.equals("2")) {
-							EmployeeDao employeeDao = new EmployeeDao(connection);
+							EmployeeDao employeeDao = new EmployeeDao();
 							Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
 							if(employee != null) {
 								validEntry = true;
@@ -468,7 +467,7 @@ public class AdministratorPortalDialogue {
 								id = sc.nextLine();
 							}
 						} else if(choice4.equals("3")) {
-							AdministratorDao administratorDao = new AdministratorDao(connection);
+							AdministratorDao administratorDao = new AdministratorDao();
 							Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
 							if(administrator != null) {
 								validEntry = true;
@@ -486,7 +485,7 @@ public class AdministratorPortalDialogue {
 					}
 			}
 			
-			AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao(connection);
+			AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao();
 			
 			afd.cancelAccount(Integer.parseInt(id), choice4);
 			
@@ -512,7 +511,7 @@ public class AdministratorPortalDialogue {
 			}
 			
 			if(choice4.equals("4")) {
-				administratorOptions(connection);
+				administratorOptions();
 			}
 			
 			System.out.println("\nEnter in the id you wish to enable account(s) for:");
@@ -527,7 +526,7 @@ public class AdministratorPortalDialogue {
 						
 						
 						if(choice4.equals("1")) {
-							CustomerDao customerDao = new CustomerDao(connection);
+							CustomerDao customerDao = new CustomerDao();
 							Customer customer = customerDao.getCustomerById(Integer.parseInt(id));
 							if(customer != null) {
 								validEntry = true;
@@ -537,7 +536,7 @@ public class AdministratorPortalDialogue {
 								id = sc.nextLine();
 							}
 						} else if(choice4.equals("2")) {
-							EmployeeDao employeeDao = new EmployeeDao(connection);
+							EmployeeDao employeeDao = new EmployeeDao();
 							Employee employee = employeeDao.getEmployeeById(Integer.parseInt(id));
 							if(employee != null) {
 								validEntry = true;
@@ -547,7 +546,7 @@ public class AdministratorPortalDialogue {
 								id = sc.nextLine();
 							}
 						} else if(choice4.equals("3")) {
-							AdministratorDao administratorDao = new AdministratorDao(connection);
+							AdministratorDao administratorDao = new AdministratorDao();
 							Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(id));
 							if(administrator != null) {
 								validEntry = true;
@@ -565,12 +564,12 @@ public class AdministratorPortalDialogue {
 					}
 			}
 			
-			AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao(connection);
+			AdministrativeFunctionsDao afd = new AdministrativeFunctionsDao();
 			
 			afd.activateAccount(Integer.parseInt(id), choice4);
 		} else if(choice.equals("9")) {
 			LoginDialogue loginDialogue = new LoginDialogue();
-			loginDialogue.login(connection);
+			loginDialogue.login();
 		}
 	}
 }

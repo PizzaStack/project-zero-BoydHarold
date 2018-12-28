@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -21,11 +20,11 @@ public class DepositDialogue {
 	String source;
 	static final Logger log = Logger.getLogger(DepositDialogue.class);
 	
-	public void deposit(int customerId, Connection connection, String accessType) {
+	public void deposit(int customerId, String accessType) {
 		
-		CheckingAccountDao checkingAccountDao = new CheckingAccountDao(connection);
-		SavingsAccountDao savingsAccountDao = new SavingsAccountDao(connection);
-		JointAccountDao jointAccountDao = new JointAccountDao(connection);
+		CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+		SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+		JointAccountDao jointAccountDao = new JointAccountDao();
 		
 		CheckingAccount ca = checkingAccountDao.getCheckingAccountById(customerId);
 		SavingsAccount sa = savingsAccountDao.getSavingsAccountById(customerId);
@@ -89,7 +88,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("4")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
@@ -117,7 +116,7 @@ public class DepositDialogue {
         		source = "Savings";
         	} else if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
@@ -145,7 +144,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
         	
     	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("1")) {
@@ -174,7 +173,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("3")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
     		
      	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("1")) {
@@ -199,7 +198,7 @@ public class DepositDialogue {
         		source = "Joint";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
      	} else if(checkingAccountStatus.equals("0") && savingsAccountStatus.equals("1") && jointAccountStatus.equals("0")) {
      		System.out.println("Current Balances:");
@@ -222,7 +221,7 @@ public class DepositDialogue {
         		source = "Savings";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
      	} else if(checkingAccountStatus.equals("1") && savingsAccountStatus.equals("0") && jointAccountStatus.equals("0")) {
      		System.out.println("Current Balances:");
@@ -246,7 +245,7 @@ public class DepositDialogue {
         		source = "Checking";
         	} else if(source.equals("2")) {
         		CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-        		cpd.customerOptions(customerId, connection, accessType);
+        		cpd.customerOptions(customerId, accessType);
         	}
      	}
     	

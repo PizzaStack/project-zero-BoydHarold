@@ -1,6 +1,5 @@
 package com.revature;
 
-import java.sql.Connection;
 import java.util.List;
 
 
@@ -25,10 +24,10 @@ public class EmployeeRegistration{
 		
 	}
 	
-	public boolean registerUser(String employeeId, String username, String password, Connection connection) {
-		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao(connection);
+	public boolean registerUser(String employeeId, String username, String password) {
+		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
 		EmployeeRegistration employeeRegistration = employeeRegistrationDao.getEmployeeUserByUsername(username);
-		EmployeeDao employeeDao = new EmployeeDao(connection);
+		EmployeeDao employeeDao = new EmployeeDao();
 		Employee employee = employeeDao.getEmployeeById(Integer.parseInt(employeeId));
 		List<EmployeeRegistration> employeeUsers = employeeRegistrationDao.getAllEmployeeUsers();
 		

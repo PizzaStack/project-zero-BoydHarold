@@ -1,12 +1,9 @@
 package com.revature;
 
-
-import java.sql.Connection;
 import java.text.DecimalFormat;
 
 import org.apache.log4j.Logger;
 
-import com.revature.consolelogic.WithdrawlDialogue;
 import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.JointAccountDao;
@@ -16,10 +13,10 @@ import com.revature.jdbcinfo.EstablishConnection;
 public class JointAccount{
 	DecimalFormat df = new DecimalFormat("#0.00");
 	EstablishConnection establishConnection = new EstablishConnection();
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
-	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
-	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+	JointAccountDao jointAccountDao = new JointAccountDao();
+	CustomerDao customerDao = new CustomerDao();
 	static final Logger log = Logger.getLogger(JointAccount.class);
 	private int accountNumber;
 	private int customerId1;
@@ -140,7 +137,7 @@ public class JointAccount{
 	}
 
 	
-	public void applyForAccount(int customerId1, int customerId2, Connection connection) {
+	public void applyForAccount(int customerId1, int customerId2) {
 		boolean customerCheck = false;
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId1);
 		String approvalStatus = "0";
