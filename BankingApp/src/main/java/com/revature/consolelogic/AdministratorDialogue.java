@@ -26,7 +26,7 @@ public class AdministratorDialogue {
 	private int administratorId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public int addNewAdministrator(Connection connection) {
+	public int addNewAdministrator() {
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -193,7 +193,7 @@ public class AdministratorDialogue {
 			year = "";
 		} else {
 			
-			AdministratorDao administratorDao = new AdministratorDao(connection);
+			AdministratorDao administratorDao = new AdministratorDao();
 			administratorDao.addAdministrator(administrator);
 			administratorId = 0;
 			
@@ -236,7 +236,7 @@ public class AdministratorDialogue {
 		int administratorId = Integer.parseInt(sc.nextLine());
 		boolean exists = false;
 		
-		AdministratorDao administratorDao = new AdministratorDao(connection);
+		AdministratorDao administratorDao = new AdministratorDao();
 		Administrator administrator = administratorDao.getAdministratorById(administratorId);
 		if(administrator != null){
 	        	exists = true;

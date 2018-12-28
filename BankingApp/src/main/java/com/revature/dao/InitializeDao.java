@@ -1,19 +1,15 @@
 package com.revature.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.revature.jdbcinfo.EstablishConnection;
+
 public class InitializeDao {
-	private Connection connection;
-	
-	public InitializeDao(Connection connection) {
-		this.connection = connection;
-	}
 	
 	public void init() {
 		try {
-			PreparedStatement preInit = connection.prepareCall("SELECT setupdefaultemployeeandadminaccounts();");
+			PreparedStatement preInit = EstablishConnection.connection.prepareCall("SELECT setupdefaultemployeeandadminaccounts();");
 			preInit.executeUpdate();
 		} catch (SQLException e) {
 			

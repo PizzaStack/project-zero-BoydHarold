@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -23,11 +22,11 @@ public class CustomerPortalDialogue {
 	Scanner sc = new Scanner(System.in);
 	boolean loop = true;
 	
-	public void customerOptions(int customerId, Connection connection, String accessType) {
+	public void customerOptions(int customerId, String accessType) {
 		while(loop) {
-		CheckingAccountDao checkingAccountDao = new CheckingAccountDao(connection);
-		SavingsAccountDao savingsAccountDao = new SavingsAccountDao(connection);
-		JointAccountDao jointAccountDao = new JointAccountDao(connection);
+		CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+		SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+		JointAccountDao jointAccountDao = new JointAccountDao();
 		
 		ca = checkingAccountDao.getCheckingAccountById(customerId);
 		sa = savingsAccountDao.getSavingsAccountById(customerId);
@@ -112,13 +111,13 @@ public class CustomerPortalDialogue {
 					}
 					
 					if(choice.equals("1")) {
-						wd.withdrawl(customerId, connection, accessType);
+						wd.withdrawl(customerId, accessType);
 					} else if(choice.equals("2")) {
-						dd.deposit(customerId, connection, accessType);
+						dd.deposit(customerId, accessType);
 					} else if(choice.equals("3")) {
-						td.transfer(customerId, connection, accessType);
+						td.transfer(customerId, accessType);
 					} else if(choice.equals("4")) {
-						customerOptions(customerId, connection, accessType);
+						customerOptions(customerId, accessType);
 					}
 					
 					} else {
@@ -138,23 +137,23 @@ public class CustomerPortalDialogue {
 						}
 						
 						if(choice.equals("1")) {
-							wd.withdrawl(customerId, connection, accessType);
+							wd.withdrawl(customerId, accessType);
 						} else if(choice.equals("2")) {
-							dd.deposit(customerId, connection, accessType);
+							dd.deposit(customerId, accessType);
 						} else if(choice.equals("3")) {
-							customerOptions(customerId, connection, accessType);
+							customerOptions(customerId, accessType);
 						}
 					}
 				} else if(choice.equals("2")){
-					afad.apply(customerId, connection, accessType);
+					afad.apply(customerId, accessType);
 				} else if(choice.equals("3")) {
 					if(accessType.equals("Customer")) {
 					LoginDialogue loginDialogue = new LoginDialogue();
-					loginDialogue.login(connection);
+					loginDialogue.login();
 					System.out.println("\nLogged out succesfully!");
 					} else if(accessType.endsWith("Administrator")) {
 						AdministratorPortalDialogue apd = new AdministratorPortalDialogue();
-						apd.administratorOptions(connection);	
+						apd.administratorOptions();	
 					}
 				}
 			
@@ -174,10 +173,10 @@ public class CustomerPortalDialogue {
 			}
 			
 			if(choice.equals("1")) {
-			afad.apply(customerId, connection, accessType);
+			afad.apply(customerId, accessType);
 			} else if(choice.equals("2")) {
 				LoginDialogue loginDialogue = new LoginDialogue();
-				loginDialogue.login(connection);
+				loginDialogue.login();
 				System.out.println("\nLogged out succesfully!");
 			}
 		}

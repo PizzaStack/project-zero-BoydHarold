@@ -1,6 +1,5 @@
 package com.revature.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,14 +8,9 @@ import java.util.List;
 
 import com.revature.AdminRegistration;
 import com.revature.dao.AdminRegistrationDao;
+import com.revature.jdbcinfo.EstablishConnection;
 
 public class AdminRegistrationDao{
-	private Connection connection;
-	
-	public AdminRegistrationDao(Connection connection) {
-		this.connection = connection;
-	}
-
 	
 	public List<AdminRegistration> getAllAdministratorUsers(){
 		List<AdminRegistration> administratorUserList = new ArrayList<>();
@@ -24,7 +18,7 @@ public class AdminRegistrationDao{
 		try {
 			PreparedStatement preGetAllAdministratorUsers = null;
 			String getAllAdministratorUsers = "SELECT * FROM AdministratorUsers;";
-			preGetAllAdministratorUsers = connection.prepareStatement(getAllAdministratorUsers);
+			preGetAllAdministratorUsers = EstablishConnection.connection.prepareStatement(getAllAdministratorUsers);
 			ResultSet rs = preGetAllAdministratorUsers.executeQuery();
 
 			while(rs.next()) {
@@ -44,7 +38,7 @@ public class AdminRegistrationDao{
 		try {
 			PreparedStatement preGetAdminRegistration = null;
 			String getAdminRegistration = "SELECT * FROM AdministratorUsers WHERE Username = ?";
-			preGetAdminRegistration = connection.prepareStatement(getAdminRegistration);
+			preGetAdminRegistration = EstablishConnection.connection.prepareStatement(getAdminRegistration);
 			preGetAdminRegistration.setString(1, username);
 			ResultSet rs = preGetAdminRegistration.executeQuery();
 			while(rs.next()) {
@@ -63,7 +57,7 @@ public class AdminRegistrationDao{
 		try {
 			PreparedStatement preAddAdministratorUser = null;
 			String addAdministratorUser = "INSERT INTO AdministratorUsers(AdministratorId, Username, Password, Status) VALUES (?,?,?,?)";
-			preAddAdministratorUser = connection.prepareStatement(addAdministratorUser);
+			preAddAdministratorUser = EstablishConnection.connection.prepareStatement(addAdministratorUser);
 			preAddAdministratorUser.setInt(1,administratorUser.getAdministratorId());
 			preAddAdministratorUser.setString(2,administratorUser.getUsername());
 			preAddAdministratorUser.setString(3,administratorUser.getPassword());

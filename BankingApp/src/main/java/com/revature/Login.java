@@ -1,6 +1,5 @@
 package com.revature;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.revature.dao.AdminRegistrationDao;
@@ -11,14 +10,14 @@ public class Login {
 	private int id;
 	boolean validatedCredentials = false;
 	
-	public int validateCredentials(String accountType, String username, String password, Connection connection) {
+	public int validateCredentials(String accountType, String username, String password) {
 		boolean validatedUsername = false;
 		boolean validatedPassword = false;
 
 		id = 0;
 		
 		if(accountType.equals("1")) {
-		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
 		List<CustomerRegistration> customerRegistrations = customerRegistrationDao.getAllCustomerUsers();
 			
 		for(CustomerRegistration customerRegistration : customerRegistrations) {
@@ -47,7 +46,7 @@ public class Login {
 		}
 			
 		} else if (accountType.equals("2")) {
-			EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao(connection);
+			EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
 			List<EmployeeRegistration> employeeRegistrations = employeeRegistrationDao.getAllEmployeeUsers();
 				
 			for(EmployeeRegistration employeeRegistration : employeeRegistrations) {
@@ -74,7 +73,7 @@ public class Login {
 				id = employeeRegistration.getEmployeeId();
 			}
 		} else if (accountType.equals("3")) {
-			AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao(connection);
+			AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao();
 			List<AdminRegistration> administratorRegistrations = administratorRegistrationDao.getAllAdministratorUsers();
 				
 			for(AdminRegistration administratorRegistration : administratorRegistrations) {

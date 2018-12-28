@@ -1,6 +1,5 @@
 package com.revature;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.revature.dao.CustomerDao;
@@ -24,11 +23,11 @@ public class CustomerRegistration{
 		
 	}
 	
-	public boolean registerUser(String customerId, String username, String password, Connection connection) {
+	public boolean registerUser(String customerId, String username, String password) {
 		
-		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
 		CustomerRegistration customerRegistration = customerRegistrationDao.getCustomerUserByUsername(username);
-		CustomerDao customerDao = new CustomerDao(connection);
+		CustomerDao customerDao = new CustomerDao();
 		Customer customer = customerDao.getCustomerById(Integer.parseInt(customerId));
 		List<CustomerRegistration> customerUsers = customerRegistrationDao.getAllCustomerUsers();
 		

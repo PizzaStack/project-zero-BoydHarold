@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +26,7 @@ public class RegistrationDialogue {
 	String password;
 	int id;
 	
-	public void register(Connection connection) {
+	public void register() {
 		System.out.println("\nWhich type of account would you like to Register?\n");
 		System.out.println("1. Customer");
 		System.out.println("2. Employee");
@@ -51,23 +50,23 @@ public class RegistrationDialogue {
 		
 		if(accountType.equals("1")) {
 			CustomerDialogue customerDialogue = new CustomerDialogue();
-			id = customerDialogue.addNewCustomer(connection);
+			id = customerDialogue.addNewCustomer();
 		} else if(accountType.equals("2")) {
 			EmployeeDialogue employeeDialogue = new EmployeeDialogue();
-			id = employeeDialogue.addNewEmployee(connection);
+			id = employeeDialogue.addNewEmployee();
 		} else if(accountType.equals("3")) {
 			AdministratorDialogue administratorDialogue = new AdministratorDialogue();
-			id = administratorDialogue.addNewAdministrator(connection);
+			id = administratorDialogue.addNewAdministrator();
 		} else if(accountType.equals("4")) {
 			LoginDialogue loginDialogue = new LoginDialogue();
-			loginDialogue.login(connection);
+			loginDialogue.login();
 		}
 		
 		
 		
-		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao(connection);
-		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao(connection);
-		AdminRegistrationDao adminRegistrationDao = new AdminRegistrationDao(connection);
+		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
+		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
+		AdminRegistrationDao adminRegistrationDao = new AdminRegistrationDao();
 		
 		boolean hasCustomerAccount = false;;
 		boolean hasEmployeeAccount = false;
@@ -91,7 +90,7 @@ public class RegistrationDialogue {
 				}
 			}
 			
-			CustomerDao customerDao = new CustomerDao(connection);
+			CustomerDao customerDao = new CustomerDao();
 			Customer customer = customerDao.getCustomerById(id);
 			
 			if(customer != null) {
@@ -115,7 +114,7 @@ public class RegistrationDialogue {
 				}
 			}
 			
-			EmployeeDao employeeDao = new EmployeeDao(connection);
+			EmployeeDao employeeDao = new EmployeeDao();
 			Employee employee = employeeDao.getEmployeeById(id);
 			
 			if(employee != null) {
@@ -141,7 +140,7 @@ public class RegistrationDialogue {
 			}
 			
 			
-			AdministratorDao administratorDao = new AdministratorDao(connection);
+			AdministratorDao administratorDao = new AdministratorDao();
 			Administrator administrator = administratorDao.getAdministratorById(id);
 			
 			if(administrator != null) {

@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.time.Year;
 import java.util.Scanner;
@@ -25,8 +24,8 @@ public class EmployeeDialogue {
 	private int employeeId;
 	DecimalFormat df = new DecimalFormat("#0.00");
 	
-	public int addNewEmployee(Connection connection) {
-		EmployeeDao employeeDao = new EmployeeDao(connection);
+	public int addNewEmployee() {
+		EmployeeDao employeeDao = new EmployeeDao();
 		while(commit.equals("n")) {
 			
 		while (firstName.equals("")) {
@@ -230,8 +229,8 @@ public class EmployeeDialogue {
 		return isNumeric;
 	}
 	
-	public void displayEmployee(Connection connection) {
-		EmployeeDao employeeDao = new EmployeeDao(connection);
+	public void displayEmployee() {
+		EmployeeDao employeeDao = new EmployeeDao();
 		System.out.println("Enter in the Employee ID:");
 		int employeeId = Integer.parseInt(sc.nextLine());
 		boolean exists = false;

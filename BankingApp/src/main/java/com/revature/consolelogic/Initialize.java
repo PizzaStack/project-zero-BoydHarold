@@ -1,15 +1,14 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 
 import com.revature.dao.InitializeDao;
 
 public class Initialize {
-	public void init(Connection connection) {
+	public void init() {
 		LoginDialogue loginDialogue = new LoginDialogue();
-		InitializeDao initializeDao = new InitializeDao(connection);
+		InitializeDao initializeDao = new InitializeDao();
 		initializeDao.init();
-		loginDialogue.login(connection);
+		loginDialogue.login();
 		
 	}
 }
