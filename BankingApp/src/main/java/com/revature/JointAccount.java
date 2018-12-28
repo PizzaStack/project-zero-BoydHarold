@@ -4,6 +4,9 @@ package com.revature;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 
+import org.apache.log4j.Logger;
+
+import com.revature.consolelogic.WithdrawlDialogue;
 import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.JointAccountDao;
@@ -17,6 +20,7 @@ public class JointAccount{
 	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
 	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
 	CustomerDao customerDao = new CustomerDao(establishConnection.establishConnection());
+	static final Logger log = Logger.getLogger(JointAccount.class);
 	private int accountNumber;
 	private int customerId1;
 	private int customerId2;
@@ -122,6 +126,7 @@ public class JointAccount{
 			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
+			log.info("$" + df.format(amount) + " was transferred from joint to checking for Customer id: " + customerId);
 		} else if (destination.equals("Savings")) {
 			withdrawl(customerId, amount);
 			savingsAccount.deposit(customerId, amount);
@@ -130,6 +135,7 @@ public class JointAccount{
 			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
 			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
+			log.info("$" + df.format(amount) + " was transferred from joint to savings for Customer id: " + customerId);
 		}
 	}
 

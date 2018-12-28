@@ -1,24 +1,22 @@
 package com.revature;
 
-import org.apache.log4j.xml.DOMConfigurator;
+import java.io.File;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import com.revature.consolelogic.Initialize;
 import com.revature.consolelogic.LoginDialogue;
 import com.revature.jdbcinfo.EstablishConnection;
-import com.sun.istack.internal.logging.Logger;
 
-
-/**
- * Hello world!
- *
- */
 public class App 
 {
-	final static Logger log = Logger.getLogger(App.class);
+	static final Logger log = Logger.getLogger(App.class);
     public static void main( String[] args )
     { 	
-    	DOMConfigurator.configure("log4j.xml");
-    	log.info("Application started");
+    	PropertyConfigurator.configure(System.getProperty("user.dir") + File.separator +
+                "\\src\\main\\resources\\log4j.properties");
+    	
        	Initialize init = new Initialize();
        	LoginDialogue ld = new LoginDialogue();
 		EstablishConnection establishConnection = new EstablishConnection();

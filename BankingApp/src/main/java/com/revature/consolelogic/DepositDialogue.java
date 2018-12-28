@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.CheckingAccount;
 import com.revature.JointAccount;
 import com.revature.SavingsAccount;
@@ -17,6 +19,7 @@ public class DepositDialogue {
 	Scanner sc = new Scanner(System.in);
 	DecimalFormat df = new DecimalFormat("#0.00");
 	String source;
+	static final Logger log = Logger.getLogger(DepositDialogue.class);
 	
 	public void deposit(int customerId, Connection connection, String accessType) {
 		
@@ -286,14 +289,17 @@ public class DepositDialogue {
     		double newBalance = ca.deposit(customerId, amount);
     		System.out.println("\n$" + df.format(amount) + " added to checking account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
+    		log.info("$" + df.format(amount) + " added to checking account. Customer id: " + customerId);
     	} else if(source.equals("Savings")) {
     		double newBalance = sa.deposit(customerId, amount);
     		System.out.println("\n$" + df.format(amount) + " added to savings account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
+    		log.info("$" + df.format(amount) + " added to savings account. Customer id: " + customerId);
     	} else if(source.equals("Joint")) {
     		double newBalance = ja.deposit(customerId, amount);
     		System.out.println("\n$" + df.format(amount) + " added to joint account.");
     		System.out.println("\nNew balance: $" + df.format(newBalance));
+    		log.info("$" + df.format(amount) + " added to joint account. Customer id: " + customerId);
     	}
 	}
 	}
