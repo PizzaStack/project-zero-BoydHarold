@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 import com.revature.Approval;
@@ -9,7 +8,7 @@ public class EmployeePortalDialogue {
 	private Scanner sc = new Scanner(System.in);
 	private boolean loop = true;
 	
-	public void employeeOptions(Connection connection) {
+	public void employeeOptions() {
 		while(loop) {
 		System.out.println("\nWhat would you like to do?");
 		System.out.println("\n1. View Customer Information");
@@ -32,7 +31,7 @@ public class EmployeePortalDialogue {
 		
 		if(choice.equals("1")) {
 			CustomerDialogue cd = new CustomerDialogue();
-			cd.displayCustomer(connection);
+			cd.displayCustomer();
 		} else if(choice.equals("2")) {
 			System.out.println("\nChoose an account type:");
 			System.out.println("\n1. Checking");
@@ -58,13 +57,13 @@ public class EmployeePortalDialogue {
 			Approval approval = new Approval();
 			
 			if(choice2.equals("1")) {
-				approval.listPendingChecking(connection);
+				approval.listPendingChecking();
 			} else if(choice2.equals("2")) {
-				approval.listPendingSavings(connection);
+				approval.listPendingSavings();
 			} else if(choice2.equals("3")) {
-				approval.listPendingJoint(connection);
+				approval.listPendingJoint();
 			} else if(choice2.equals("4")) {
-				employeeOptions(connection);
+				employeeOptions();
 			}
 
 		} else if(choice.equals("3")) {
@@ -89,7 +88,7 @@ public class EmployeePortalDialogue {
 			}
 			
 			if(choice2.equals("4")) {
-				employeeOptions(connection);
+				employeeOptions();
 			}
 			
 			Approval approval = new Approval();
@@ -113,7 +112,7 @@ public class EmployeePortalDialogue {
 			}
 			
 			if(choice3.equals("3")) {
-				employeeOptions(connection);
+				employeeOptions();
 			}
 			
 			System.out.println("\nEnter in the customerId:");
@@ -135,26 +134,26 @@ public class EmployeePortalDialogue {
 			
 			if(choice2.equals("1")) {
 				if(choice3.equals("1")) {
-					approval.approve(Integer.parseInt(id), "1", connection);
+					approval.approve(Integer.parseInt(id), "1");
 				} else {
-					approval.deny(Integer.parseInt(id), "1", connection);
+					approval.deny(Integer.parseInt(id), "1");
 				}
 			} else if(choice2.equals("2")) {
 				if(choice3.equals("1")) {
-					approval.approve(Integer.parseInt(id), "2", connection);
+					approval.approve(Integer.parseInt(id), "2");
 				} else {
-					approval.deny(Integer.parseInt(id), "2", connection);
+					approval.deny(Integer.parseInt(id), "2");
 				}
 			} else if(choice2.equals("3")) {
 				if(choice3.equals("1")) {
-					approval.approve(Integer.parseInt(id), "3", connection);
+					approval.approve(Integer.parseInt(id), "3");
 				} else {
-					approval.deny(Integer.parseInt(id), "3", connection);
+					approval.deny(Integer.parseInt(id), "3");
 				}
 			}
 		} else if(choice.equals("4")) {
 			LoginDialogue loginDialogue = new LoginDialogue();
-			loginDialogue.login(connection);
+			loginDialogue.login();
 		}
 	}
 

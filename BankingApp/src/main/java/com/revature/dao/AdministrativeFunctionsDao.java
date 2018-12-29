@@ -1,24 +1,21 @@
 package com.revature.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.revature.jdbcinfo.EstablishConnection;
+
 public class AdministrativeFunctionsDao {
-	private Connection connection;
 	private int successcount;
 	
-	public AdministrativeFunctionsDao(Connection connection) {
-		this.connection = connection;
-	}
 	
 	public void cancelAccount(int id, String accountType) {
 		successcount = 0;
 		if(accountType.equals("1")) {
 			
 		try {
-			PreparedStatement preCancelCustomerAccount = connection.prepareCall("SELECT cancelcustomeraccount(?);");
+			PreparedStatement preCancelCustomerAccount = EstablishConnection.connection.prepareCall("SELECT cancelcustomeraccount(?);");
 			preCancelCustomerAccount.setInt(1, id);
 			ResultSet rs = preCancelCustomerAccount.executeQuery();
 			
@@ -36,7 +33,7 @@ public class AdministrativeFunctionsDao {
 		} else if(accountType.equals("2")) {
 
 			try {
-				PreparedStatement preCancelEmployeeAccount = connection.prepareCall("SELECT cancelemployeeaccount(?);");
+				PreparedStatement preCancelEmployeeAccount = EstablishConnection.connection.prepareCall("SELECT cancelemployeeaccount(?);");
 				preCancelEmployeeAccount.setInt(1, id);
 				preCancelEmployeeAccount.executeUpdate();
 			} catch (SQLException e) {
@@ -46,7 +43,7 @@ public class AdministrativeFunctionsDao {
 		} else if(accountType.equals("3")) {
 			
 			try {
-				PreparedStatement preCancelAdministratorAccount = connection.prepareCall("SELECT canceladminaccount(?);");
+				PreparedStatement preCancelAdministratorAccount = EstablishConnection.connection.prepareCall("SELECT canceladminaccount(?);");
 				preCancelAdministratorAccount.setInt(1, id);
 				preCancelAdministratorAccount.executeUpdate();
 			} catch (SQLException e) {
@@ -60,7 +57,7 @@ public class AdministrativeFunctionsDao {
 	public void activateAccount(int id, String accountType) {
 		if(accountType.equals("1")) {
 			try {
-				PreparedStatement preCancelCustomerAccount = connection.prepareCall("SELECT activatecustomeraccount(?);");
+				PreparedStatement preCancelCustomerAccount = EstablishConnection.connection.prepareCall("SELECT activatecustomeraccount(?);");
 				preCancelCustomerAccount.setInt(1, id);
 				preCancelCustomerAccount.executeUpdate();
 			} catch (SQLException e) {
@@ -69,7 +66,7 @@ public class AdministrativeFunctionsDao {
 			System.out.println("Customer account(s) enabled!");
 		} else if(accountType.equals("2")) {
 			try {
-				PreparedStatement preCancelEmployeeAccount = connection.prepareCall("SELECT activateemployeeaccount(?);");
+				PreparedStatement preCancelEmployeeAccount = EstablishConnection.connection.prepareCall("SELECT activateemployeeaccount(?);");
 				preCancelEmployeeAccount.setInt(1, id);
 				preCancelEmployeeAccount.executeUpdate();
 			} catch (SQLException e) {
@@ -78,7 +75,7 @@ public class AdministrativeFunctionsDao {
 			System.out.println("Employee account(s) enabled!");
 		} else if(accountType.equals("3")) {
 			try {
-				PreparedStatement preCancelAdministratorAccount = connection.prepareCall("SELECT activateadminaccount(?);");
+				PreparedStatement preCancelAdministratorAccount = EstablishConnection.connection.prepareCall("SELECT activateadminaccount(?);");
 				preCancelAdministratorAccount.setInt(1, id);
 				preCancelAdministratorAccount.executeUpdate();
 			} catch (SQLException e) {

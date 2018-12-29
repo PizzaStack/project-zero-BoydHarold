@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class EstablishConnection {
 	private ArrayList<String> connectionInfo;
-	private Connection connection;
+	public static Connection connection;
 	
 	public Connection establishConnection() {
 		connectionInfo = new ArrayList<String>();

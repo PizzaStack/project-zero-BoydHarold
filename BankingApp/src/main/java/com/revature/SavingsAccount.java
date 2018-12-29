@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import org.apache.log4j.Logger;
 
 import com.revature.dao.SavingsAccountDao;
-import com.revature.consolelogic.WithdrawlDialogue;
 import com.revature.dao.CheckingAccountDao;
 import com.revature.dao.JointAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
@@ -13,9 +12,9 @@ import com.revature.jdbcinfo.EstablishConnection;
 public class SavingsAccount {
 	DecimalFormat df = new DecimalFormat("#0.00");
 	EstablishConnection establishConnection = new EstablishConnection();
-	CheckingAccountDao checkingAccountDao = new CheckingAccountDao(establishConnection.establishConnection());
-	SavingsAccountDao savingsAccountDao = new SavingsAccountDao(establishConnection.establishConnection());
-	JointAccountDao jointAccountDao = new JointAccountDao(establishConnection.establishConnection());
+	CheckingAccountDao checkingAccountDao = new CheckingAccountDao();
+	SavingsAccountDao savingsAccountDao = new SavingsAccountDao();
+	JointAccountDao jointAccountDao = new JointAccountDao();
 	static final Logger log = Logger.getLogger(SavingsAccount.class);
 	private int accountNumber;
 	private int customerId;

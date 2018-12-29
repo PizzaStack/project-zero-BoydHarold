@@ -1,6 +1,5 @@
 package com.revature.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,21 +8,17 @@ import java.util.List;
 
 import com.revature.Customer;
 import com.revature.dao.CustomerDao;
+import com.revature.jdbcinfo.EstablishConnection;
 
 public class CustomerDao{
 	private Customer customer;
-	private Connection connection;
-
-	public CustomerDao(Connection connection) {
-		this.connection = connection;
-	}
 	
 	public List<Customer> getAllCustomers(){
 		List<Customer> customers = new ArrayList<>();
 		try {
 			PreparedStatement preGetAllCustomers = null;
 			String getAllCustomers = "SELECT * FROM Customer;";
-			preGetAllCustomers = connection.prepareStatement(getAllCustomers);
+			preGetAllCustomers = EstablishConnection.connection.prepareStatement(getAllCustomers);
 			ResultSet rs = preGetAllCustomers.executeQuery();
 			while(rs.next()) {
 				customer = new Customer(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
@@ -40,7 +35,7 @@ public class CustomerDao{
 	public Customer getCustomerById(int id) {
 		try {
 			PreparedStatement preGetCustomer = null;
-			preGetCustomer = connection.prepareStatement("SELECT * FROM Customer WHERE CustomerId = ?");
+			preGetCustomer = EstablishConnection.connection.prepareStatement("SELECT * FROM Customer WHERE CustomerId = ?");
 			preGetCustomer.setInt(1, id);
 			ResultSet rs = preGetCustomer.executeQuery();
 			customer = null;
@@ -69,7 +64,7 @@ public class CustomerDao{
 		try {
 			PreparedStatement preAddCustomer = null;
 			String addCustomer = "INSERT INTO Customer(FirstName, LastName, Address, BirthDate, EmailAddress, PhoneNumber, Status) VALUES (?,?,?,?,?,?,?)";
-			preAddCustomer = connection.prepareStatement(addCustomer);
+			preAddCustomer = EstablishConnection.connection.prepareStatement(addCustomer);
 			preAddCustomer.setString(1,customer.getCustomerFirstName());
 			preAddCustomer.setString(2,customer.getCustomerLastName());
 			preAddCustomer.setString(3,customer.getCustomerAddress());

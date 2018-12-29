@@ -1,9 +1,9 @@
 package com.revature.consolelogic;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 import com.revature.Login;
+import com.revature.jdbcinfo.EstablishConnection;
 
 public class LoginDialogue {
 	Scanner sc = new Scanner(System.in);
@@ -13,7 +13,7 @@ public class LoginDialogue {
 	Login login = new Login();
 	boolean loop = true;
 	
-	public void login(Connection connection) {
+	public void login() {
 		while(loop) {
 		System.out.println("Welcome to the Bank of Revature!");
 		System.out.println("\nPlease choose what you would like to do today:");
@@ -36,9 +36,11 @@ public class LoginDialogue {
 		}
 		
 		if(choice.equals("3")) {
+			EstablishConnection establishConnection = new EstablishConnection();
+			establishConnection.closeConnection();
 			System.exit(0);
 		} else if(choice.equals("2")) {
-			rd.register(connection);
+			rd.register();
 		} else {
 			System.out.println("\nChoose a login type:");
 			System.out.println("1. Customer");
@@ -60,7 +62,7 @@ public class LoginDialogue {
 			}
 			
 			if(loginType.equals("4")) {
-				login(connection);
+				login();
 			}
 			
 			boolean loginSuccessful = false;
@@ -98,20 +100,20 @@ public class LoginDialogue {
 				}
 			}
 			
-			int loginValidated = login.validateCredentials(loginType, username, password, connection);
+			int loginValidated = login.validateCredentials(loginType, username, password);
 			if(loginValidated > 0) {
 				System.out.println("Login successful! Please wait...");
 				loginSuccessful = true;
 				if(loginType.equals("1")) {
 					String accessType = "Customer";
 					CustomerPortalDialogue cpd = new CustomerPortalDialogue();
-					cpd.customerOptions(loginValidated, connection, accessType);
+					cpd.customerOptions(loginValidated, accessType);
 				} else if(loginType.equals("2")) {
 					EmployeePortalDialogue epd = new EmployeePortalDialogue();
-					epd.employeeOptions(connection);
+					epd.employeeOptions();
 				} else if(loginType.equals("3")) {
 					AdministratorPortalDialogue apd = new AdministratorPortalDialogue();
-					apd.administratorOptions(connection);
+					apd.administratorOptions();
 				}
 			} else if(loginValidated == -1){
 				loginSuccessful = true;

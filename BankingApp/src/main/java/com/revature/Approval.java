@@ -1,6 +1,5 @@
 package com.revature;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.revature.dao.ApprovalDao;
@@ -42,8 +41,8 @@ public class Approval {
 		
 	}
 	
-	public void listPendingChecking(Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void listPendingChecking() {
+		ApprovalDao approvalDao = new ApprovalDao();
 		List<Approval> checkingAccounts = approvalDao.getAllCheckingAccounts();
 		int pendingCount = 0;
 		
@@ -69,8 +68,8 @@ public class Approval {
 
 	}
 	
-	public void listPendingSavings(Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void listPendingSavings() {
+		ApprovalDao approvalDao = new ApprovalDao();
 		List<Approval> savingsAccounts = approvalDao.getAllSavingsAccounts();
 		int pendingCount = 0;
 		
@@ -96,8 +95,8 @@ public class Approval {
 		}
 	}
 	
-	public void listPendingJoint(Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void listPendingJoint() {
+		ApprovalDao approvalDao = new ApprovalDao();
 		List<Approval> jointAccounts = approvalDao.getAllJointAccounts();
 		int pendingCount = 0;
 		
@@ -122,8 +121,8 @@ public class Approval {
 		}
 	}
 	
-	public void listPendingEmployees(Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void listPendingEmployees() {
+		ApprovalDao approvalDao = new ApprovalDao();
 		int pendingCount = 0;
 		List<Employee> employees = approvalDao.getAllEmployees();
 		
@@ -147,8 +146,8 @@ public class Approval {
 		}
 	}
 	
-	public void listPendingAdministrators(Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void listPendingAdministrators() {
+		ApprovalDao approvalDao = new ApprovalDao();
 		int pendingCount = 0;
 		List<Administrator> administrators = approvalDao.getAllAdministrators();
 		
@@ -172,12 +171,12 @@ public class Approval {
 		}
 	}
 	
-	public void approve(int customerId, String accountType, Connection connection) {
+	public void approve(int customerId, String accountType) {
 		String approvalStatus = "u";
 		boolean customerExists = false;
 
-		CustomerDao customerDao = new CustomerDao(connection);
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+		CustomerDao customerDao = new CustomerDao();
+		ApprovalDao approvalDao = new ApprovalDao();
 		
 		
 		
@@ -317,11 +316,11 @@ public class Approval {
 		
 	}
 	
-	public void deny(int customerId, String accountType, Connection connection) {
+	public void deny(int customerId, String accountType) {
 		String approvalStatus = "u";
 
-		ApprovalDao approvalDao = new ApprovalDao(connection);
-		CustomerDao customerDao = new CustomerDao(connection);
+		ApprovalDao approvalDao = new ApprovalDao();
+		CustomerDao customerDao = new CustomerDao();
 		boolean customerExists = false;
 
 		
@@ -445,8 +444,8 @@ public class Approval {
 		}
 	}
 	
-	public void approveEmployee(int id, Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void approveEmployee(int id) {
+		ApprovalDao approvalDao = new ApprovalDao();
 		int pendingCount = 0;
 		String approvalStatus = "u";
 		
@@ -490,8 +489,8 @@ public class Approval {
 		}
 	}
 	
-	public void denyEmployee(int id, Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void denyEmployee(int id) {
+		ApprovalDao approvalDao = new ApprovalDao();
 		int pendingCount = 0;
 		String approvalStatus = "u";
 		List<Employee> employees = approvalDao.getAllEmployees();
@@ -536,8 +535,8 @@ public class Approval {
 		}
 	}
 	
-	public void approveAdministrator(int id, Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void approveAdministrator(int id) {
+		ApprovalDao approvalDao = new ApprovalDao();
 		int pendingCount = 0;
 		String approvalStatus = "u";
 		List<Administrator> administrators = approvalDao.getAllAdministrators();
@@ -581,8 +580,8 @@ public class Approval {
 		}
 	}
 	
-	public void denyAdministrator(int id, Connection connection) {
-		ApprovalDao approvalDao = new ApprovalDao(connection);
+	public void denyAdministrator(int id) {
+		ApprovalDao approvalDao = new ApprovalDao();
 		int pendingCount = 0;
 		String approvalStatus = "u";
 		List<Administrator> administrators = approvalDao.getAllAdministrators();

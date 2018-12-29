@@ -20,8 +20,9 @@ public class App
        	Initialize init = new Initialize();
        	LoginDialogue ld = new LoginDialogue();
 		EstablishConnection establishConnection = new EstablishConnection();
-		init.init(establishConnection.establishConnection());
-		ld.login(establishConnection.establishConnection());
+		establishConnection.establishConnection();
+		init.init();
+		ld.login();
      	establishConnection.closeConnection();
     }
 }

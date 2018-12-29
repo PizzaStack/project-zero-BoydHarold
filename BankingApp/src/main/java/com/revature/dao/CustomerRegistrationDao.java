@@ -1,6 +1,5 @@
 package com.revature.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,13 +8,9 @@ import java.util.List;
 
 import com.revature.CustomerRegistration;
 import com.revature.dao.CustomerRegistrationDao;
+import com.revature.jdbcinfo.EstablishConnection;
 
 public class CustomerRegistrationDao{
-	private Connection connection;
-	
-	public CustomerRegistrationDao(Connection connection) {
-		this.connection = connection;
-	}
 
 	public List<CustomerRegistration> getAllCustomerUsers(){
 		List<CustomerRegistration> customerUserList = new ArrayList<>();
@@ -23,7 +18,7 @@ public class CustomerRegistrationDao{
 		try {
 			PreparedStatement preGetAllCustomerUsers = null;
 			String getAllCustomerUsers = "SELECT * FROM CustomerUsers;";
-			preGetAllCustomerUsers = connection.prepareStatement(getAllCustomerUsers);
+			preGetAllCustomerUsers = EstablishConnection.connection.prepareStatement(getAllCustomerUsers);
 			ResultSet rs = preGetAllCustomerUsers.executeQuery();
 
 			while(rs.next()) {
@@ -43,7 +38,7 @@ public class CustomerRegistrationDao{
 		try {
 			PreparedStatement preGetCustomerRegistration = null;
 			String getCustomerRegistration = "SELECT * FROM CustomerUsers WHERE Username = ?";
-			preGetCustomerRegistration = connection.prepareStatement(getCustomerRegistration);
+			preGetCustomerRegistration = EstablishConnection.connection.prepareStatement(getCustomerRegistration);
 			preGetCustomerRegistration.setString(1, username);
 			ResultSet rs = preGetCustomerRegistration.executeQuery();
 			while(rs.next()) {
@@ -62,7 +57,7 @@ public class CustomerRegistrationDao{
 		try {
 			PreparedStatement preAddCustomerUser = null;
 			String addCustomerUser = "INSERT INTO CustomerUsers(CustomerId, Username, Password, Status) VALUES (?,?,?,?)";
-			preAddCustomerUser = connection.prepareStatement(addCustomerUser);
+			preAddCustomerUser = EstablishConnection.connection.prepareStatement(addCustomerUser);
 			preAddCustomerUser.setInt(1,customerUser.getCustomerId());
 			preAddCustomerUser.setString(2,customerUser.getUsername());
 			preAddCustomerUser.setString(3,customerUser.getPassword());
