@@ -1,0 +1,270 @@
+DROP TABLE IF EXISTS CheckingAccount;
+DROP TABLE IF EXISTS SavingsAccount;
+DROP TABLE IF EXISTS JointAccount;
+DROP TABLE IF EXISTS CustomerUsers;
+DROP TABLE IF EXISTS EmployeeUsers;
+DROP TABLE IF EXISTS AdministratorUsers;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Administrator;
+
+CREATE TABLE Customer (
+CustomerId SERIAL PRIMARY KEY,
+FirstName varchar(50),
+LastName varchar(50),
+Address varchar(50),
+BirthDate varchar(50),
+EmailAddress varchar(50),
+PhoneNumber varchar(50),
+Status smallint
+);
+
+CREATE TABLE Employee (
+EmployeeId SERIAL PRIMARY KEY,
+FirstName varchar(50),
+LastName varchar(50),
+Address varchar(50),
+BirthDate varchar(50),
+EmailAddress varchar(50),
+PhoneNumber varchar(50),
+Status smallint,
+ApprovalStatus char
+);
+
+CREATE TABLE Administrator (
+AdministratorId SERIAL PRIMARY KEY,
+FirstName varchar(50),
+LastName varchar(50),
+Address varchar(50),
+BirthDate varchar(50),
+EmailAddress varchar(50),
+PhoneNumber varchar(50),
+Status smallint,
+ApprovalStatus char
+);
+
+CREATE TABLE CheckingAccount (
+AccountNumber SERIAL PRIMARY KEY,
+CustomerId int REFERENCES Customer(CustomerId),
+Status smallint,
+ApprovalStatus char,
+Balance numeric (100,2)
+);
+
+CREATE TABLE SavingsAccount (
+AccountNumber SERIAL PRIMARY KEY,
+CustomerId int REFERENCES Customer(CustomerId),
+Status smallint,
+ApprovalStatus char,
+Balance numeric (100,2)
+);
+
+CREATE TABLE JointAccount (
+AccountNumber SERIAL PRIMARY KEY,
+CustomerId1 int REFERENCES Customer(CustomerId),
+CustomerId2 int REFERENCES Customer(CustomerId),
+Status smallint,
+ApprovalStatus char,
+Balance numeric (100,2)
+);
+
+CREATE TABLE CustomerUsers (
+UserId SERIAL PRIMARY KEY,
+CustomerId int REFERENCES Customer(CustomerId),
+Username varchar(50),
+Password varchar(50),
+Status smallint
+);
+
+CREATE TABLE EmployeeUsers (
+UserId SERIAL PRIMARY KEY,
+EmployeeId int REFERENCES Employee(EmployeeId),
+Username varchar(50),
+Password varchar(50),
+Status smallint
+);
+
+CREATE TABLE AdministratorUsers (
+UserId SERIAL PRIMARY KEY,
+AdministratorId int REFERENCES Administrator(AdministratorId),
+Username varchar(50),
+Password varchar(50),
+Status smallint
+);
+
+CREATE OR REPLACE FUNCTION cancelcustomeraccount(id integer)
+RETURNS integer AS
+$$
+DECLARE
+successcount integer;
+hasjointaccount boolean;
+jointamount numeric(100,2);
+id1 integer;
+id2 integer;
+checkingaccount1 boolean;
+checkingaccount2 boolean;
+currentbalance1 numeric(100,2);
+currentbalance2 numeric(100,2);
+
+BEGIN
+	checkingaccount1 = false;
+	checkingaccount2 = false;
+	hasjointaccount = false;
+	
+	IF EXISTS(SELECT accountnumber FROM jointaccount WHERE customerid1 = id OR customerid2 = id) THEN
+	SELECT balance INTO jointamount FROM jointaccount WHERE customerid1 = id OR customerid2 = id;
+	SELECT customerid1 INTO id1 FROM jointaccount WHERE customerid1 = id OR customerid2 = id;
+	SELECT customerid2 INTO id2 FROM jointaccount WHERE customerid1 = id OR customerid2 = id;
+	jointamount = jointamount/2;
+	hasjointaccount = true;
+	END IF;
+
+	IF EXISTS(SELECT accountnumber FROM checkingaccount WHERE customerid = id1 AND status = 1) THEN
+	checkingaccount1 = true;
+	END IF;
+	
+	IF EXISTS(SELECT accountnumber FROM checkingaccount WHERE customerid = id2 AND status = 1) THEN
+	checkingaccount2 = true;
+	END IF;
+	
+	IF(checkingaccount1 = true AND checkingaccount2 = true) THEN
+	successcount = 1;
+	SELECT balance INTO currentbalance1 FROM checkingaccount WHERE customerid = id1;
+	SELECT balance INTO currentbalance2 FROM checkingaccount WHERE customerid = id2;
+	currentbalance1 = currentbalance1 + jointamount;
+	currentbalance2 = currentbalance2 + jointamount;
+	UPDATE jointaccount
+	SET balance = 0
+	WHERE customerid1 = id
+	OR customerid2 = id;
+	UPDATE checkingaccount
+	SET balance = currentbalance1
+	WHERE customerid = id1;
+	UPDATE checkingaccount
+	SET balance = currentbalance2
+	WHERE customerid = id2;
+	ELSE
+	successcount = 0;
+	END IF;
+	
+	IF(successcount = 1) THEN
+	UPDATE Customer SET Status = 0 WHERE CustomerId = id;
+	UPDATE CheckingAccount SET Status = 0 WHERE CustomerId = id;
+	UPDATE SavingsAccount SET Status = 0 WHERE CustomerId = id;
+	UPDATE CustomerUsers SET Status = 0 WHERE CustomerId = id;
+	DELETE FROM JointAccount WHERE CustomerId1 = id OR CustomerId2 = id;
+	END IF;
+	
+	if(hasjointaccount = false) THEN
+	UPDATE Customer SET Status = 0 WHERE CustomerId = id;
+	UPDATE CheckingAccount SET Status = 0 WHERE CustomerId = id;
+	UPDATE SavingsAccount SET Status = 0 WHERE CustomerId = id;
+	UPDATE CustomerUsers SET Status = 0 WHERE CustomerId = id;
+	successcount = 2;
+	END IF;
+	
+	RETURN successcount;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION cancelemployeeaccount(id integer)
+RETURNS boolean AS
+$$
+BEGIN
+	UPDATE Employee SET Status = 0 WHERE EmployeeId = id;
+	UPDATE EmployeeUsers SET Status = 0 WHERE EmployeeId = id;
+	RETURN true;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION canceladminaccount(id integer)
+RETURNS boolean AS
+$$
+BEGIN
+	UPDATE Administrator SET Status = 0 WHERE AdministratorId = id;
+	UPDATE AdministratorUsers SET Status = 0 WHERE AdministratorId = id;
+	RETURN true;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION activatecustomeraccount(id integer)
+RETURNS boolean AS
+$$
+DECLARE
+checkingaccountstatus varchar(5);
+savingsaccountstatus varchar(5);
+
+BEGIN
+	IF EXISTS (SELECT ApprovalStatus FROM CheckingAccount WHERE CustomerId = id) THEN
+	SELECT ApprovalStatus INTO checkingaccountstatus FROM CheckingAccount WHERE CustomerId = id;
+	END IF;
+	
+	IF EXISTS (SELECT ApprovalStatus FROM SavingsAccount WHERE CustomerId = id) THEN
+	SELECT ApprovalStatus INTO savingsaccountstatus FROM SavingsAccount WHERE CustomerId = id;
+	END IF;
+	
+	UPDATE Customer SET Status = 1 WHERE CustomerId = id;
+	UPDATE CustomerUsers SET Status = 1 WHERE CustomerId = id;
+	
+	IF(checkingaccountstatus = 'a') THEN
+	UPDATE CheckingAccount SET Status = 1 WHERE CustomerId = id;
+	END IF;
+	
+	IF(savingsaccountstatus = 'a') THEN
+	UPDATE SavingsAccount SET Status = 1 WHERE CustomerId = id;
+	END IF;
+	
+	RETURN true;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION activateemployeeaccount(id integer)
+RETURNS boolean AS
+$$
+BEGIN
+	UPDATE Employee SET Status = 1 WHERE EmployeeId = id;
+	UPDATE EmployeeUsers SET Status = 1 WHERE EmployeeId = id;
+	RETURN true;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION activateadminaccount(id integer)
+RETURNS boolean AS
+$$
+BEGIN
+	UPDATE Administrator SET Status = 1 WHERE AdministratorId = id;
+	UPDATE AdministratorUsers SET Status = 1 WHERE AdministratorId = id;
+	RETURN true;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION setupdefaultemployeeandadminaccounts()
+RETURNS boolean AS
+$$
+BEGIN
+	IF NOT EXISTS(SELECT * FROM Employee WHERE EmployeeId = 1) THEN
+		INSERT INTO Employee (FirstName, LastName, Address, BirthDate, EmailAddress, PhoneNumber, Status, ApprovalStatus)
+		VALUES ('Default','Default','Default','Default','Default','Default',1,'a');
+		
+		INSERT INTO EmployeeUsers (EmployeeId, Username, Password, Status)
+		VALUES (1,'employee','password',1);
+		
+		INSERT INTO Administrator (FirstName, LastName, Address, BirthDate, EmailAddress, PhoneNumber, Status, ApprovalStatus)
+		VALUES ('Default','Default','Default','Default','Default','Default',1,'a');
+		
+		INSERT INTO AdministratorUsers (AdministratorId, Username, Password, Status)
+		VALUES (1,'admin','password',1);
+	END IF;
+	
+	RETURN true;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+
