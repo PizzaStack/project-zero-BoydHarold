@@ -22,18 +22,18 @@ public class CheckingAccount {
 	private String approvalStatus;
 	private double balance;
 
-	public CheckingAccount(int accountNumber, int customerId, int status, String approvalStatus, double balance){
+	public CheckingAccount(int accountNumber, int customerId, int status, String approvalStatus, double balance) {
 		this.accountNumber = accountNumber;
 		this.customerId = customerId;
 		this.status = status;
 		this.approvalStatus = approvalStatus;
 		this.balance = balance;
 	}
-	
+
 	public CheckingAccount() {
-		
+
 	}
-	
+
 	public int getAccountNumber() {
 		return accountNumber;
 	}
@@ -73,11 +73,11 @@ public class CheckingAccount {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
+
 	public void initialize(int customerId) {
 		CheckingAccount checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
-		
-		if(checkingAccount == null) {
+
+		if (checkingAccount == null) {
 			checkingAccount = new CheckingAccount();
 			checkingAccount.setCustomerId(customerId);
 			checkingAccount.setStatus(0);
@@ -85,7 +85,7 @@ public class CheckingAccount {
 			checkingAccount.setBalance(0.00);
 			checkingAccountDao.addCheckingAccount(checkingAccount);
 		}
-		
+
 	}
 
 	public double withdrawl(int customerId, double amount) {
@@ -93,8 +93,8 @@ public class CheckingAccount {
 		double currentBalance = checkingAccount.getBalance();
 		double newBalance = currentBalance - amount;
 		if (newBalance < 0) {
-			System.out.println("You do not have enough money to withdrawl that much! You only have: $" + df.format(currentBalance)
-					+ " remaining in your account!");
+			System.out.println("You do not have enough money to withdrawl that much! You only have: $"
+					+ df.format(currentBalance) + " remaining in your account!");
 			return currentBalance;
 		} else {
 			checkingAccount.setBalance(newBalance);
@@ -116,7 +116,7 @@ public class CheckingAccount {
 		SavingsAccount savingsAccount = savingsAccountDao.getSavingsAccountById(customerId);
 		CheckingAccount checkingAccount = checkingAccountDao.getCheckingAccountById(customerId);
 		JointAccount jointAccount = jointAccountDao.getJointAccountById(customerId);
-		
+
 		if (destination.equals("Savings")) {
 			withdrawl(customerId, amount);
 			savingsAccount.deposit(customerId, amount);
@@ -125,7 +125,8 @@ public class CheckingAccount {
 			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
 			System.out.println("New Savings Account Balance: $" + df.format(savingsAccount.getBalance()));
-			log.info("$" + df.format(amount) + " was transferred from checking to savings for Customer id: " + customerId);
+			log.info("$" + df.format(amount) + " was transferred from checking to savings for Customer id: "
+					+ customerId);
 		} else if (destination.equals("Joint")) {
 			withdrawl(customerId, amount);
 			jointAccount.deposit(customerId, amount);
@@ -134,7 +135,8 @@ public class CheckingAccount {
 			jointAccount = jointAccountDao.getJointAccountById(customerId);
 			System.out.println("New Checking Account Balance: $" + df.format(checkingAccount.getBalance()));
 			System.out.println("New Joint Account Balance: $" + df.format(jointAccount.getBalance()));
-			log.info("$" + df.format(amount) + " was transferred from checking to joint for Customer id: " + customerId);
+			log.info(
+					"$" + df.format(amount) + " was transferred from checking to joint for Customer id: " + customerId);
 		}
 	}
 
@@ -144,17 +146,16 @@ public class CheckingAccount {
 		if (approvalStatus.equals("p")) {
 			System.out.println("Approval already pending!");
 		} else {
-			
-			if(approvalStatus.equals("d") || approvalStatus.equals("u")) {
-			checkingAccount.setApprovalStatus("p");
-			checkingAccountDao.updateCheckingAccount(checkingAccount);
-				
-			System.out.println("Applied for Checking Account!");
+
+			if (approvalStatus.equals("d") || approvalStatus.equals("u")) {
+				checkingAccount.setApprovalStatus("p");
+				checkingAccountDao.updateCheckingAccount(checkingAccount);
+
+				System.out.println("Applied for Checking Account!");
 			} else {
 				System.out.println("You already have an account!");
 			}
 		}
 	}
-
 
 }

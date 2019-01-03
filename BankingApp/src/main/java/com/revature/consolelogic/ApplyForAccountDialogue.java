@@ -11,20 +11,20 @@ public class ApplyForAccountDialogue {
 	CheckingAccount ca = new CheckingAccount();
 	SavingsAccount sa = new SavingsAccount();
 	JointAccount ja = new JointAccount();
-	
+
 	public void apply(int customerId, String accessType) {
 		System.out.println("\nWhich type of account would you like to apply for?");
 		System.out.println("\n1. Checking");
 		System.out.println("2. Savings");
 		System.out.println("3. Joint");
 		System.out.println("4. Back");
-		
+
 		String choice = sc.nextLine();
-		
+
 		boolean validEntry = false;
-		
-		while(validEntry == false) {
-			if(choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4")) {
+
+		while (validEntry == false) {
+			if (choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4")) {
 				validEntry = true;
 			} else {
 				validEntry = false;
@@ -32,20 +32,20 @@ public class ApplyForAccountDialogue {
 				choice = sc.nextLine();
 			}
 		}
-		
-		if(choice.equals("1")) {
+
+		if (choice.equals("1")) {
 			ca.applyForAccount(customerId);
 		} else if (choice.equals("2")) {
 			sa.applyForAccount(customerId);
 		} else if (choice.equals("3")) {
 			System.out.println("Enter in the customer id of whom you would like to open this joint account with:");
 			String customerId2 = sc.nextLine();
-			
+
 			validEntry = false;
-			
-			while(validEntry == false) {
+
+			while (validEntry == false) {
 				boolean isNumeric = isNumeric(customerId2);
-				if(isNumeric) {
+				if (isNumeric) {
 					validEntry = true;
 				} else {
 					System.out.println("Invalid entry! Enter in a valid customer id!");
@@ -53,12 +53,12 @@ public class ApplyForAccountDialogue {
 			}
 
 			ja.applyForAccount(customerId, Integer.parseInt(customerId2));
-		} else if(choice.equals("4")) {
+		} else if (choice.equals("4")) {
 			CustomerPortalDialogue cpd = new CustomerPortalDialogue();
 			cpd.customerOptions(customerId, accessType);
 		}
 	}
-	
+
 	public boolean isNumeric(String datePart) {
 		boolean isNumeric = false;
 		try {

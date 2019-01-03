@@ -5,64 +5,63 @@ import java.util.List;
 import com.revature.dao.CustomerDao;
 import com.revature.dao.CustomerRegistrationDao;
 
-public class CustomerRegistration{
+public class CustomerRegistration {
 	private int userId;
 	private int customerId;
 	private String username;
 	private String password;
 	private int status;
-	
+
 	public CustomerRegistration(int customerId, String username, String password, int status) {
 		this.customerId = customerId;
 		this.username = username;
 		this.password = password;
 		this.status = status;
 	}
-	
+
 	public CustomerRegistration() {
-		
+
 	}
-	
+
 	public boolean registerUser(String customerId, String username, String password) {
-		
+
 		CustomerRegistrationDao customerRegistrationDao = new CustomerRegistrationDao();
 		CustomerRegistration customerRegistration = customerRegistrationDao.getCustomerUserByUsername(username);
 		CustomerDao customerDao = new CustomerDao();
 		Customer customer = customerDao.getCustomerById(Integer.parseInt(customerId));
 		List<CustomerRegistration> customerUsers = customerRegistrationDao.getAllCustomerUsers();
-		
+
 		int id = 0;
-		
-		for(CustomerRegistration customerUser : customerUsers) {
-			if(customerUser.getCustomerId() == Integer.parseInt(customerId)) {
+
+		for (CustomerRegistration customerUser : customerUsers) {
+			if (customerUser.getCustomerId() == Integer.parseInt(customerId)) {
 				id = customerUser.getCustomerId();
 			}
 		}
-		
-		
+
 		boolean userExists = false;
-		if(customerRegistration == null) {
+		if (customerRegistration == null) {
 			userExists = false;
 		} else {
 			userExists = true;
 		}
-		
+
 		boolean customerOnboarded = false;
-		if(customer == null) {
+		if (customer == null) {
 			customerOnboarded = false;
 		} else {
 			customerOnboarded = true;
 		}
-		
-		
+
 		boolean success = false;
-		if(id != 0) {
+		if (id != 0) {
 			System.out.println("You already have an account! You are only allowed one account.");
 			success = false;
-		} else if(customerOnboarded == false) {
-			System.out.println("Customer does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
+		} else if (customerOnboarded == false) {
+			System.out.println(
+					"Customer does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
 			success = false;
-		} else if(userExists == true) {
+		} else if (userExists == true) {
 			System.out.println("Account already exists with that username!");
 			success = false;
 		} else {
@@ -111,6 +110,5 @@ public class CustomerRegistration{
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
 
 }

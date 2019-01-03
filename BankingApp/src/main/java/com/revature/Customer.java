@@ -9,8 +9,9 @@ public class Customer {
 	private String emailAddress;
 	private String phoneNumber;
 	private int customerIsActive;
-	
-	public Customer(String firstName, String lastName, String address, String birthDate, String emailAddress, String phoneNumber, int status) {
+
+	public Customer(String firstName, String lastName, String address, String birthDate, String emailAddress,
+			String phoneNumber, int status) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -19,11 +20,11 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.customerIsActive = status;
 	}
-	
+
 	public Customer() {
-		
+
 	}
-	
+
 	public void setCustomerFirstName(String name) {
 		this.firstName = name;
 	}
@@ -48,11 +49,11 @@ public class Customer {
 	public void setCustomerPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	public void setCustomerIsActive(int customerIsActive) {
 		this.customerIsActive = customerIsActive;
 	}
-	
+
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
@@ -80,13 +81,13 @@ public class Customer {
 	public String getCustomerPhoneNumber() {
 		return this.phoneNumber;
 	}
-	
+
 	public int getCustomerIsActive() {
 		return this.customerIsActive;
 	}
-	
+
 	public int getCustomerId() {
 		return this.customerId;
 	}
-	
+
 }

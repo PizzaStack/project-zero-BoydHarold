@@ -10,50 +10,53 @@ import com.revature.JointAccount;
 import com.revature.dao.JointAccountDao;
 import com.revature.jdbcinfo.EstablishConnection;
 
-public class JointAccountDao{
+public class JointAccountDao {
 	String approvalStatus;
 
-	public List<JointAccount> getAllJointAccounts(){
+	public List<JointAccount> getAllJointAccounts() {
 		List<JointAccount> jointAccounts = new ArrayList<>();
 		try {
 			PreparedStatement preGetAllJointAccounts = null;
 			preGetAllJointAccounts = EstablishConnection.connection.prepareStatement("SELECT * FROM JointAccount;");
 			ResultSet rs = preGetAllJointAccounts.executeQuery();
 			JointAccount jointAccount = null;
-			while(rs.next()) {
-				jointAccount = new JointAccount(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getDouble(6));
+			while (rs.next()) {
+				jointAccount = new JointAccount(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getString(5),
+						rs.getDouble(6));
 				jointAccounts.add(jointAccount);
 			}
 		} catch (SQLException e) {
 
 		}
-		
+
 		return jointAccounts;
 	}
-	
+
 	public JointAccount getJointAccountById(int customerId) {
 		JointAccount jointAccount = new JointAccount();
 		try {
 			PreparedStatement preGetJointAccount = null;
-			preGetJointAccount = EstablishConnection.connection.prepareStatement("SELECT * FROM JointAccount WHERE CustomerId1 = ? OR CustomerId2 = ?");
+			preGetJointAccount = EstablishConnection.connection
+					.prepareStatement("SELECT * FROM JointAccount WHERE CustomerId1 = ? OR CustomerId2 = ?");
 			preGetJointAccount.setInt(1, customerId);
 			preGetJointAccount.setInt(2, customerId);
 			ResultSet rs = preGetJointAccount.executeQuery();
 			jointAccount = null;
-			while(rs.next()) {
-				jointAccount = new JointAccount(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getDouble(6));
+			while (rs.next()) {
+				jointAccount = new JointAccount(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getString(5),
+						rs.getDouble(6));
 			}
 		} catch (SQLException e) {
-			
+
 		}
-		
-		
+
 		return jointAccount;
 	}
-	
+
 	public void updateJointAccount(JointAccount jointAccount) {
 		try {
-			PreparedStatement preUpdateJointAccount = EstablishConnection.connection.prepareStatement("UPDATE JointAccount SET Status = ?, ApprovalStatus = ?, Balance = ? WHERE CustomerId1 = ? OR CustomerId2 = ?;");
+			PreparedStatement preUpdateJointAccount = EstablishConnection.connection.prepareStatement(
+					"UPDATE JointAccount SET Status = ?, ApprovalStatus = ?, Balance = ? WHERE CustomerId1 = ? OR CustomerId2 = ?;");
 			preUpdateJointAccount.setInt(1, jointAccount.getStatus());
 			preUpdateJointAccount.setString(2, jointAccount.getApprovalStatus());
 			preUpdateJointAccount.setDouble(3, jointAccount.getBalance());
@@ -62,13 +65,14 @@ public class JointAccountDao{
 			preUpdateJointAccount.executeUpdate();
 
 		} catch (SQLException e) {
-			
+
 		}
 	}
-	
+
 	public void addJointAccount(JointAccount jointAccount) {
 		try {
-			PreparedStatement preAddJointAccount = EstablishConnection.connection.prepareStatement("INSERT INTO JointAccount (CustomerId1, CustomerId2, Status, ApprovalStatus, Balance) VALUES (?,?,?,?,?);");
+			PreparedStatement preAddJointAccount = EstablishConnection.connection.prepareStatement(
+					"INSERT INTO JointAccount (CustomerId1, CustomerId2, Status, ApprovalStatus, Balance) VALUES (?,?,?,?,?);");
 			preAddJointAccount.setInt(1, jointAccount.getCustomerId1());
 			preAddJointAccount.setInt(2, jointAccount.getCustomerId2());
 			preAddJointAccount.setInt(3, jointAccount.getStatus());
@@ -77,7 +81,7 @@ public class JointAccountDao{
 			preAddJointAccount.executeUpdate();
 
 		} catch (SQLException e) {
-			
+
 		}
 	}
 }

@@ -11,60 +11,58 @@ public class AdminRegistration {
 	private String username;
 	private String password;
 	private int status;
-	
+
 	public AdminRegistration(int administratorId, String username, String password, int status) {
 		this.administratorId = administratorId;
 		this.username = username;
 		this.password = password;
 		this.status = status;
 	}
-	
+
 	public AdminRegistration() {
-		
+
 	}
-	
+
 	public boolean registerUser(String administratorId, String username, String password) {
-		
+
 		AdminRegistrationDao administratorRegistrationDao = new AdminRegistrationDao();
-		AdminRegistration administratorRegistration = administratorRegistrationDao.getAdministratorUserByUsername(username);
+		AdminRegistration administratorRegistration = administratorRegistrationDao
+				.getAdministratorUserByUsername(username);
 		AdministratorDao administratorDao = new AdministratorDao();
 		Administrator administrator = administratorDao.getAdministratorById(Integer.parseInt(administratorId));
 		List<AdminRegistration> administratorUsers = administratorRegistrationDao.getAllAdministratorUsers();
-		
+
 		int id = 0;
-		
-		for(AdminRegistration administratorUser : administratorUsers) {
-			if(administratorUser.getAdministratorId() == Integer.parseInt(administratorId)) {
+
+		for (AdminRegistration administratorUser : administratorUsers) {
+			if (administratorUser.getAdministratorId() == Integer.parseInt(administratorId)) {
 				id = administratorUser.getAdministratorId();
 			}
 		}
-		
-		
+
 		boolean userExists = false;
-		if(administratorRegistration == null) {
+		if (administratorRegistration == null) {
 			userExists = false;
 		} else {
 			userExists = true;
 		}
-		
+
 		boolean administratorOnboarded = false;
-		if(administrator == null) {
+		if (administrator == null) {
 			administratorOnboarded = false;
 		} else {
 			administratorOnboarded = true;
 		}
-		
-		
-		
-		
+
 		boolean success = false;
-		if(id != 0) {
+		if (id != 0) {
 			System.out.println("You already have an account! You are only allowed one account.");
 			success = false;
-		} else if(administratorOnboarded == false) {
-			System.out.println("Administrator does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
+		} else if (administratorOnboarded == false) {
+			System.out.println(
+					"Administrator does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
 			success = false;
-		} else if(userExists == true) {
+		} else if (userExists == true) {
 			System.out.println("Account already exists with that username!");
 			success = false;
 		} else {
@@ -114,5 +112,4 @@ public class AdminRegistration {
 		this.status = status;
 	}
 
-	
 }

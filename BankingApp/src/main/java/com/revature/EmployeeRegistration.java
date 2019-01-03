@@ -2,67 +2,66 @@ package com.revature;
 
 import java.util.List;
 
-
 import com.revature.dao.EmployeeDao;
 import com.revature.dao.EmployeeRegistrationDao;
 
-public class EmployeeRegistration{
+public class EmployeeRegistration {
 	private int userId;
 	private int employeeId;
 	private String username;
 	private String password;
 	private int status;
-	
+
 	public EmployeeRegistration(int employeeId, String username, String password, int status) {
 		this.employeeId = employeeId;
 		this.username = username;
 		this.password = password;
 		this.status = status;
 	}
-	
+
 	public EmployeeRegistration() {
-		
+
 	}
-	
+
 	public boolean registerUser(String employeeId, String username, String password) {
 		EmployeeRegistrationDao employeeRegistrationDao = new EmployeeRegistrationDao();
 		EmployeeRegistration employeeRegistration = employeeRegistrationDao.getEmployeeUserByUsername(username);
 		EmployeeDao employeeDao = new EmployeeDao();
 		Employee employee = employeeDao.getEmployeeById(Integer.parseInt(employeeId));
 		List<EmployeeRegistration> employeeUsers = employeeRegistrationDao.getAllEmployeeUsers();
-		
-		
+
 		boolean success = false;
-		
+
 		int id = 0;
-		
-		for(EmployeeRegistration employeeUser : employeeUsers) {
-			if(employeeUser.getEmployeeId() == Integer.parseInt(employeeId)) {
+
+		for (EmployeeRegistration employeeUser : employeeUsers) {
+			if (employeeUser.getEmployeeId() == Integer.parseInt(employeeId)) {
 				id = employeeUser.getEmployeeId();
 			}
 		}
-		
+
 		boolean userExists = false;
-		if(employeeRegistration == null) {
+		if (employeeRegistration == null) {
 			userExists = false;
 		} else {
 			userExists = true;
 		}
-		
+
 		boolean employeeOnboarded = false;
-		if(employee == null) {
+		if (employee == null) {
 			employeeOnboarded = false;
 		} else {
 			employeeOnboarded = true;
 		}
-		
-		if(id != 0) {
+
+		if (id != 0) {
 			System.out.println("You already have an account! You are only allowed one account.");
 			success = false;
-		} else if(employeeOnboarded == false) {
-			System.out.println("Employee does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
+		} else if (employeeOnboarded == false) {
+			System.out.println(
+					"Employee does not have an account with the bank, please speak to a bank employee so you can be onboarded.");
 			success = false;
-		} else if(userExists == true) {
+		} else if (userExists == true) {
 			System.out.println("Account already exists with that username!");
 			success = false;
 		} else {
@@ -110,7 +109,5 @@ public class EmployeeRegistration{
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-
 
 }

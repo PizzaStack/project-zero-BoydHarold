@@ -1,6 +1,5 @@
 package com.revature.consolelogic;
 
-
 import com.revature.dao.InitializeDao;
 
 public class Initialize {
@@ -9,6 +8,6 @@ public class Initialize {
 		InitializeDao initializeDao = new InitializeDao();
 		initializeDao.init();
 		loginDialogue.login();
-		
+
 	}
 }
